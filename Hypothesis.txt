@@ -1,0 +1,14 @@
+#File Contenente tutte le ipotesi nella forma coppia-valore
+#Il simbolo # denota i commenti
+A-Blind Trust
+B-Very High Trust
+C-High Trust
+D-High Medium Trust
+E-Low Medium Trust
+F-Low Trust
+G-Low Distrust
+H-Low Medium Distrust
+I-High Medium Distrust
+L-High Distrust
+M-Very High Distrust
+N-Complete Distrust
