@@ -1,41 +1,42 @@
 package core;
 
-import java.util.Hashtable;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class MassDistribution {
 
-	protected Hashtable<Element, Double> mass;
+	protected ArrayList<Element> elements;
 
-	public MassDistribution(Hashtable<Element, Double> mass) {
+	public MassDistribution(ArrayList<Element> mass) {
 		super();
-		this.mass = mass;
+		this.elements = mass;
 	}
 
-	public Double getBpa(Element element) {
-		if (element != null)
-			return mass.get(element);
-		else
-			return null;
+	public ArrayList<Element> getElements() {
+		return elements;
 	}
 
-	public void addElement(Element element, Double bpa) {
-		if (mass == null)
-			mass = new Hashtable<Element, Double>();
-		mass.put(element, bpa);
+	public void setElements(ArrayList<Element> mass) {
+		this.elements = mass;
+	}
+
+	public void addElement(Element element) {
+		if (elements == null)
+			elements = new ArrayList<Element>();
+		elements.add(element);
 	}
 
 	/**
-	 * Verify if the mass distribution is valid, hat means the sum of all
+	 * Verify if the elements distribution is valid, hat means the sum of all
 	 * elements it's equal to one.
 	 * 
-	 * @return true if the mass distribution is valid, false otherwise.
+	 * @return true if the elements distribution is valid, false otherwise.
 	 */
 	public boolean isValid() {
 		double sum = 0;
-		for (Iterator iterator = mass.values().iterator(); iterator.hasNext();) {
-			Double bpa = (Double) iterator.next();
-			sum = sum + bpa;
+		for (Iterator iterator = elements.iterator(); iterator.hasNext();) {
+			Element element = (Element) iterator.next();
+			sum = sum + element.getBpa();
 
 		}
 		if (sum == 1)

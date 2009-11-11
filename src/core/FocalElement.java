@@ -1,9 +1,9 @@
 package core;
 
-import java.util.Collection;
+import java.util.ArrayList;
 
 /**
- * A Focal Element is an Element with an evaluated mass.
+ * A Focal Element is an Element with an evaluated elements.
  * 
  * @author Elisa Costante
  * 
@@ -11,8 +11,8 @@ import java.util.Collection;
 public class FocalElement extends Element {
 	private double bpa;
 
-	public FocalElement(Collection<Hypothesis> hypothesies, double bpa) {
-		super(hypothesies);
+	public FocalElement(ArrayList<Hypothesis> hypothesies, double bpa) {
+		super(hypothesies, bpa);
 		this.bpa = bpa;
 	}
 
