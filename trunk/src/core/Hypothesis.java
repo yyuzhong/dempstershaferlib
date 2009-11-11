@@ -18,6 +18,10 @@ public class Hypothesis {
 		this.value = value;
 	}
 
+	public Hypothesis(String name) {
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
 	}
