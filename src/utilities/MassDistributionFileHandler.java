@@ -49,6 +49,7 @@ public class MassDistributionFileHandler {
 					Element element = new Element(hypothesies, bpa);
 					elements.add(element);
 				}
+				line = br.readLine();
 			}
 
 		} catch (Exception e) {
@@ -69,8 +70,8 @@ public class MassDistributionFileHandler {
 	private ArrayList<Hypothesis> readHypothesies(String allHypothesies) {
 		ArrayList<Hypothesis> hypothesies = new ArrayList<Hypothesis>();
 
-		allHypothesies = allHypothesies.replaceAll("{", "");
-		allHypothesies = allHypothesies.replaceAll("}", "");
+		allHypothesies = allHypothesies.replaceAll("\\{", "");
+		allHypothesies = allHypothesies.replaceAll("\\}", "");
 		StringTokenizer tokenizer = new StringTokenizer(allHypothesies);
 
 		while (tokenizer.hasMoreTokens()) {

@@ -103,6 +103,9 @@ public class NewSwingApp extends javax.swing.JFrame {
 	}
 
 	public void initGUI() {
+
+		setLocationRelativeTo(null);
+		setVisible(true);
 		try {
 			{
 				resultTab = new JTabbedPane();
