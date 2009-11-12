@@ -38,4 +38,19 @@ public class Hypothesis {
 		this.value = value;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		Hypothesis other = (Hypothesis) obj;
+		if (other.getName().equals(this.getName()))
+			return true;
+		else
+			return false;
+	}
+
+	@Override
+	public String toString() {
+		String objToString = "{" + name + "}";
+		return objToString;
+	}
+
 }
