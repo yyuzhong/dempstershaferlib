@@ -75,7 +75,7 @@ public class MassDistributionFileHandler {
 		StringTokenizer tokenizer = new StringTokenizer(allHypothesies);
 
 		while (tokenizer.hasMoreTokens()) {
-			Hypothesis hypothesis = new Hypothesis(tokenizer.nextToken(";"));
+			Hypothesis hypothesis = new Hypothesis(tokenizer.nextToken(","));
 			hypothesies.add(hypothesis);
 		}
 

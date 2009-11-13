@@ -42,9 +42,9 @@ public class Main {
 		masses.add(uddiMass);
 		masses.add(trustAuthorityMass);
 
-		// JointMassDistribution demDistribution = JointManager
-		// .dempsterJoint(masses);
-		//
+		JointMassDistribution demDistribution = JointManager
+				.dempsterJoint(masses);
+
 		// JointMassDistribution yagerDistribution = JointManager
 		// .yagerJoint(masses);
 
@@ -56,7 +56,7 @@ public class Main {
 		// distanceDistribution.setOperator("Distance of Evidence");
 
 		ArrayList<MassDistribution> results = new ArrayList<MassDistribution>();
-		// results.add(demDistribution);
+		results.add(demDistribution);
 		// results.add(yagerDistribution);
 
 		results.add(averageDistribution);
