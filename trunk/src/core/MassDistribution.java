@@ -44,4 +44,15 @@ public class MassDistribution {
 		else
 			return false;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "MassDistribution [elements=" + elements + "]";
+	}
+
 }

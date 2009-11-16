@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import joint.JointManager;
+import joint.JointOperatorEnum;
 import junit.framework.TestCase;
+import core.Element;
 import core.Hypothesis;
 import core.JointMassDistribution;
 import core.MassDistribution;
@@ -87,8 +89,10 @@ public class JointManagerTest extends TestCase {
 		JointMassDistribution demDistribution = JointManager
 				.dempsterJoint(masses);
 		JointMassDistribution dempsterResult = readDempsterResult();
+		dempsterResult.setOperator(JointOperatorEnum.DEMPSTER.getName());
+		assertEquals(demDistribution, dempsterResult);
 
-		fail("Not yet implemented");
+		// fail("Not yet implemented");
 	}
 
 	private JointMassDistribution readDempsterResult() {
@@ -99,10 +103,8 @@ public class JointManagerTest extends TestCase {
 					"result.txt")));
 			String readLine = br.readLine();
 
-			while (readLine != null) {
-				while (!readLine.startsWith("$Output DEMPSTER")) {
-					readLine = br.readLine();
-				}
+			while (!readLine.startsWith("$Output DEMPSTER")) {
+				readLine = br.readLine();
 			}
 
 			readLine = br.readLine();
@@ -123,7 +125,11 @@ public class JointManagerTest extends TestCase {
 		readLine = readLine.replaceAll("\\{", "");
 		readLine = readLine.replaceAll("\\}", "");
 
+		JointMassDistribution results = null;
+
 		ArrayList<Hypothesis> hypothesiesList = null;
+
+		ArrayList<Element> elementList = new ArrayList<Element>();
 
 		StringTokenizer elementTokenizer = new StringTokenizer(readLine);
 
@@ -132,24 +138,39 @@ public class JointManagerTest extends TestCase {
 			String elementString = elementTokenizer.nextToken(";");
 
 			// elementString=A,B-0.5
+			Element el = parseElement(elementString);
 
-			StringTokenizer hypTokenizer = new StringTokenizer(elementString);
-			String hypothesiesString = elementTokenizer.nextToken("-");
-			// hypothesiesString= A,B
-
-			hypothesiesList = new ArrayList<Hypothesis>();
-
-			while (hypTokenizer.hasMoreTokens()) {
-
-				Hypothesis hypothesis = new Hypothesis(hypTokenizer
-						.nextToken(","));
-
-				hypothesiesList.add(hypothesis);
-			}
-
+			elementList.add(el);
 		}
+		if (elementList.size() > 0)
+			results = new JointMassDistribution(elementList);
 
-		return null;
+		return results;
+	}
+
+	private Element parseElement(String elementString) {
+		// elementString=A,B-0.5
+		ArrayList<Hypothesis> hypothesiesList = new ArrayList<Hypothesis>();
+		StringTokenizer elementTokenizer = new StringTokenizer(elementString);
+		String hypothesiesString = elementTokenizer.nextToken("-");
+		hypothesiesList = parseHypothesies(hypothesiesString);
+		Double bpa = Double.parseDouble(elementTokenizer.nextToken("-"));
+
+		Element el = new Element(hypothesiesList, bpa);
+		return el;
+	}
+
+	private ArrayList<Hypothesis> parseHypothesies(String hypothesiesString) {
+		// hypothesiesString=A,B
+		ArrayList<Hypothesis> hypothesiesList = new ArrayList<Hypothesis>();
+		StringTokenizer hypTokenizer = new StringTokenizer(hypothesiesString);
+		while (hypTokenizer.hasMoreTokens()) {
+
+			Hypothesis hypothesis = new Hypothesis(hypTokenizer.nextToken(","));
+
+			hypothesiesList.add(hypothesis);
+		}
+		return hypothesiesList;
 	}
 
 	/**
@@ -158,10 +179,37 @@ public class JointManagerTest extends TestCase {
 	 */
 	public void testYagerJoint() {
 
-		// JointMassDistribution yagerDistribution = JointManager
-		// .yagerJoint(masses);
+		JointMassDistribution yagerDistribution = JointManager
+				.yagerJoint(masses);
+		JointMassDistribution yagerResult = readYagerResult();
+		yagerResult.setOperator(JointOperatorEnum.YAGER.getName());
+		assertEquals(yagerDistribution, yagerResult);
+	}
 
-		fail("Not yet implemented");
+	private JointMassDistribution readYagerResult() {
+		JointMassDistribution yagerResult = null;
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(
+					"result.txt")));
+			String readLine = br.readLine();
+
+			while (!readLine.startsWith("$Output YAGER")) {
+				readLine = br.readLine();
+			}
+
+			readLine = br.readLine();
+			yagerResult = parseResult(readLine);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return yagerResult;
 	}
 
 	/**
@@ -171,7 +219,35 @@ public class JointManagerTest extends TestCase {
 	public void testAverageJoint() {
 		JointMassDistribution averageDistribution = JointManager
 				.averageJoint(masses);
-		fail("Not yet implemented");
+		JointMassDistribution averageResult = readAverageResult();
+		averageResult.setOperator(JointOperatorEnum.AVERAGE.getName());
+		assertEquals(averageDistribution, averageResult);
+	}
+
+	private JointMassDistribution readAverageResult() {
+		JointMassDistribution averageResult = null;
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(
+					"result.txt")));
+			String readLine = br.readLine();
+
+			while (!readLine.startsWith("$Output AVERAGE")) {
+				readLine = br.readLine();
+			}
+
+			readLine = br.readLine();
+			averageResult = parseResult(readLine);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return averageResult;
 	}
 
 	/**
@@ -180,10 +256,40 @@ public class JointManagerTest extends TestCase {
 	 */
 	public void testDistanceEvidenceJoint() {
 
-		// JointMassDistribution distanceDistribution = JointManager
-		// .distanceEvidenceJoint(masses);
-		// distanceDistribution.setOperator("Distance of Evidence");
+		JointMassDistribution distanceDistribution = JointManager
+				.distanceEvidenceJoint(masses);
+		JointMassDistribution distanceResult = readDistanceResult();
+		distanceResult.setOperator(JointOperatorEnum.DISTANCE_EVIDENCE
+				.getName());
+		assertEquals(distanceDistribution, distanceResult);
+
 		fail("Not yet implemented");
+	}
+
+	private JointMassDistribution readDistanceResult() {
+		JointMassDistribution distanceResult = null;
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(
+					"result.txt")));
+			String readLine = br.readLine();
+
+			while (!readLine.startsWith("$Output DISTANCE")) {
+				readLine = br.readLine();
+			}
+
+			readLine = br.readLine();
+			distanceResult = parseResult(readLine);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return distanceResult;
 	}
 
 }

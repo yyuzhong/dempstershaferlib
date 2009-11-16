@@ -15,7 +15,7 @@ $Input row-3
 $Output DEMPSTER
 {{A-0};{B-1};{C-0};{D-0};{E-0}}
 $Output YAGER
-{{A-0};{B-0.004};{C-0};{D-0};{E-0}}
+{{A-0};{B-0.004};{C-0};{D-0};{E-0};{A,B,C,D,E,F-0.996}}
 $Output AVERAGE
 {{A-0.333};{B-0.2};{C-0.167};{D-0.033};{E-0.267}}
 $Output DISTANCE

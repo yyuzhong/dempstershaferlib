@@ -1,5 +1,6 @@
 package core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -37,6 +38,20 @@ public class FrameOfDiscernment {
 
 		return null;
 
+	}
+
+	public static Element getUniversalSet() {
+
+		ArrayList<Hypothesis> allHypothesies = new ArrayList<Hypothesis>();
+
+		allHypothesies.add(new Hypothesis("A"));
+		allHypothesies.add(new Hypothesis("B"));
+		allHypothesies.add(new Hypothesis("C"));
+		allHypothesies.add(new Hypothesis("D"));
+		allHypothesies.add(new Hypothesis("E"));
+		allHypothesies.add(new Hypothesis("F"));
+
+		return new Element(allHypothesies);
 	}
 
 }

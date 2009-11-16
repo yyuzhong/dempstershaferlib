@@ -7,7 +7,7 @@ package core;
  * @author Elisa Costante
  * 
  */
-public class Hypothesis {
+public class Hypothesis implements Comparable {
 
 	protected String name;
 	protected Object value;
@@ -51,6 +51,15 @@ public class Hypothesis {
 	public String toString() {
 		String objToString = "{" + name + "}";
 		return objToString;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		Hypothesis hypothesis = (Hypothesis) o;
+		String compare1 = hypothesis.getName();
+		String compare2 = this.name;
+
+		return compare1.compareTo(compare2);
 	}
 
 }

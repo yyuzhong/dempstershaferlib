@@ -1,5 +1,7 @@
 package core;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -14,13 +16,13 @@ public class Element implements Comparable {
 
 	protected ArrayList<Hypothesis> hypothesies;
 
-	private double bpa;
-	private double belief;
-	private double plausability;
+	private Double bpa;
+	private Double belief;
+	private Double plausability;
 
-	public Element(ArrayList<Hypothesis> hypothesies, double bpa) {
+	public Element(ArrayList<Hypothesis> hypothesies, Double bpa) {
 		super();
-		this.bpa = bpa;
+		setBpa(bpa);
 		this.hypothesies = hypothesies;
 	}
 
@@ -29,27 +31,39 @@ public class Element implements Comparable {
 		this.hypothesies = hypothesies;
 	}
 
-	public double getBpa() {
+	public Double getBpa() {
 		return bpa;
 	}
 
-	public void setBpa(double bpa) {
+	/**
+	 * Set the Value of bpa. It mantains only 5 decimal digit
+	 * 
+	 * @param bpa
+	 */
+	public void setBpa(Double bpa) {
+		BigDecimal bigDecimal = new BigDecimal(bpa, new MathContext(5));
+		bpa = bigDecimal.doubleValue();
 		this.bpa = bpa;
+
 	}
 
-	public double getBelief() {
+	public Double getBelief() {
 		return belief;
 	}
 
-	public void setBelief(double belief) {
+	public void setBelief(Double belief) {
+		BigDecimal bigDecimal = new BigDecimal(belief, new MathContext(5));
+		belief = bigDecimal.doubleValue();
 		this.belief = belief;
 	}
 
-	public double getPlausability() {
+	public Double getPlausability() {
 		return plausability;
 	}
 
-	public void setPlausability(double plausability) {
+	public void setPlausability(Double plausability) {
+		BigDecimal bigDecimal = new BigDecimal(plausability, new MathContext(5));
+		plausability = bigDecimal.doubleValue();
 		this.plausability = plausability;
 	}
 
@@ -107,14 +121,25 @@ public class Element implements Comparable {
 
 	/**
 	 * Returns the Union between <code>element1</code> and <code>element2</code>
-	 * .
+	 * . An union of two {@link Element} is an {@link Element} that has all the
+	 * hypothesies common to both the elemnts <code>element1</code> and
+	 * <code>element2</code>.
 	 * 
 	 * @param element1
 	 * @param element2
 	 * @return the Union between the elements or null if the union is empty.
 	 */
 	public static Element getUnion(Element element1, Element element2) {
-		return null;
+
+		TreeSet<Hypothesis> union = new TreeSet<Hypothesis>(element1
+				.getHypothesies());
+		union.addAll(element2.getHypothesies());
+
+		if (union.size() > 0)
+
+			return new Element(new ArrayList<Hypothesis>(union));
+		else
+			return null;
 	}
 
 	/**
@@ -138,7 +163,8 @@ public class Element implements Comparable {
 	public boolean equals(Object obj) {
 		Element other = (Element) obj;
 		ArrayList<Hypothesis> otherHypothesies = other.getHypothesies();
-		if (otherHypothesies.equals(hypothesies))
+		if (other.getHypothesies().size() == hypothesies.size()
+				&& otherHypothesies.containsAll(hypothesies))
 			return true;
 		else
 			return false;
@@ -166,6 +192,32 @@ public class Element implements Comparable {
 		String compare2 = hypothesies.toString();
 
 		return compare1.compareTo(compare2);
+	}
+
+	/**
+	 * @return the number of the hypothesies of the element
+	 */
+	public int size() {
+		if (hypothesies != null)
+			return hypothesies.size();
+		else
+			return 0;
+	}
+
+	public static ArrayList<Element> getMassUnionElement(
+			ArrayList<MassDistribution> masses) {
+		ArrayList<Element> union = null;
+		if (masses.size() >= 2) {
+			ArrayList<Element> m1Elements = masses.get(0).getElements();
+			ArrayList<Element> m2Elements = masses.get(1).getElements();
+
+			union = getMassUnionElement(m1Elements, m2Elements);
+			for (int i = 2; i < masses.size(); i++) {
+				union = getMassUnionElement(union, masses.get(i).getElements());
+			}
+
+		}
+		return union;
 	}
 
 }
