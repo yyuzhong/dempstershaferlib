@@ -3,6 +3,7 @@ package joint;
 import java.util.ArrayList;
 
 import core.Element;
+import core.FrameOfDiscernment;
 import core.JointMassDistribution;
 import core.MassDistribution;
 
@@ -110,11 +111,7 @@ public class JointManager {
 						.setOperator(JointOperatorEnum.YAGER.getName());
 				break;
 			case 4:
-				jointDistribution = distance(m1, m2);
-				for (int j = i; j < masses.size(); j++) {
-					jointDistribution = distance(jointDistribution, masses
-							.get(j));
-				}
+				jointDistribution = distance(masses);
 				jointDistribution
 						.setOperator(JointOperatorEnum.DISTANCE_EVIDENCE
 								.getName());
@@ -134,25 +131,210 @@ public class JointManager {
 			return null;
 	}
 
-	private static JointMassDistribution distance(MassDistribution m1,
+	/**
+	 * Applies the Chen-Shy distance evidence aggregation to the mass
+	 * distributions.</br>
+	 * 
+	 * The algorithm of computation is the following: </br> 1. Computation of
+	 * SImilarity Matrix <br>
+	 * 2. Computation of the Support degree of each piece of evidence mi<br>
+	 * 3. Computation of the Credibility degree of each piece of evidence mi <br>
+	 * 4. Computation of the modified average mass <br>
+	 * 5. If there are N different sources THe DempsterRule will be apllied N-1
+	 * times
+	 * 
+	 * @param m1
+	 * @param m2
+	 * @return
+	 */
+	private static JointMassDistribution distance(
+			ArrayList<MassDistribution> masses) {
+		JointMassDistribution jointMassDistribution = null;
+
+		if (masses.size() > 1) {
+			double[][] similarityMatrix = getSimilarityMatrix(masses);
+
+			double[] supportDegree = getSupportDegree(similarityMatrix);
+
+			double[] credibility = getCredibility(supportDegree);
+
+			ArrayList<Element> jointElements = Element
+					.getMassUnionElement(masses);
+
+			for (int i = 0; i < jointElements.size(); i++) {
+
+				Element jointElement = jointElements.get(i);
+
+				double newBpa = 0;
+				for (int j = 0; j < masses.size(); j++) {
+					MassDistribution m = masses.get(j);
+					double cred = credibility[j];
+					double oldBpa = 0;
+
+					int index = m.getElements().indexOf(jointElement);
+					if (index >= 0)
+						oldBpa = m.getElements().get(index).getBpa();
+					newBpa = newBpa + (cred * oldBpa);
+				}
+				jointElement.setBpa(newBpa);
+
+			}
+
+			jointMassDistribution = new JointMassDistribution(jointElements);
+		}
+		return jointMassDistribution;
+	}
+
+	/**
+	 * Computes the scalar product between two mass distributions
+	 * 
+	 * @param m1
+	 *            : {@link MassDistribution}
+	 * @param m2
+	 *            : {@link MassDistribution}
+	 * @return the scalarProduct.
+	 */
+	private static double getScalarProduct(MassDistribution m1,
 			MassDistribution m2) {
-		// TODO Auto-generated method stub
+
+		double scalarProduct = 0;
+
+		ArrayList<Element> m1Elements = m1.getElements();
+		ArrayList<Element> m2Elements = m2.getElements();
+
+		for (int i = 0; i < m1Elements.size(); i++) {
+			Element el1 = m1Elements.get(i);
+
+			for (int j = 0; j < m2Elements.size(); j++) {
+
+				Element el2 = m2Elements.get(j);
+				Element intersection = Element.getIntersection(el1, el2);
+				Element union = Element.getUnion(el1, el2);
+
+				int unionSize = 0;
+				int intersectionSize = 0;
+
+				if (intersection != null)
+					intersectionSize = intersection.size();
+				if (union != null)
+					unionSize = union.size();
+
+				// scalarProduct= Summation [el1*el2] . |intersect(el1,el2)| /
+				// |union(el1,el2)|
+				scalarProduct = scalarProduct
+						+ ((el1.getBpa() * el2.getBpa()) * (intersectionSize / unionSize));
+			}
+		}
+
+		return scalarProduct;
+
+	}
+
+	/**
+	 * Compute the distance between two mass distributions.
+	 * 
+	 * @param m1
+	 * @param m2
+	 * @return
+	 */
+	private static double getDistance(MassDistribution m1, MassDistribution m2) {
+		double normM1 = getScalarProduct(m1, m1); // ||m1||^2
+		double normM2 = getScalarProduct(m2, m2);// ||m2||^2
+		double scalarProduct = getScalarProduct(m1, m2);// <m1,m2>
+		double distance = Math
+				.sqrt((normM1 + normM2 - 2 * (scalarProduct)) / 2);
+		return distance;
+
+	}
+
+	/**
+	 * Computes the similarity between two mass distributions.
+	 * 
+	 * @param m1
+	 * @param m2
+	 * @return
+	 */
+	private static double getSimilarity(MassDistribution m1, MassDistribution m2) {
+		if (m1.equals(m2)) {
+			return 1;
+		}
+
+		else {
+			double distance = getDistance(m1, m2);
+			double sim = (Math.cos(distance * Math.PI) + 1) / 2;
+			return sim;
+		}
+
+	}
+
+	private static double[] getSupportDegree(double[][] similarityMatrix) {
+		double[] supportDegree = new double[similarityMatrix.length];
+
+		for (int i = 0; i < similarityMatrix.length; i++) {
+			supportDegree[i] = 0;
+			for (int j = 0; j < similarityMatrix.length; j++) {
+				if (i != j)
+					supportDegree[i] = supportDegree[i]
+							+ similarityMatrix[i][j];
+			}
+		}
+
+		return supportDegree;
+	}
+
+	private static double[] getCredibility(double[] supportDegree) {
+		double[] credibility = new double[supportDegree.length];
+		double summation = 0;
+
+		for (int i = 0; i < supportDegree.length; i++) {
+
+			summation = summation + supportDegree[i];
+
+		}
+
+		for (int i = 0; i < supportDegree.length; i++) {
+
+			// credibility(m1)= Sup(mi) / Summation(Sup(mi)) for each mass i
+			credibility[i] = supportDegree[i] / summation;
+
+		}
+
+		return credibility;
+	}
+
+	/**
+	 * Compute the Similarity MAtrix of mass distributions.
+	 * 
+	 * @param masses
+	 * @return the similarity MAtrix or null if there are no mass.
+	 */
+	private static double[][] getSimilarityMatrix(
+			ArrayList<MassDistribution> masses) {
+		if (masses != null && masses.size() > 0) {
+			int n = masses.size();
+			double[][] similarityMatrix = new double[n][n];
+
+			for (int i = 0; i < similarityMatrix.length; i++) {
+				for (int j = i; j < similarityMatrix.length; j++) {
+					if (i == j) {
+						similarityMatrix[i][j] = 1;
+					} else {
+						similarityMatrix[i][j] = getSimilarity(masses.get(i),
+								masses.get(j));
+					}
+				}
+			}
+			return similarityMatrix;
+		}
 		return null;
 	}
 
 	private static JointMassDistribution yager(MassDistribution m1,
 			MassDistribution m2) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private static JointMassDistribution dempster(MassDistribution m1,
-			MassDistribution m2) {
-
 		ArrayList<Element> m1Elements = m1.getElements();
 		ArrayList<Element> m2Elements = m2.getElements();
 
-		double conflict = getConflict(m1Elements, m1Elements);
+		double conflict = getConflict(m1Elements, m2Elements);
 
 		ArrayList<Element> jointElements = Element.getMassUnionElement(
 				m1Elements, m2Elements);
@@ -175,7 +357,60 @@ public class JointManager {
 				}
 
 			}
+			jointElement.setBpa(bpa);
+		}
 
+		Element universalSet = FrameOfDiscernment.getUniversalSet();
+
+		int index = jointElements.indexOf(universalSet);
+		if (index >= 0) {
+			// The UNIVERSALSET is already in the list
+			jointElements.get(index).setBpa(conflict);
+
+		} else // The UNIVERSALSET must be added to the list
+
+		{
+			universalSet.setBpa(conflict);
+			jointElements.add(universalSet);
+
+		}
+		JointMassDistribution jointMass = new JointMassDistribution(
+				jointElements);
+		if (jointMass.isValid()) {
+			return jointMass;
+		} else
+			return null;
+	}
+
+	private static JointMassDistribution dempster(MassDistribution m1,
+			MassDistribution m2) {
+
+		ArrayList<Element> m1Elements = m1.getElements();
+		ArrayList<Element> m2Elements = m2.getElements();
+
+		double conflict = getConflict(m1Elements, m2Elements);
+
+		ArrayList<Element> jointElements = Element.getMassUnionElement(
+				m1Elements, m2Elements);
+
+		for (int i = 0; i < jointElements.size(); i++) {
+			Element jointElement = jointElements.get(i);
+			double bpa = 0;
+			for (int k = 0; k < m1Elements.size(); k++) {
+				Element el1 = m1Elements.get(k);
+
+				for (int j = 0; j < m2Elements.size(); j++) {
+					Element el2 = m2Elements.get(j);
+
+					Element intersection = Element.getIntersection(el1, el2);
+
+					if (intersection != null
+							&& intersection.equals(jointElement)) {
+						bpa = bpa + (el1.getBpa() * el2.getBpa());
+					}
+				}
+
+			}
 			bpa = bpa / (1 - conflict);
 			jointElement.setBpa(bpa);
 		}

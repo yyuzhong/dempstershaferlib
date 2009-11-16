@@ -18,4 +18,40 @@ public class JointMassDistribution extends MassDistribution {
 		this.operator = operator;
 	}
 
+	@Override
+	public String toString() {
+		return "JointMassDistribution [operator=" + operator + "]";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((operator == null) ? 0 : operator.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		JointMassDistribution other = (JointMassDistribution) obj;
+		if (other.getElements().size() == elements.size()
+				&& other.getElements().containsAll(this.elements)
+				&& other.getOperator().equals(operator))
+			return true;
+		else
+			return false;
+
+	}
+
 }

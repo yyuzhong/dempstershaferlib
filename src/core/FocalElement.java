@@ -9,18 +9,18 @@ import java.util.ArrayList;
  * 
  */
 public class FocalElement extends Element {
-	private double bpa;
+	private Double bpa;
 
 	public FocalElement(ArrayList<Hypothesis> hypothesies, double bpa) {
 		super(hypothesies, bpa);
 		this.bpa = bpa;
 	}
 
-	public double getBpa() {
+	public Double getBpa() {
 		return bpa;
 	}
 
-	public void setBpa(double bpa) {
+	public void setBpa(Double bpa) {
 		this.bpa = bpa;
 	}
 
