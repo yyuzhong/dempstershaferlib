@@ -112,6 +112,13 @@ public class JointManager {
 				break;
 			case 4:
 				jointDistribution = distance(masses);
+
+				JointMassDistribution dempster = dempster(jointDistribution,
+						jointDistribution);
+
+				for (int j = 0; j < masses.size() - 2; j++) {
+					jointDistribution = dempster(dempster, jointDistribution);
+				}
 				jointDistribution
 						.setOperator(JointOperatorEnum.DISTANCE_EVIDENCE
 								.getName());
@@ -182,7 +189,10 @@ public class JointManager {
 
 			jointMassDistribution = new JointMassDistribution(jointElements);
 		}
-		return jointMassDistribution;
+		if (jointMassDistribution.isValid())
+			return jointMassDistribution;
+		else
+			return null;
 	}
 
 	/**
@@ -255,15 +265,10 @@ public class JointManager {
 	 * @return
 	 */
 	private static double getSimilarity(MassDistribution m1, MassDistribution m2) {
-		if (m1.equals(m2)) {
-			return 1;
-		}
 
-		else {
-			double distance = getDistance(m1, m2);
-			double sim = (Math.cos(distance * Math.PI) + 1) / 2;
-			return sim;
-		}
+		double distance = getDistance(m1, m2);
+		double sim = (Math.cos(distance * Math.PI) + 1) / 2;
+		return sim;
 
 	}
 
@@ -319,8 +324,8 @@ public class JointManager {
 					if (i == j) {
 						similarityMatrix[i][j] = 1;
 					} else {
-						similarityMatrix[i][j] = getSimilarity(masses.get(i),
-								masses.get(j));
+						similarityMatrix[i][j] = similarityMatrix[j][i] = getSimilarity(
+								masses.get(i), masses.get(j));
 					}
 				}
 			}
