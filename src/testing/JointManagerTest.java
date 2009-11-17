@@ -262,8 +262,6 @@ public class JointManagerTest extends TestCase {
 		distanceResult.setOperator(JointOperatorEnum.DISTANCE_EVIDENCE
 				.getName());
 		assertEquals(distanceDistribution, distanceResult);
-
-		fail("Not yet implemented");
 	}
 
 	private JointMassDistribution readDistanceResult() {

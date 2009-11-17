@@ -39,7 +39,7 @@ public class MassDistribution {
 			sum = sum + element.getBpa();
 
 		}
-		if (sum == 1)
+		if (Math.round(sum) == 1)
 			return true;
 		else
 			return false;
@@ -55,4 +55,44 @@ public class MassDistribution {
 		return "MassDistribution [elements=" + elements + "]";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((elements == null) ? 0 : elements.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		MassDistribution other = (MassDistribution) obj;
+
+		if (other.getElements().size() == elements.size()
+				&& other.getElements().containsAll(elements)) {
+			boolean equal = true;
+			for (int i = 0; i < other.getElements().size(); i++) {
+				Element el1 = other.getElements().get(i);
+				int index = elements.indexOf(el1);
+
+				Element el2 = elements.get(index);
+
+				if (el1.getBpa().doubleValue() != el2.getBpa().doubleValue())
+					equal = false;
+			}
+			return equal;
+		} else
+			return false;
+	}
 }

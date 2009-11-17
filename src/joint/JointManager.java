@@ -113,11 +113,12 @@ public class JointManager {
 			case 4:
 				jointDistribution = distance(masses);
 
-				JointMassDistribution dempster = dempster(jointDistribution,
-						jointDistribution);
+				JointMassDistribution dempsterDistribution = dempster(
+						jointDistribution, jointDistribution);
 
 				for (int j = 0; j < masses.size() - 2; j++) {
-					jointDistribution = dempster(dempster, jointDistribution);
+					jointDistribution = dempster(dempsterDistribution,
+							jointDistribution);
 				}
 				jointDistribution
 						.setOperator(JointOperatorEnum.DISTANCE_EVIDENCE
