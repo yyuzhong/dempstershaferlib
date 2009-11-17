@@ -37,21 +37,21 @@ public class JointMassDistribution extends MassDistribution {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		JointMassDistribution other = (JointMassDistribution) obj;
-		if (other.getElements().size() == elements.size()
-				&& other.getElements().containsAll(this.elements)
-				&& other.getOperator().equals(operator))
-			return true;
-		else
-			return false;
-
-	}
+	// /*
+	// * (non-Javadoc)
+	// *
+	// * @see java.lang.Object#equals(java.lang.Object)
+	// */
+	// @Override
+	// public boolean equals(Object obj) {
+	// JointMassDistribution other = (JointMassDistribution) obj;
+	// if (other.getElements().size() == elements.size()
+	// && other.getElements().containsAll(this.elements)
+	// && other.getOperator().equals(operator))
+	// return true;
+	// else
+	// return false;
+	//
+	// }
 
 }
