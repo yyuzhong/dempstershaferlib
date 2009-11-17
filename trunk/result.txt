@@ -1,5 +1,5 @@
 #Test 1 Dempster-Shafer
-#il file è nel formato:
+#il file e'nel formato:
 #$Input row-3
 #{{A,B-0.9};{B-0.1}}
 #{{A-0.1};{B-0.1};{E-0.8}}
@@ -17,6 +17,6 @@ $Output DEMPSTER
 $Output YAGER
 {{A-0};{B-0.004};{C-0};{D-0};{E-0};{A,B,C,D,E,F-0.996}}
 $Output AVERAGE
-{{A-0.333};{B-0.2};{C-0.167};{D-0.033};{E-0.267}}
+{{A-0.25};{B-0.25};{C-0.25};{D-0.05};{E-0.2}}
 $Output DISTANCE
-{{A-0.28};{B-0.139};{C-0.090};{D-0.001};{E-0.490}}
+{{A-0.354};{B-0.173};{C-0.126};{D-0.001};{E-0.347}}

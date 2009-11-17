@@ -46,7 +46,7 @@ public class MassDistributionFileHandler {
 					hypothesies = readHypothesies(allHypothesies);
 					double bpa = Double.parseDouble(tokenizer.nextToken());
 
-					Element element = new Element(hypothesies, bpa);
+					Element element = new Element(hypothesies, new Double(bpa));
 					elements.add(element);
 				}
 				line = br.readLine();

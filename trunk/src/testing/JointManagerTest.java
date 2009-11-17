@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 
 import joint.JointManager;
 import joint.JointOperatorEnum;
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import core.Element;
 import core.Hypothesis;
@@ -68,6 +69,10 @@ public class JointManagerTest extends TestCase {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
+		masses = null;
+		masses = new ArrayList<MassDistribution>();
+
+		readInput();
 
 	}
 
@@ -90,7 +95,15 @@ public class JointManagerTest extends TestCase {
 				.dempsterJoint(masses);
 		JointMassDistribution dempsterResult = readDempsterResult();
 		dempsterResult.setOperator(JointOperatorEnum.DEMPSTER.getName());
-		assertEquals(demDistribution, dempsterResult);
+
+		try {
+			assertEquals(demDistribution, dempsterResult);
+		} catch (AssertionFailedError e) {
+			System.out.println("Oracolo: " + dempsterResult.toString());
+			System.out
+					.println("Dempster result: " + demDistribution.toString());
+
+		}
 
 		// fail("Not yet implemented");
 	}
@@ -183,7 +196,15 @@ public class JointManagerTest extends TestCase {
 				.yagerJoint(masses);
 		JointMassDistribution yagerResult = readYagerResult();
 		yagerResult.setOperator(JointOperatorEnum.YAGER.getName());
-		assertEquals(yagerDistribution, yagerResult);
+
+		try {
+			assertEquals(yagerDistribution, yagerResult);
+		} catch (AssertionFailedError e) {
+			System.out.println("Oracolo: " + yagerResult.toString());
+			System.out.println("Yager result: " + yagerDistribution.toString());
+
+		}
+
 	}
 
 	private JointMassDistribution readYagerResult() {
@@ -221,7 +242,17 @@ public class JointManagerTest extends TestCase {
 				.averageJoint(masses);
 		JointMassDistribution averageResult = readAverageResult();
 		averageResult.setOperator(JointOperatorEnum.AVERAGE.getName());
-		assertEquals(averageDistribution, averageResult);
+
+		try {
+			assertEquals(averageDistribution, averageResult);
+
+		} catch (AssertionFailedError e) {
+			System.out.println("Oracolo: " + averageResult.toString());
+			System.out.println("Average result: "
+					+ averageDistribution.toString());
+
+		}
+
 	}
 
 	private JointMassDistribution readAverageResult() {
@@ -261,7 +292,15 @@ public class JointManagerTest extends TestCase {
 		JointMassDistribution distanceResult = readDistanceResult();
 		distanceResult.setOperator(JointOperatorEnum.DISTANCE_EVIDENCE
 				.getName());
-		assertEquals(distanceDistribution, distanceResult);
+		try {
+			assertEquals(distanceDistribution, distanceResult);
+		} catch (AssertionFailedError e) {
+			System.out.println("Oracolo: " + distanceResult.toString());
+			System.out.println("Evidence result: "
+					+ distanceDistribution.toString());
+
+		}
+
 	}
 
 	private JointMassDistribution readDistanceResult() {
