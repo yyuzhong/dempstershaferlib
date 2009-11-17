@@ -180,7 +180,7 @@ public class Element implements Comparable {
 				elementToString = elementToString + ",";
 			}
 		}
-		elementToString = elementToString + "}";
+		elementToString = elementToString + " - " + bpa.toString() + "}";
 
 		return elementToString;
 	}
