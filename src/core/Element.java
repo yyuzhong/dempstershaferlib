@@ -12,7 +12,7 @@ import java.util.TreeSet;
  * @author Elisa Costante
  * 
  */
-public class Element implements Comparable {
+public class Element implements Comparable, Cloneable {
 
 	protected ArrayList<Hypothesis> hypothesies;
 
@@ -220,4 +220,14 @@ public class Element implements Comparable {
 		return union;
 	}
 
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		ArrayList<Hypothesis> hypClone = new ArrayList<Hypothesis>();
+		for (int i = 0; i < hypothesies.size(); i++) {
+			Hypothesis hyp = (Hypothesis) hypothesies.get(i).clone();
+			hypClone.add(hyp);
+		}
+		Element clone = new Element(hypClone, bpa);
+		return clone;
+	}
 }

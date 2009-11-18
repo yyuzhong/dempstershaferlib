@@ -7,7 +7,7 @@ package core;
  * @author Elisa Costante
  * 
  */
-public class Hypothesis implements Comparable {
+public class Hypothesis implements Comparable, Cloneable {
 
 	protected String name;
 	protected Object value;
@@ -60,6 +60,14 @@ public class Hypothesis implements Comparable {
 		String compare2 = this.name;
 
 		return compare1.compareTo(compare2);
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		String nameClone = new String(name);
+		Object valueClone = value;
+		Hypothesis clone = new Hypothesis(nameClone, valueClone);
+		return clone;
 	}
 
 }

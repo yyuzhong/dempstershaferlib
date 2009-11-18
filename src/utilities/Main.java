@@ -14,8 +14,9 @@ public class Main {
 
 	/**
 	 * @param args
+	 * @throws CloneNotSupportedException
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws CloneNotSupportedException {
 
 		// String fileName = "Hypothesis.txt";
 		// FrameOfDiscernment frameOfDiscernment = new FrameOfDiscernment(
@@ -42,19 +43,22 @@ public class Main {
 		masses.add(uddiMass);
 		masses.add(trustAuthorityMass);
 
-		ArrayList<MassDistribution> input = new ArrayList<MassDistribution>(
-				masses);
+		ArrayList<MassDistribution> input = getNewArrayList(masses);
+		// ArrayList<MassDistribution> input = (ArrayList<MassDistribution>)
+		// masses
+		// .clone();
+
 		JointMassDistribution demDistribution = JointManager
 				.dempsterJoint(input);
 
 		// JointMassDistribution yagerDistribution = JointManager
-		// .yagerJoint(masses);
+		// .yagerJoint(input);
 
 		JointMassDistribution averageDistribution = JointManager
-				.averageJoint(new ArrayList<MassDistribution>(masses));
+				.averageJoint(input);
 
 		JointMassDistribution distanceDistribution = JointManager
-				.distanceEvidenceJoint(new ArrayList<MassDistribution>(masses));
+				.distanceEvidenceJoint(input);
 
 		ArrayList<MassDistribution> results = new ArrayList<MassDistribution>();
 		results.add(demDistribution);
@@ -72,5 +76,19 @@ public class Main {
 		frame.setJointResults(results);
 		frame.initGUI();
 
+	}
+
+	private static ArrayList<MassDistribution> getNewArrayList(
+			ArrayList<MassDistribution> oldArray)
+			throws CloneNotSupportedException {
+		ArrayList<MassDistribution> newArray = (ArrayList<MassDistribution>) oldArray
+				.clone();
+
+		for (int i = 0; i < oldArray.size(); i++) {
+			MassDistribution m = ((MassDistribution) oldArray.get(i));
+			MassDistribution newMAss = (MassDistribution) m.clone();
+			newArray.add(newMAss);
+		}
+		return newArray;
 	}
 }
