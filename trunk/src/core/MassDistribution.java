@@ -3,7 +3,7 @@ package core;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class MassDistribution {
+public class MassDistribution implements Cloneable {
 
 	protected ArrayList<Element> elements;
 
@@ -95,4 +95,20 @@ public class MassDistribution {
 		} else
 			return false;
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		try {
+			ArrayList<Element> elementsClone = new ArrayList<Element>();
+			for (int i = 0; i < elements.size(); i++) {
+				Element el = (Element) elements.get(i).clone();
+				elementsClone.add(el);
+			}
+			MassDistribution clone = new MassDistribution(elementsClone);
+			return clone;
+		} catch (CloneNotSupportedException e) {
+			throw new InternalError(e.toString());
+		}
+	}
+
 }
