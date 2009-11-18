@@ -1,22 +1,25 @@
 package utilities;
 
-import gui.NewSwingApp;
-
 import java.util.ArrayList;
 
 import joint.JointManager;
 import core.JointMassDistribution;
 import core.MassDistribution;
 import core.Source;
-import core.SourceMassDistribution;
+import exception.JointNotPossibleException;
+import exception.MassDistributionNotValidException;
+import gui.NewSwingApp;
 
 public class Main {
 
 	/**
 	 * @param args
 	 * @throws CloneNotSupportedException
+	 * @throws MassDistributionNotValidException
+	 * @throws JointNotPossibleException
 	 */
-	public static void main(String[] args) throws CloneNotSupportedException {
+	public static void main(String[] args) throws CloneNotSupportedException,
+			JointNotPossibleException, MassDistributionNotValidException {
 
 		// String fileName = "Hypothesis.txt";
 		// FrameOfDiscernment frameOfDiscernment = new FrameOfDiscernment(
@@ -28,14 +31,14 @@ public class Main {
 		Source uddi = new Source("UDDI");
 		Source trustAuthority = new Source("TrustAthority");
 
-		SourceMassDistribution feedbackMass = feedback
+		MassDistribution feedbackMass = feedback
 				.getMassDistribution("feedback.txt");
 		feedbackMass.setSource(feedback);
 
-		SourceMassDistribution uddiMass = uddi.getMassDistribution("uddi.txt");
+		MassDistribution uddiMass = uddi.getMassDistribution("uddi.txt");
 		uddiMass.setSource(uddi);
 
-		SourceMassDistribution trustAuthorityMass = trustAuthority
+		MassDistribution trustAuthorityMass = trustAuthority
 				.getMassDistribution("trustAuthority.txt");
 		trustAuthorityMass.setSource(trustAuthority);
 
@@ -44,38 +47,43 @@ public class Main {
 		masses.add(trustAuthorityMass);
 
 		ArrayList<MassDistribution> input = getNewArrayList(masses);
-		// ArrayList<MassDistribution> input = (ArrayList<MassDistribution>)
-		// masses
-		// .clone();
 
 		JointMassDistribution demDistribution = JointManager
 				.dempsterJoint(input);
+		demDistribution = JointMassDistribution.order(demDistribution);
 
-		// JointMassDistribution yagerDistribution = JointManager
-		// .yagerJoint(input);
+		JointMassDistribution yagerDistribution = JointManager
+				.yagerJoint(input);
 
-		input = getNewArrayList(masses);
+		// yagerDistribution = JointMassDistribution.order(yagerDistribution);
+
+		// input = getNewArrayList(masses);
 		JointMassDistribution averageDistribution = JointManager
 				.averageJoint(input);
+		averageDistribution = JointMassDistribution.order(averageDistribution);
 
-		input = getNewArrayList(masses);
+		// input = getNewArrayList(masses);
 		JointMassDistribution distanceDistribution = JointManager
 				.distanceEvidenceJoint(input);
+		distanceDistribution = JointMassDistribution
+				.order(distanceDistribution);
 
 		ArrayList<MassDistribution> results = new ArrayList<MassDistribution>();
-		results.add(demDistribution);
-		// results.add(yagerDistribution);
 
+		results.add(demDistribution);
+		results.add(yagerDistribution);
 		results.add(distanceDistribution);
 		results.add(averageDistribution);
 
-		showresults(results);
+		showresults(results, getNewArrayList(masses));
 
 	}
 
-	private static void showresults(ArrayList<MassDistribution> results) {
+	private static void showresults(ArrayList<MassDistribution> results,
+			ArrayList<MassDistribution> input) {
 		NewSwingApp frame = new NewSwingApp();
 		frame.setJointResults(results);
+		frame.setInput(input);
 		frame.initGUI();
 
 	}

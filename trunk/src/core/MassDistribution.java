@@ -6,6 +6,7 @@ import java.util.Iterator;
 public class MassDistribution implements Cloneable {
 
 	protected ArrayList<Element> elements;
+	protected Source source;
 
 	public MassDistribution(ArrayList<Element> mass) {
 		super();
@@ -52,7 +53,13 @@ public class MassDistribution implements Cloneable {
 	 */
 	@Override
 	public String toString() {
-		return "MassDistribution [elements=" + elements + "]";
+		String massTOString = "MassDistribution [elements=" + elements;
+		if (source != null)
+			massTOString = massTOString + " " + source.getName() + "]";
+		else
+			massTOString = massTOString + "]";
+
+		return massTOString;
 	}
 
 	/*
@@ -109,6 +116,45 @@ public class MassDistribution implements Cloneable {
 		} catch (CloneNotSupportedException e) {
 			throw new InternalError(e.toString());
 		}
+	}
+
+	public static MassDistribution order(MassDistribution mass) {
+		ArrayList<Element> orderedElements = new ArrayList<Element>();
+		for (Iterator iterator = orderedElements.iterator(); iterator.hasNext();) {
+			Element element1 = (Element) iterator.next();
+
+			Element min = element1;
+			for (int j = 0; j < mass.getElements().size(); j++) {
+				Element element2 = mass.getElements().get(j);
+
+				if (element2.compareTo(element1) <= 0) {
+					min = element2;
+				}
+
+			}
+			orderedElements.add(min);
+			mass.getElements().remove(element1);
+		}
+
+		MassDistribution orderedMass = new MassDistribution(orderedElements);
+
+		return orderedMass;
+
+	}
+
+	/**
+	 * @return the source
+	 */
+	public Source getSource() {
+		return source;
+	}
+
+	/**
+	 * @param source
+	 *            the source to set
+	 */
+	public void setSource(Source source) {
+		this.source = source;
 	}
 
 }

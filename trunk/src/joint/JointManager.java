@@ -6,6 +6,8 @@ import core.Element;
 import core.FrameOfDiscernment;
 import core.JointMassDistribution;
 import core.MassDistribution;
+import exception.JointNotPossibleException;
+import exception.MassDistributionNotValidException;
 
 /**
  * THe class supplies a static method for each different joint operator.
@@ -21,13 +23,17 @@ public class JointManager {
 	 * @param masses
 	 * @return the result of Dempster's operator to the {@link MassDistribution}
 	 *         list
+	 * @throws JointNotPossibleException
+	 * @throws MassDistributionNotValidException
 	 */
 	public static JointMassDistribution dempsterJoint(
-			ArrayList<MassDistribution> masses) {
+			ArrayList<MassDistribution> masses)
+			throws JointNotPossibleException, MassDistributionNotValidException {
 		if (masses.size() > 1)
 			return applyOperator(masses, JointOperatorEnum.DEMPSTER.getValue());
 		else
-			return null;
+			throw new JointNotPossibleException(
+					"It's not possible do a joint with just one MassDistribution");
 	}
 
 	/**
@@ -36,11 +42,17 @@ public class JointManager {
 	 * @param masses
 	 * @return the result of Yager's operator to the {@link MassDistribution}
 	 *         list
+	 * @throws JointNotPossibleException
+	 * @throws MassDistributionNotValidException
 	 */
 	public static JointMassDistribution yagerJoint(
-			ArrayList<MassDistribution> masses) {
-
-		return applyOperator(masses, JointOperatorEnum.YAGER.getValue());
+			ArrayList<MassDistribution> masses)
+			throws JointNotPossibleException, MassDistributionNotValidException {
+		if (masses.size() > 1)
+			return applyOperator(masses, JointOperatorEnum.YAGER.getValue());
+		else
+			throw new JointNotPossibleException(
+					"It's not possible do a joint with just one MassDistribution");
 	}
 
 	/**
@@ -49,11 +61,19 @@ public class JointManager {
 	 * @param masses
 	 * @return the result of Average operator to the {@link MassDistribution}
 	 *         list
+	 * @throws JointNotPossibleException
+	 * @throws MassDistributionNotValidException
 	 */
 	public static JointMassDistribution averageJoint(
-			ArrayList<MassDistribution> masses) {
+			ArrayList<MassDistribution> masses)
+			throws JointNotPossibleException, MassDistributionNotValidException {
+		if (masses.size() > 1)
 
-		return applyOperator(masses, JointOperatorEnum.AVERAGE.getValue());
+			return applyOperator(masses, JointOperatorEnum.AVERAGE.getValue());
+		else
+			throw new JointNotPossibleException(
+					"It's not possible do a joint with just one MassDistribution");
+
 	}
 
 	/**
@@ -63,80 +83,86 @@ public class JointManager {
 	 * @param masses
 	 * @return the result of Distance Evidence operator to the
 	 *         {@link MassDistribution} list
+	 * @throws JointNotPossibleException
+	 * @throws MassDistributionNotValidException
 	 */
 	public static JointMassDistribution distanceEvidenceJoint(
-			ArrayList<MassDistribution> masses) {
-		return applyOperator(masses, JointOperatorEnum.DISTANCE_EVIDENCE
-				.getValue());
+			ArrayList<MassDistribution> masses)
+			throws JointNotPossibleException, MassDistributionNotValidException {
+		if (masses.size() > 1)
+
+			return applyOperator(masses, JointOperatorEnum.DISTANCE_EVIDENCE
+					.getValue());
+
+		else
+			throw new JointNotPossibleException(
+					"It's not possible do a joint with just one MassDistribution");
+
 	}
 
-	public static JointMassDistribution applyOperator(
-			ArrayList<MassDistribution> masses, int operator) {
+	private static JointMassDistribution applyOperator(
+			ArrayList<MassDistribution> masses, int operator)
+			throws MassDistributionNotValidException {
 
-		if (masses.size() > 1) {
+		JointMassDistribution jointDistribution = null;
+		int i = 0;
 
-			JointMassDistribution jointDistribution = null;
-			int i = 0;
+		MassDistribution m1 = masses.get(i);
+		i++;
+		MassDistribution m2 = masses.get(i);
+		i++;
 
-			MassDistribution m1 = masses.get(i);
-			i++;
-			MassDistribution m2 = masses.get(i);
-			i++;
-
-			switch (operator) {
-			case 1:
-				jointDistribution = average(m1, m2);
-				for (int j = i; j < masses.size(); j++) {
-					jointDistribution = average(jointDistribution, masses
-							.get(j));
-				}
-				jointDistribution.setOperator(JointOperatorEnum.AVERAGE
-						.getName());
-				break;
-			case 2:
-				jointDistribution = dempster(m1, m2);
-				for (int j = i; j < masses.size(); j++) {
-					jointDistribution = dempster(jointDistribution, masses
-							.get(j));
-				}
-				jointDistribution.setOperator(JointOperatorEnum.DEMPSTER
-						.getName());
-				break;
-			case 3:
-				jointDistribution = yager(m1, m2);
-				for (int j = i; j < masses.size(); j++) {
-					jointDistribution = yager(jointDistribution, masses.get(j));
-				}
-				jointDistribution
-						.setOperator(JointOperatorEnum.YAGER.getName());
-				break;
-			case 4:
-				jointDistribution = distance(masses);
-
-				JointMassDistribution dempsterDistribution = dempster(
-						jointDistribution, jointDistribution);
-
-				for (int j = 0; j < masses.size() - 2; j++) {
-					jointDistribution = dempster(dempsterDistribution,
-							jointDistribution);
-				}
-				jointDistribution
-						.setOperator(JointOperatorEnum.DISTANCE_EVIDENCE
-								.getName());
-				break;
-
-			default:
-				break;
+		switch (operator) {
+		case 1:
+			jointDistribution = average(masses);
+			jointDistribution.setOperator(JointOperatorEnum.AVERAGE.getName());
+			break;
+		case 2:
+			jointDistribution = dempster(m1, m2);
+			for (int j = i; j < masses.size(); j++) {
+				jointDistribution = dempster(jointDistribution, masses.get(j));
 			}
+			jointDistribution.setOperator(JointOperatorEnum.DEMPSTER.getName());
+			break;
+		case 3:
+			Double conflict = getConflict(m1.getElements(), m2.getElements());
+			jointDistribution = yager(m1, m2, false, conflict);
+			for (int j = i; j < masses.size(); j++) {
+				conflict = conflict
+						+ getConflict(jointDistribution.getElements(), masses
+								.get(j).getElements());
+				if (j == (masses.size() - 1))
+					jointDistribution = yager(jointDistribution, masses.get(j),
+							true, conflict);
+				else
+					jointDistribution = yager(jointDistribution, masses.get(j),
+							false, conflict);
+			}
+			jointDistribution.setOperator(JointOperatorEnum.YAGER.getName());
+			break;
+		case 4:
+			jointDistribution = distance(masses);
 
-			if (jointDistribution.isValid())
-				return jointDistribution;
-			else
-				return null;
+			JointMassDistribution dempsterDistribution = dempster(
+					jointDistribution, jointDistribution);
 
-		} else
-			// there is only one massDistribution in the array.
-			return null;
+			for (int j = 0; j < masses.size() - 2; j++) {
+				jointDistribution = dempster(dempsterDistribution,
+						jointDistribution);
+			}
+			jointDistribution.setOperator(JointOperatorEnum.DISTANCE_EVIDENCE
+					.getName());
+			break;
+
+		default:
+			break;
+		}
+
+		if (jointDistribution.isValid())
+			return jointDistribution;
+		else
+			throw new MassDistributionNotValidException("MassDistribution"
+					+ jointDistribution.toString() + " is not valid!");
 	}
 
 	/**
@@ -154,9 +180,11 @@ public class JointManager {
 	 * @param m1
 	 * @param m2
 	 * @return
+	 * @throws MassDistributionNotValidException
 	 */
 	private static JointMassDistribution distance(
-			ArrayList<MassDistribution> masses) {
+			ArrayList<MassDistribution> masses)
+			throws MassDistributionNotValidException {
 		JointMassDistribution jointMassDistribution = null;
 
 		if (masses.size() > 1) {
@@ -193,7 +221,8 @@ public class JointManager {
 		if (jointMassDistribution.isValid())
 			return jointMassDistribution;
 		else
-			return null;
+			throw new MassDistributionNotValidException("MassDistribution"
+					+ jointMassDistribution.toString() + " is not valid!");
 	}
 
 	/**
@@ -336,11 +365,14 @@ public class JointManager {
 	}
 
 	private static JointMassDistribution yager(MassDistribution m1,
-			MassDistribution m2) {
+			MassDistribution m2, boolean last, Double conflictTransfer)
+			throws MassDistributionNotValidException {
 		ArrayList<Element> m1Elements = m1.getElements();
 		ArrayList<Element> m2Elements = m2.getElements();
 
-		double conflict = getConflict(m1Elements, m2Elements);
+		// double conflict = getConflict(m1Elements, m2Elements);
+		// conflictTransfer = new Double(conflictTransfer.doubleValue() +
+		// conflict);
 
 		ArrayList<Element> jointElements = Element.getMassUnionElement(
 				m1Elements, m2Elements);
@@ -366,30 +398,26 @@ public class JointManager {
 			jointElement.setBpa(bpa);
 		}
 
-		Element universalSet = FrameOfDiscernment.getUniversalSet();
+		if (last) {
+			Element universalSet = FrameOfDiscernment.getUniversalSet();
 
-		int index = jointElements.indexOf(universalSet);
-		if (index >= 0) {
-			// The UNIVERSALSET is already in the list
-			jointElements.get(index).setBpa(conflict);
-
-		} else // The UNIVERSALSET must be added to the list
-
-		{
-			universalSet.setBpa(conflict);
+			universalSet.setBpa(conflictTransfer);
 			jointElements.add(universalSet);
 
 		}
 		JointMassDistribution jointMass = new JointMassDistribution(
 				jointElements);
-		if (jointMass.isValid()) {
-			return jointMass;
-		} else
-			return null;
+		return jointMass;
+		// if (jointMass.isValid()) {
+		// return jointMass;
+		// } else
+		// throw new MassDistributionNotValidException("MassDistribution"
+		// + jointMass.toString() + " is not valid!");
+
 	}
 
 	private static JointMassDistribution dempster(MassDistribution m1,
-			MassDistribution m2) {
+			MassDistribution m2) throws MassDistributionNotValidException {
 
 		ArrayList<Element> m1Elements = m1.getElements();
 		ArrayList<Element> m2Elements = m2.getElements();
@@ -426,7 +454,8 @@ public class JointManager {
 		if (jointMass.isValid()) {
 			return jointMass;
 		} else
-			return null;
+			throw new MassDistributionNotValidException("MassDistribution"
+					+ jointMass.toString() + " is not valid!");
 	}
 
 	private static double getConflict(ArrayList<Element> m1Elements,
@@ -447,8 +476,7 @@ public class JointManager {
 		return conflict;
 	}
 
-	private static JointMassDistribution average(MassDistribution m1,
-			MassDistribution m2) {
+	private static JointMassDistribution average(ArrayList<MassDistribution>) throws MassDistributionNotValidException {
 
 		ArrayList<Element> m1Elements = m1.getElements();
 		ArrayList<Element> m2Elements = m2.getElements();
@@ -486,7 +514,8 @@ public class JointManager {
 		if (jointMass.isValid()) {
 			return jointMass;
 		} else
-			return null;
+			throw new MassDistributionNotValidException("MassDistribution"
+					+ jointMass.toString() + " is not valid!");
 	}
 
 }

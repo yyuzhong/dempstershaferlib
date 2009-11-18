@@ -1,5 +1,6 @@
 #File Contenente tutte le ipotesi nella forma coppia-valore
 #Il simbolo # denota i commenti
+
 A-Blind Trust
 B-Very High Trust
 C-High Trust

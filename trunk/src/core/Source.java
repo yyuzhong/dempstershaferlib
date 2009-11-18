@@ -11,7 +11,7 @@ public class Source {
 
 	protected FrameOfDiscernment frameOfDiscernment;
 
-	protected SourceMassDistribution massDistribution;
+	protected MassDistribution massDistribution;
 
 	protected String name;
 
@@ -29,7 +29,7 @@ public class Source {
 	}
 
 	public Source(FrameOfDiscernment frameOfDiscernment,
-			SourceMassDistribution massDistribution) {
+			MassDistribution massDistribution) {
 		super();
 		this.frameOfDiscernment = frameOfDiscernment;
 		this.massDistribution = massDistribution;
@@ -43,7 +43,7 @@ public class Source {
 		this.frameOfDiscernment = frameOfDiscernment;
 	}
 
-	public SourceMassDistribution getMassDistribution(String filename) {
+	public MassDistribution getMassDistribution(String filename) {
 
 		if (massDistribution == null) {
 			MassDistributionFileHandler fileHandler = new MassDistributionFileHandler();
@@ -53,7 +53,7 @@ public class Source {
 		return massDistribution;
 	}
 
-	public void setMassDistribution(SourceMassDistribution massDistribution) {
+	public void setMassDistribution(MassDistribution massDistribution) {
 		this.massDistribution = massDistribution;
 	}
 
