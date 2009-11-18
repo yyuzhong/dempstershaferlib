@@ -54,9 +54,11 @@ public class Main {
 		// JointMassDistribution yagerDistribution = JointManager
 		// .yagerJoint(input);
 
+		input = getNewArrayList(masses);
 		JointMassDistribution averageDistribution = JointManager
 				.averageJoint(input);
 
+		input = getNewArrayList(masses);
 		JointMassDistribution distanceDistribution = JointManager
 				.distanceEvidenceJoint(input);
 
@@ -81,8 +83,7 @@ public class Main {
 	private static ArrayList<MassDistribution> getNewArrayList(
 			ArrayList<MassDistribution> oldArray)
 			throws CloneNotSupportedException {
-		ArrayList<MassDistribution> newArray = (ArrayList<MassDistribution>) oldArray
-				.clone();
+		ArrayList<MassDistribution> newArray = new ArrayList<MassDistribution>();
 
 		for (int i = 0; i < oldArray.size(); i++) {
 			MassDistribution m = ((MassDistribution) oldArray.get(i));
