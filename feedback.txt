@@ -1,3 +1,4 @@
 #File per la lettura della distribuzione di massa nella forma : {Element1,Element2,...,Elementn}-bpa
-{A}-0.9
-{B}-0.1
+{B}-0.4
+{C}-0.5
+{D}-0.1

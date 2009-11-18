@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import core.Element;
+import core.JointMassDistribution;
 import core.MassDistribution;
 
 /**
@@ -59,6 +60,9 @@ public class NewSwingApp extends javax.swing.JFrame {
 	private JMenu jMenu3;
 	private JMenuBar jMenuBar1;
 	private ArrayList<MassDistribution> jointResults;
+	private JTabbedPane inputTab;
+	private ArrayList<MassDistribution> input;
+	private JTable inputTable;
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -80,20 +84,25 @@ public class NewSwingApp extends javax.swing.JFrame {
 
 	private void setResultsTable() {
 		int rows = jointResults.size();
-		int column = ((MassDistribution) jointResults.get(0)).getElements()
-				.size();
+		int column = 10;
+		// int column = ((MassDistribution) jointResults.get(0)).getElements()
+		// .size();
 
 		String[][] data = new String[rows][column];
 		String[] columnTitle = new String[column];
 
 		for (int i = 0; i < rows; i++) {
-			MassDistribution massDistribution = (MassDistribution) jointResults
+			JointMassDistribution massDistribution = (JointMassDistribution) jointResults
 					.get(i);
-			for (int j = 0; j < column; j++) {
+			data[i][0] = massDistribution.getOperator();
+
+			for (int j = 0; j < massDistribution.getElements().size(); j++) {
 				Element element = (Element) massDistribution.getElements().get(
 						j);
-				data[i][j] = Double.toString(element.getBpa());
-				columnTitle[j] = element.toString();
+				// data[i][j] = Double.toString(element.getBpa());
+				data[i][j + 1] = element.toString();
+
+				columnTitle[j + 1] = element.toString();
 			}
 
 		}
@@ -102,6 +111,37 @@ public class NewSwingApp extends javax.swing.JFrame {
 		resultTable = new JTable();
 		resultTab.addTab("Results", null, getResultTable(), null);
 		resultTable.setModel(resultTableModel);
+		resultTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	}
+
+	private void setInputTable() {
+		int rows = input.size();
+		int column = 10; // ((MassDistribution)
+		// input.get(0)).getElements().size();
+
+		String[][] data = new String[rows][column];
+		String[] columnTitle = new String[column];
+
+		for (int i = 0; i < rows; i++) {
+			MassDistribution massDistribution = (MassDistribution) input.get(i);
+			data[i][0] = "" + (i + 1);
+			for (int j = 0; j < massDistribution.getElements().size(); j++) {
+
+				Element element = (Element) massDistribution.getElements().get(
+						j);
+				// data[i][j] = Double.toString(element.getBpa());
+				data[i][j + 1] = element.toString();
+
+				columnTitle[j + 1] = element.toString();
+			}
+
+		}
+
+		TableModel inputTableModel = new DefaultTableModel(data, columnTitle);
+		inputTable = new JTable();
+		inputTab.addTab("Input", null, getInputTable(), null);
+		inputTable.setModel(inputTableModel);
+
 	}
 
 	public void initGUI() {
@@ -111,8 +151,15 @@ public class NewSwingApp extends javax.swing.JFrame {
 		try {
 			{
 				resultTab = new JTabbedPane();
-				getContentPane().add(resultTab, BorderLayout.CENTER);
+
+				getContentPane().add(resultTab, BorderLayout.EAST);
 				setResultsTable();
+			}
+
+			{
+				inputTab = new JTabbedPane();
+				getContentPane().add(inputTab, BorderLayout.WEST);
+				setInputTable();
 			}
 			{
 				jMenuBar1 = new JMenuBar();
@@ -214,4 +261,33 @@ public class NewSwingApp extends javax.swing.JFrame {
 		return resultTable;
 	}
 
+	/**
+	 * @return the input
+	 */
+	public ArrayList<MassDistribution> getInput() {
+		return input;
+	}
+
+	/**
+	 * @param input
+	 *            the input to set
+	 */
+	public void setInput(ArrayList<MassDistribution> input) {
+		this.input = input;
+	}
+
+	/**
+	 * @return the inputTable
+	 */
+	public JTable getInputTable() {
+		return inputTable;
+	}
+
+	/**
+	 * @param inputTable
+	 *            the inputTable to set
+	 */
+	public void setInputTable(JTable inputTable) {
+		this.inputTable = inputTable;
+	}
 }

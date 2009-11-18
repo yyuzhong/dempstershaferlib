@@ -20,7 +20,8 @@ import core.Hypothesis;
 import core.JointMassDistribution;
 import core.MassDistribution;
 import core.Source;
-import core.SourceMassDistribution;
+import exception.JointNotPossibleException;
+import exception.MassDistributionNotValidException;
 
 /**
  * @author Elisa Costante
@@ -46,14 +47,14 @@ public class JointManagerTest extends TestCase {
 		Source feedback = new Source("Feedback");
 		Source uddi = new Source("UDDI");
 		Source trustAuthority = new Source("TrustAthority");
-		SourceMassDistribution feedbackMass = feedback
+		MassDistribution feedbackMass = feedback
 				.getMassDistribution("feedback.txt");
 		feedbackMass.setSource(feedback);
 
-		SourceMassDistribution uddiMass = uddi.getMassDistribution("uddi.txt");
+		MassDistribution uddiMass = uddi.getMassDistribution("uddi.txt");
 		uddiMass.setSource(uddi);
 
-		SourceMassDistribution trustAuthorityMass = trustAuthority
+		MassDistribution trustAuthorityMass = trustAuthority
 				.getMassDistribution("trustAuthority.txt");
 		trustAuthorityMass.setSource(trustAuthority);
 
@@ -88,8 +89,12 @@ public class JointManagerTest extends TestCase {
 	/**
 	 * Test method for
 	 * {@link joint.JointManager#dempsterJoint(java.util.ArrayList)}.
+	 * 
+	 * @throws MassDistributionNotValidException
+	 * @throws JointNotPossibleException
 	 */
-	public void testDempsterJoint() {
+	public void testDempsterJoint() throws JointNotPossibleException,
+			MassDistributionNotValidException {
 
 		JointMassDistribution demDistribution = JointManager
 				.dempsterJoint(masses);
@@ -189,8 +194,12 @@ public class JointManagerTest extends TestCase {
 	/**
 	 * Test method for
 	 * {@link joint.JointManager#yagerJoint(java.util.ArrayList)}.
+	 * 
+	 * @throws MassDistributionNotValidException
+	 * @throws JointNotPossibleException
 	 */
-	public void testYagerJoint() {
+	public void testYagerJoint() throws JointNotPossibleException,
+			MassDistributionNotValidException {
 
 		JointMassDistribution yagerDistribution = JointManager
 				.yagerJoint(masses);
@@ -236,8 +245,12 @@ public class JointManagerTest extends TestCase {
 	/**
 	 * Test method for
 	 * {@link joint.JointManager#averageJoint(java.util.ArrayList)}.
+	 * 
+	 * @throws MassDistributionNotValidException
+	 * @throws JointNotPossibleException
 	 */
-	public void testAverageJoint() {
+	public void testAverageJoint() throws JointNotPossibleException,
+			MassDistributionNotValidException {
 		JointMassDistribution averageDistribution = JointManager
 				.averageJoint(masses);
 		JointMassDistribution averageResult = readAverageResult();
@@ -284,8 +297,12 @@ public class JointManagerTest extends TestCase {
 	/**
 	 * Test method for
 	 * {@link joint.JointManager#distanceEvidenceJoint(java.util.ArrayList)}.
+	 * 
+	 * @throws MassDistributionNotValidException
+	 * @throws JointNotPossibleException
 	 */
-	public void testDistanceEvidenceJoint() {
+	public void testDistanceEvidenceJoint() throws JointNotPossibleException,
+			MassDistributionNotValidException {
 
 		JointMassDistribution distanceDistribution = JointManager
 				.distanceEvidenceJoint(masses);

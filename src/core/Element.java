@@ -5,6 +5,8 @@ import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
+import utilities.DoubleWrapper;
+
 /**
  * An {@link Element} belong to PowerSet. It is a Singleton if has only one
  * {@link Hypothesis}
@@ -151,10 +153,21 @@ public class Element implements Comparable, Cloneable {
 	 */
 	public static ArrayList<Element> getMassUnionElement(
 			ArrayList<Element> elementList1, ArrayList<Element> elementList2) {
+		ArrayList<Element> newElementList1 = new ArrayList<Element>();
 
-		TreeSet<Element> union = new TreeSet<Element>(elementList1);
+		for (Element element : elementList1) {
+			newElementList1.add(new Element(element.getHypothesies()));
+		}
 
-		union.addAll(new TreeSet<Element>(elementList2));
+		ArrayList<Element> newElementList2 = new ArrayList<Element>();
+
+		for (Element element : elementList2) {
+			newElementList2.add(new Element(element.getHypothesies()));
+		}
+
+		TreeSet<Element> union = new TreeSet<Element>(newElementList1);
+
+		union.addAll(new TreeSet<Element>(newElementList2));
 
 		return new ArrayList<Element>(union);
 	}
@@ -180,7 +193,12 @@ public class Element implements Comparable, Cloneable {
 				elementToString = elementToString + ",";
 			}
 		}
-		elementToString = elementToString + " - " + bpa.toString() + "}";
+		if (bpa != null)
+			elementToString = elementToString + " - "
+					+ new DoubleWrapper(bpa).toString() + "}";
+		else
+
+			elementToString = elementToString + "}";
 
 		return elementToString;
 	}
@@ -188,10 +206,21 @@ public class Element implements Comparable, Cloneable {
 	@Override
 	public int compareTo(Object o) {
 		Element element = (Element) o;
-		String compare1 = element.getHypothesies().toString();
-		String compare2 = hypothesies.toString();
 
-		return compare1.compareTo(compare2);
+		ArrayList<Hypothesis> elementHypList = element.getHypothesies();
+		// String compare1 = element.getHypothesies().toString();
+		String compare1 = "";
+		for (Hypothesis hypothesis : elementHypList) {
+			compare1 = compare1 + hypothesis.getName();
+		}
+		String compare2 = "";
+
+		for (Hypothesis hypothesis : hypothesies) {
+			compare2 = compare2 + hypothesis.getName();
+		}
+		int value = compare2.compareTo(compare1);
+
+		return value;
 	}
 
 	/**

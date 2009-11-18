@@ -54,4 +54,28 @@ public class JointMassDistribution extends MassDistribution {
 	//
 	// }
 
+	public static JointMassDistribution order(JointMassDistribution mass) {
+		ArrayList<Element> orderedElements = new ArrayList<Element>();
+		for (int i = 0; i < mass.getElements().size(); i++) {
+			Element element1 = mass.getElements().get(i);
+
+			Element min = element1;
+			for (int j = i; j < mass.getElements().size(); j++) {
+				Element element2 = mass.getElements().get(j);
+
+				if (element2.compareTo(element1) < 0) {
+					min = element2;
+				}
+
+			}
+			orderedElements.add(min);
+		}
+
+		JointMassDistribution orderedMass = new JointMassDistribution(
+				orderedElements);
+		orderedMass.setOperator(mass.getOperator());
+
+		return orderedMass;
+
+	}
 }

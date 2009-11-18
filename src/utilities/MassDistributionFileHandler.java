@@ -10,7 +10,6 @@ import java.util.StringTokenizer;
 import core.Element;
 import core.Hypothesis;
 import core.MassDistribution;
-import core.SourceMassDistribution;
 
 public class MassDistributionFileHandler {
 
@@ -21,7 +20,7 @@ public class MassDistributionFileHandler {
 	 * @param filename
 	 * @return a Valid {@link MassDistribution} or <code>null</code> otherwise.
 	 */
-	public SourceMassDistribution getMassDistribution(String filename) {
+	public MassDistribution getMassDistribution(String filename) {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new InputStreamReader(new FileInputStream(
@@ -57,8 +56,7 @@ public class MassDistributionFileHandler {
 			return null;
 		}
 
-		SourceMassDistribution massDistribution = new SourceMassDistribution(
-				elements);
+		MassDistribution massDistribution = new MassDistribution(elements);
 
 		if (massDistribution.isValid())
 			return massDistribution;
