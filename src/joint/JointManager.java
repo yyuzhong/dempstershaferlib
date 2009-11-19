@@ -3,6 +3,7 @@ package joint;
 import java.util.ArrayList;
 
 import core.Element;
+import core.FocalElement;
 import core.FrameOfDiscernment;
 import core.JointMassDistribution;
 import core.MassDistribution;
@@ -114,7 +115,7 @@ public class JointManager {
 
 		switch (operator) {
 		case 1:
-			jointDistribution = average(masses);
+			jointDistribution = average(m1, m2, masses);
 			jointDistribution.setOperator(JointOperatorEnum.AVERAGE.getName());
 			break;
 		case 2:
@@ -125,12 +126,13 @@ public class JointManager {
 			jointDistribution.setOperator(JointOperatorEnum.DEMPSTER.getName());
 			break;
 		case 3:
-			Double conflict = getConflict(m1.getElements(), m2.getElements());
+			Double conflict = getConflict(m1.getFocalElements(), m2
+					.getFocalElements());
 			jointDistribution = yager(m1, m2, false, conflict);
 			for (int j = i; j < masses.size(); j++) {
 				conflict = conflict
-						+ getConflict(jointDistribution.getElements(), masses
-								.get(j).getElements());
+						+ getConflict(jointDistribution.getFocalElements(),
+								masses.get(j).getFocalElements());
 				if (j == (masses.size() - 1))
 					jointDistribution = yager(jointDistribution, masses.get(j),
 							true, conflict);
@@ -194,12 +196,12 @@ public class JointManager {
 
 			double[] credibility = getCredibility(supportDegree);
 
-			ArrayList<Element> jointElements = Element
+			ArrayList<FocalElement> jointElements = Element
 					.getMassUnionElement(masses);
 
 			for (int i = 0; i < jointElements.size(); i++) {
 
-				Element jointElement = jointElements.get(i);
+				FocalElement jointElement = jointElements.get(i);
 
 				double newBpa = 0;
 				for (int j = 0; j < masses.size(); j++) {
@@ -207,9 +209,9 @@ public class JointManager {
 					double cred = credibility[j];
 					double oldBpa = 0;
 
-					int index = m.getElements().indexOf(jointElement);
+					int index = m.getFocalElements().indexOf(jointElement);
 					if (index >= 0)
-						oldBpa = m.getElements().get(index).getBpa();
+						oldBpa = m.getFocalElements().get(index).getBpa();
 					newBpa = newBpa + (cred * oldBpa);
 				}
 				jointElement.setBpa(newBpa);
@@ -239,8 +241,8 @@ public class JointManager {
 
 		double scalarProduct = 0;
 
-		ArrayList<Element> m1Elements = m1.getElements();
-		ArrayList<Element> m2Elements = m2.getElements();
+		ArrayList<Element> m1Elements = m1.getFocalElements();
+		ArrayList<Element> m2Elements = m2.getFocalElements();
 
 		for (int i = 0; i < m1Elements.size(); i++) {
 			Element el1 = m1Elements.get(i);
@@ -367,8 +369,8 @@ public class JointManager {
 	private static JointMassDistribution yager(MassDistribution m1,
 			MassDistribution m2, boolean last, Double conflictTransfer)
 			throws MassDistributionNotValidException {
-		ArrayList<Element> m1Elements = m1.getElements();
-		ArrayList<Element> m2Elements = m2.getElements();
+		ArrayList<Element> m1Elements = m1.getFocalElements();
+		ArrayList<Element> m2Elements = m2.getFocalElements();
 
 		// double conflict = getConflict(m1Elements, m2Elements);
 		// conflictTransfer = new Double(conflictTransfer.doubleValue() +
@@ -419,8 +421,8 @@ public class JointManager {
 	private static JointMassDistribution dempster(MassDistribution m1,
 			MassDistribution m2) throws MassDistributionNotValidException {
 
-		ArrayList<Element> m1Elements = m1.getElements();
-		ArrayList<Element> m2Elements = m2.getElements();
+		ArrayList<Element> m1Elements = m1.getFocalElements();
+		ArrayList<Element> m2Elements = m2.getFocalElements();
 
 		double conflict = getConflict(m1Elements, m2Elements);
 
@@ -476,36 +478,42 @@ public class JointManager {
 		return conflict;
 	}
 
-	private static JointMassDistribution average(ArrayList<MassDistribution>) throws MassDistributionNotValidException {
+	private static JointMassDistribution average(MassDistribution m1,
+			MassDistribution m2, ArrayList<MassDistribution> masses)
+			throws MassDistributionNotValidException {
 
-		ArrayList<Element> m1Elements = m1.getElements();
-		ArrayList<Element> m2Elements = m2.getElements();
+		ArrayList<Element> m1Elements = m1.getFocalElements();
+		ArrayList<Element> m2Elements = m2.getFocalElements();
 
 		ArrayList<Element> jointElements = Element.getMassUnionElement(
 				m1Elements, m2Elements);
+		for (int i = 2; i < masses.size(); i++) {
+
+			MassDistribution m3 = masses.get(i);
+			ArrayList<Element> el3 = m3.getFocalElements();
+			jointElements = Element.getMassUnionElement(jointElements, el3);
+		}
 
 		for (int i = 0; i < jointElements.size(); i++) {
+
+			double bpa = 0;
 			Element jointElement = jointElements.get(i);
 
-			int m1Index = m1Elements.indexOf(jointElement);
-			Element m1Element = null;
-			if (m1Index > (-1))
-				m1Element = m1Elements.get(m1Index);
+			ArrayList<Element> sameElements = new ArrayList<Element>();
 
-			int m2Index = m2Elements.indexOf(jointElement);
-			Element m2Element = null;
-			if (m2Index > (-1))
-				m2Element = m2Elements.get(m2Index);
-
-			if (m1Element == null) {
-				jointElement.setBpa(m2Element.getBpa() / 2);
-			} else if (m2Element == null) {
-				jointElement.setBpa(m1Element.getBpa() / 2);
-
-			} else if (Element.getIntersection(m1Element, m2Element) != null) {
-				double intersectBpa = (m1Element.getBpa() + m2Element.getBpa()) / 2;
-				jointElement.setBpa(intersectBpa);
+			for (int j = 0; j < masses.size(); j++) {
+				Element same = Element.findElement(masses.get(j)
+						.getFocalElements(), jointElement);
+				if (same != null) {
+					sameElements.add(same);
+				}
 			}
+
+			for (Element element : sameElements) {
+				bpa = bpa + element.getBpa();
+			}
+
+			jointElement.setBpa(new Double(bpa / masses.size()));
 
 		}
 
@@ -517,5 +525,4 @@ public class JointManager {
 			throw new MassDistributionNotValidException("MassDistribution"
 					+ jointMass.toString() + " is not valid!");
 	}
-
 }

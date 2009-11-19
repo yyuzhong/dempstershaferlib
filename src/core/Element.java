@@ -1,11 +1,7 @@
 package core;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.TreeSet;
-
-import utilities.DoubleWrapper;
 
 /**
  * An {@link Element} belong to PowerSet. It is a Singleton if has only one
@@ -18,55 +14,9 @@ public class Element implements Comparable, Cloneable {
 
 	protected ArrayList<Hypothesis> hypothesies;
 
-	private Double bpa;
-	private Double belief;
-	private Double plausability;
-
-	public Element(ArrayList<Hypothesis> hypothesies, Double bpa) {
-		super();
-		setBpa(bpa);
-		this.hypothesies = hypothesies;
-	}
-
 	public Element(ArrayList<Hypothesis> hypothesies) {
 		super();
 		this.hypothesies = hypothesies;
-	}
-
-	public Double getBpa() {
-		return bpa;
-	}
-
-	/**
-	 * Set the Value of bpa. It mantains only 5 decimal digit
-	 * 
-	 * @param bpa
-	 */
-	public void setBpa(Double bpa) {
-		BigDecimal bigDecimal = new BigDecimal(bpa, new MathContext(5));
-		bpa = bigDecimal.doubleValue();
-		this.bpa = bpa;
-
-	}
-
-	public Double getBelief() {
-		return belief;
-	}
-
-	public void setBelief(Double belief) {
-		BigDecimal bigDecimal = new BigDecimal(belief, new MathContext(5));
-		belief = bigDecimal.doubleValue();
-		this.belief = belief;
-	}
-
-	public Double getPlausability() {
-		return plausability;
-	}
-
-	public void setPlausability(Double plausability) {
-		BigDecimal bigDecimal = new BigDecimal(plausability, new MathContext(5));
-		plausability = bigDecimal.doubleValue();
-		this.plausability = plausability;
 	}
 
 	public ArrayList<Hypothesis> getHypothesies() {
@@ -129,7 +79,8 @@ public class Element implements Comparable, Cloneable {
 	 * 
 	 * @param element1
 	 * @param element2
-	 * @return the Union between the elements or null if the union is empty.
+	 * @return the Union between the focalElements or null if the union is
+	 *         empty.
 	 */
 	public static Element getUnion(Element element1, Element element2) {
 
@@ -145,31 +96,35 @@ public class Element implements Comparable, Cloneable {
 	}
 
 	/**
-	 * Return the union of two elements list.
+	 * Return the union of two focalElements list.
 	 * 
 	 * @param el1
 	 * @param el2
-	 * @return the union of two elements list.
+	 * @return the union of two focalElements list.
 	 */
-	public static ArrayList<Element> getMassUnionElement(
-			ArrayList<Element> elementList1, ArrayList<Element> elementList2) {
-		ArrayList<Element> newElementList1 = new ArrayList<Element>();
+	public static ArrayList<FocalElement> getMassUnionElement(
+			ArrayList<FocalElement> elementList1,
+			ArrayList<FocalElement> elementList2) {
 
-		for (Element element : elementList1) {
-			newElementList1.add(new Element(element.getHypothesies()));
+		ArrayList<FocalElement> newElementList1 = new ArrayList<FocalElement>();
+
+		for (FocalElement element : elementList1) {
+			newElementList1.add(new FocalElement(element.getElement(), element
+					.getBpa()));
 		}
 
-		ArrayList<Element> newElementList2 = new ArrayList<Element>();
+		ArrayList<FocalElement> newElementList2 = new ArrayList<FocalElement>();
 
-		for (Element element : elementList2) {
-			newElementList2.add(new Element(element.getHypothesies()));
+		for (FocalElement element : elementList2) {
+			newElementList2.add(new FocalElement(element.getElement(), element
+					.getBpa()));
 		}
 
-		TreeSet<Element> union = new TreeSet<Element>(newElementList1);
+		TreeSet<FocalElement> union = new TreeSet<FocalElement>(newElementList1);
 
-		union.addAll(new TreeSet<Element>(newElementList2));
+		union.addAll(new TreeSet<FocalElement>(newElementList2));
 
-		return new ArrayList<Element>(union);
+		return new ArrayList<FocalElement>(union);
 	}
 
 	@Override
@@ -178,6 +133,8 @@ public class Element implements Comparable, Cloneable {
 		ArrayList<Hypothesis> otherHypothesies = other.getHypothesies();
 		if (other.getHypothesies().size() == hypothesies.size()
 				&& otherHypothesies.containsAll(hypothesies))
+			return true;
+		else if (this == null && obj == null)
 			return true;
 		else
 			return false;
@@ -193,12 +150,8 @@ public class Element implements Comparable, Cloneable {
 				elementToString = elementToString + ",";
 			}
 		}
-		if (bpa != null)
-			elementToString = elementToString + " - "
-					+ new DoubleWrapper(bpa).toString() + "}";
-		else
 
-			elementToString = elementToString + "}";
+		elementToString = elementToString + "}";
 
 		return elementToString;
 	}
@@ -233,16 +186,21 @@ public class Element implements Comparable, Cloneable {
 			return 0;
 	}
 
-	public static ArrayList<Element> getMassUnionElement(
+	public static ArrayList<FocalElement> getMassUnionElement(
 			ArrayList<MassDistribution> masses) {
-		ArrayList<Element> union = null;
+
+		ArrayList<FocalElement> union = null;
+
 		if (masses.size() >= 2) {
-			ArrayList<Element> m1Elements = masses.get(0).getElements();
-			ArrayList<Element> m2Elements = masses.get(1).getElements();
+			ArrayList<FocalElement> m1Elements = masses.get(0)
+					.getFocalElements();
+			ArrayList<FocalElement> m2Elements = masses.get(1)
+					.getFocalElements();
 
 			union = getMassUnionElement(m1Elements, m2Elements);
 			for (int i = 2; i < masses.size(); i++) {
-				union = getMassUnionElement(union, masses.get(i).getElements());
+				union = getMassUnionElement(union, masses.get(i)
+						.getFocalElements());
 			}
 
 		}
@@ -256,7 +214,26 @@ public class Element implements Comparable, Cloneable {
 			Hypothesis hyp = (Hypothesis) hypothesies.get(i).clone();
 			hypClone.add(hyp);
 		}
-		Element clone = new Element(hypClone, bpa);
+		Element clone = new Element(hypClone);
 		return clone;
+	}
+
+	/**
+	 * Look up for the <code>element</code> in the <code>elementList</code>.
+	 * 
+	 * @param elementsList
+	 *            : the list of focalElements
+	 * @param element
+	 *            : the element one want to find in the list.
+	 * @return The <code>element</code> if it is in the list, <code>null</code>
+	 *         otherwise.
+	 */
+	public static Element findElement(ArrayList<Element> elementsList,
+			Element element) {
+		int index = elementsList.indexOf(element);
+		Element found = null;
+		if (index >= 0)
+			found = elementsList.get(index);
+		return found;
 	}
 }

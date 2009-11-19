@@ -96,8 +96,8 @@ public class NewSwingApp extends javax.swing.JFrame {
 					.get(i);
 			data[i][0] = massDistribution.getOperator();
 
-			for (int j = 0; j < massDistribution.getElements().size(); j++) {
-				Element element = (Element) massDistribution.getElements().get(
+			for (int j = 0; j < massDistribution.getFocalElements().size(); j++) {
+				Element element = (Element) massDistribution.getFocalElements().get(
 						j);
 				// data[i][j] = Double.toString(element.getBpa());
 				data[i][j + 1] = element.toString();
@@ -125,9 +125,9 @@ public class NewSwingApp extends javax.swing.JFrame {
 		for (int i = 0; i < rows; i++) {
 			MassDistribution massDistribution = (MassDistribution) input.get(i);
 			data[i][0] = "" + (i + 1);
-			for (int j = 0; j < massDistribution.getElements().size(); j++) {
+			for (int j = 0; j < massDistribution.getFocalElements().size(); j++) {
 
-				Element element = (Element) massDistribution.getElements().get(
+				Element element = (Element) massDistribution.getFocalElements().get(
 						j);
 				// data[i][j] = Double.toString(element.getBpa());
 				data[i][j + 1] = element.toString();

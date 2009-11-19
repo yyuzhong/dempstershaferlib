@@ -6,7 +6,7 @@ public class JointMassDistribution extends MassDistribution {
 
 	protected String operator;
 
-	public JointMassDistribution(ArrayList<Element> elements) {
+	public JointMassDistribution(ArrayList<FocalElement> elements) {
 		super(elements);
 	}
 
@@ -20,7 +20,7 @@ public class JointMassDistribution extends MassDistribution {
 
 	@Override
 	public String toString() {
-		return "Elements [" + elements + "]; [operator=" + operator + "]";
+		return "Elements [" + focalElements + "]; [operator=" + operator + "]";
 	}
 
 	/*
@@ -45,7 +45,7 @@ public class JointMassDistribution extends MassDistribution {
 	// @Override
 	// public boolean equals(Object obj) {
 	// JointMassDistribution other = (JointMassDistribution) obj;
-	// if (other.getElements().size() == elements.size()
+	// if (other.getElements().size() == focalElements.size()
 	// && other.getElements().containsAll(this.elements)
 	// && other.getOperator().equals(operator))
 	// return true;
@@ -56,23 +56,11 @@ public class JointMassDistribution extends MassDistribution {
 
 	public static JointMassDistribution order(JointMassDistribution mass) {
 		ArrayList<Element> orderedElements = new ArrayList<Element>();
-		for (int i = 0; i < mass.getElements().size(); i++) {
-			Element element1 = mass.getElements().get(i);
 
-			Element min = element1;
-			for (int j = i; j < mass.getElements().size(); j++) {
-				Element element2 = mass.getElements().get(j);
-
-				if (element2.compareTo(element1) < 0) {
-					min = element2;
-				}
-
-			}
-			orderedElements.add(min);
-		}
+		MassDistribution ordered = MassDistribution.order(mass);
 
 		JointMassDistribution orderedMass = new JointMassDistribution(
-				orderedElements);
+				ordered.focalElements);
 		orderedMass.setOperator(mass.getOperator());
 
 		return orderedMass;
