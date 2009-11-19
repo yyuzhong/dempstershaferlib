@@ -16,6 +16,7 @@ import joint.JointOperatorEnum;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import core.Element;
+import core.FocalElement;
 import core.Hypothesis;
 import core.JointMassDistribution;
 import core.MassDistribution;
@@ -147,7 +148,7 @@ public class JointManagerTest extends TestCase {
 
 		ArrayList<Hypothesis> hypothesiesList = null;
 
-		ArrayList<Element> elementList = new ArrayList<Element>();
+		ArrayList<FocalElement> elementList = new ArrayList<FocalElement>();
 
 		StringTokenizer elementTokenizer = new StringTokenizer(readLine);
 
@@ -156,7 +157,7 @@ public class JointManagerTest extends TestCase {
 			String elementString = elementTokenizer.nextToken(";");
 
 			// elementString=A,B-0.5
-			Element el = parseElement(elementString);
+			FocalElement el = parseElement(elementString);
 
 			elementList.add(el);
 		}
@@ -166,7 +167,7 @@ public class JointManagerTest extends TestCase {
 		return results;
 	}
 
-	private Element parseElement(String elementString) {
+	private FocalElement parseElement(String elementString) {
 		// elementString=A,B-0.5
 		ArrayList<Hypothesis> hypothesiesList = new ArrayList<Hypothesis>();
 		StringTokenizer elementTokenizer = new StringTokenizer(elementString);
@@ -174,7 +175,7 @@ public class JointManagerTest extends TestCase {
 		hypothesiesList = parseHypothesies(hypothesiesString);
 		Double bpa = Double.parseDouble(elementTokenizer.nextToken("-"));
 
-		Element el = new Element(hypothesiesList, bpa);
+		FocalElement el = new FocalElement(new Element(hypothesiesList), bpa);
 		return el;
 	}
 
