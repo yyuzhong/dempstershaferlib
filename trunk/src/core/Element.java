@@ -95,38 +95,6 @@ public class Element implements Comparable, Cloneable {
 			return null;
 	}
 
-	/**
-	 * Return the union of two focalElements list.
-	 * 
-	 * @param el1
-	 * @param el2
-	 * @return the union of two focalElements list.
-	 */
-	public static ArrayList<FocalElement> getMassUnionElement(
-			ArrayList<FocalElement> elementList1,
-			ArrayList<FocalElement> elementList2) {
-
-		ArrayList<FocalElement> newElementList1 = new ArrayList<FocalElement>();
-
-		for (FocalElement element : elementList1) {
-			newElementList1.add(new FocalElement(element.getElement(), element
-					.getBpa()));
-		}
-
-		ArrayList<FocalElement> newElementList2 = new ArrayList<FocalElement>();
-
-		for (FocalElement element : elementList2) {
-			newElementList2.add(new FocalElement(element.getElement(), element
-					.getBpa()));
-		}
-
-		TreeSet<FocalElement> union = new TreeSet<FocalElement>(newElementList1);
-
-		union.addAll(new TreeSet<FocalElement>(newElementList2));
-
-		return new ArrayList<FocalElement>(union);
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		Element other = (Element) obj;
@@ -186,27 +154,6 @@ public class Element implements Comparable, Cloneable {
 			return 0;
 	}
 
-	public static ArrayList<FocalElement> getMassUnionElement(
-			ArrayList<MassDistribution> masses) {
-
-		ArrayList<FocalElement> union = null;
-
-		if (masses.size() >= 2) {
-			ArrayList<FocalElement> m1Elements = masses.get(0)
-					.getFocalElements();
-			ArrayList<FocalElement> m2Elements = masses.get(1)
-					.getFocalElements();
-
-			union = getMassUnionElement(m1Elements, m2Elements);
-			for (int i = 2; i < masses.size(); i++) {
-				union = getMassUnionElement(union, masses.get(i)
-						.getFocalElements());
-			}
-
-		}
-		return union;
-	}
-
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		ArrayList<Hypothesis> hypClone = new ArrayList<Hypothesis>();
@@ -218,22 +165,4 @@ public class Element implements Comparable, Cloneable {
 		return clone;
 	}
 
-	/**
-	 * Look up for the <code>element</code> in the <code>elementList</code>.
-	 * 
-	 * @param elementsList
-	 *            : the list of focalElements
-	 * @param element
-	 *            : the element one want to find in the list.
-	 * @return The <code>element</code> if it is in the list, <code>null</code>
-	 *         otherwise.
-	 */
-	public static Element findElement(ArrayList<Element> elementsList,
-			Element element) {
-		int index = elementsList.indexOf(element);
-		Element found = null;
-		if (index >= 0)
-			found = elementsList.get(index);
-		return found;
-	}
 }

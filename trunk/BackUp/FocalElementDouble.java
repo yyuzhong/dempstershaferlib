@@ -13,7 +13,7 @@ import java.util.TreeSet;
  */
 public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	private final int PRECISION = 4;
-	private BigDecimal bpa;
+	private Double bpa;
 	private Element element;
 
 	private Double belief;
@@ -22,7 +22,7 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	public FocalElement(Element element, double bpa) {
 
 		this.element = element;
-		setBpa(bpa);
+		this.bpa = bpa;
 	}
 
 	/**
@@ -31,9 +31,9 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 * @param bpa
 	 */
 	public void setBpa(Double bpa) {
-		BigDecimal bpaBigDecimal = new BigDecimal(bpa).setScale(PRECISION,
-				BigDecimal.ROUND_HALF_UP);
-		this.bpa = bpaBigDecimal;
+		// BigDecimal bigDecimal = new BigDecimal(bpa, new MathContext(5));
+		// bpa = bigDecimal.doubleValue();
+		this.bpa = bpa;
 
 	}
 
@@ -41,7 +41,7 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 * @return the bpa
 	 */
 	public Double getBpa() {
-		return bpa.doubleValue();
+		return bpa;
 	}
 
 	public Double getBelief() {
@@ -116,8 +116,7 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 		FocalElement other = (FocalElement) obj;
 
 		if (other.getElement().equals(element)
-				&& compareSamePrecision(other.getBpa().doubleValue(), bpa
-						.doubleValue(), PRECISION))
+				&& compareSamePrecision(other.getBpa(), bpa, 4))
 			return true;
 		else
 			return false;
@@ -126,7 +125,7 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		Element cloneElement = (Element) element.clone();
-		FocalElement clone = new FocalElement(cloneElement, bpa.doubleValue());
+		FocalElement clone = new FocalElement(cloneElement, bpa);
 		clone.setBelief(belief);
 		clone.setPlausability(plausability);
 		return clone;

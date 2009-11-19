@@ -14,7 +14,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import core.Element;
+import core.FocalElement;
 import core.JointMassDistribution;
 import core.MassDistribution;
 
@@ -97,8 +97,8 @@ public class NewSwingApp extends javax.swing.JFrame {
 			data[i][0] = massDistribution.getOperator();
 
 			for (int j = 0; j < massDistribution.getFocalElements().size(); j++) {
-				Element element = (Element) massDistribution.getFocalElements().get(
-						j);
+				FocalElement element = (FocalElement) massDistribution
+						.getFocalElements().get(j);
 				// data[i][j] = Double.toString(element.getBpa());
 				data[i][j + 1] = element.toString();
 
@@ -127,8 +127,8 @@ public class NewSwingApp extends javax.swing.JFrame {
 			data[i][0] = "" + (i + 1);
 			for (int j = 0; j < massDistribution.getFocalElements().size(); j++) {
 
-				Element element = (Element) massDistribution.getFocalElements().get(
-						j);
+				FocalElement element = (FocalElement) massDistribution
+						.getFocalElements().get(j);
 				// data[i][j] = Double.toString(element.getBpa());
 				data[i][j + 1] = element.toString();
 

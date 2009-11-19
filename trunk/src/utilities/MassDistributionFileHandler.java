@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import core.Element;
+import core.FocalElement;
 import core.Hypothesis;
 import core.MassDistribution;
 
@@ -30,7 +31,7 @@ public class MassDistributionFileHandler {
 			return null;
 		}
 
-		ArrayList<Element> elements = new ArrayList<Element>();
+		ArrayList<FocalElement> elements = new ArrayList<FocalElement>();
 
 		try {
 			ArrayList<Hypothesis> hypothesies = new ArrayList<Hypothesis>();
@@ -45,7 +46,8 @@ public class MassDistributionFileHandler {
 					hypothesies = readHypothesies(allHypothesies);
 					double bpa = Double.parseDouble(tokenizer.nextToken());
 
-					Element element = new Element(hypothesies, new Double(bpa));
+					FocalElement element = new FocalElement(new Element(
+							hypothesies), new Double(bpa));
 					elements.add(element);
 				}
 				line = br.readLine();
