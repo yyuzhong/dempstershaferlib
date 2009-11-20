@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import joint.JointManager;
-import joint.JointOperatorEnum;
+import joint.JointOperator;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import core.Element;
@@ -100,7 +100,7 @@ public class JointManagerTest extends TestCase {
 		JointMassDistribution demDistribution = JointManager
 				.dempsterJoint(masses);
 		JointMassDistribution dempsterResult = readDempsterResult();
-		dempsterResult.setOperator(JointOperatorEnum.DEMPSTER.getName());
+		dempsterResult.setOperator(JointOperator.DEMPSTER.getName());
 
 		try {
 			assertEquals(demDistribution, dempsterResult);
@@ -205,7 +205,7 @@ public class JointManagerTest extends TestCase {
 		JointMassDistribution yagerDistribution = JointManager
 				.yagerJoint(masses);
 		JointMassDistribution yagerResult = readYagerResult();
-		yagerResult.setOperator(JointOperatorEnum.YAGER.getName());
+		yagerResult.setOperator(JointOperator.YAGER.getName());
 
 		try {
 			assertEquals(yagerDistribution, yagerResult);
@@ -255,7 +255,7 @@ public class JointManagerTest extends TestCase {
 		JointMassDistribution averageDistribution = JointManager
 				.averageJoint(masses);
 		JointMassDistribution averageResult = readAverageResult();
-		averageResult.setOperator(JointOperatorEnum.AVERAGE.getName());
+		averageResult.setOperator(JointOperator.AVERAGE.getName());
 
 		try {
 			assertEquals(averageDistribution, averageResult);
@@ -308,7 +308,7 @@ public class JointManagerTest extends TestCase {
 		JointMassDistribution distanceDistribution = JointManager
 				.distanceEvidenceJoint(masses);
 		JointMassDistribution distanceResult = readDistanceResult();
-		distanceResult.setOperator(JointOperatorEnum.DISTANCE_EVIDENCE
+		distanceResult.setOperator(JointOperator.DISTANCE_EVIDENCE
 				.getName());
 		try {
 			assertEquals(distanceDistribution, distanceResult);

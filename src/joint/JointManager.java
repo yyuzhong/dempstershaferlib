@@ -31,7 +31,7 @@ public class JointManager {
 			ArrayList<MassDistribution> masses)
 			throws JointNotPossibleException, MassDistributionNotValidException {
 		if (masses.size() > 1)
-			return applyOperator(masses, JointOperatorEnum.DEMPSTER.getValue());
+			return applyOperator(masses, JointOperator.DEMPSTER);
 		else
 			throw new JointNotPossibleException(
 					"It's not possible do a joint with just one MassDistribution");
@@ -50,7 +50,7 @@ public class JointManager {
 			ArrayList<MassDistribution> masses)
 			throws JointNotPossibleException, MassDistributionNotValidException {
 		if (masses.size() > 1)
-			return applyOperator(masses, JointOperatorEnum.YAGER.getValue());
+			return applyOperator(masses, JointOperator.YAGER);
 		else
 			throw new JointNotPossibleException(
 					"It's not possible do a joint with just one MassDistribution");
@@ -70,7 +70,7 @@ public class JointManager {
 			throws JointNotPossibleException, MassDistributionNotValidException {
 		if (masses.size() > 1)
 
-			return applyOperator(masses, JointOperatorEnum.AVERAGE.getValue());
+			return applyOperator(masses, JointOperator.AVERAGE);
 		else
 			throw new JointNotPossibleException(
 					"It's not possible do a joint with just one MassDistribution");
@@ -92,8 +92,7 @@ public class JointManager {
 			throws JointNotPossibleException, MassDistributionNotValidException {
 		if (masses.size() > 1)
 
-			return applyOperator(masses, JointOperatorEnum.DISTANCE_EVIDENCE
-					.getValue());
+			return applyOperator(masses, JointOperator.DISTANCE_EVIDENCE);
 
 		else
 			throw new JointNotPossibleException(
@@ -101,70 +100,75 @@ public class JointManager {
 
 	}
 
-	private static JointMassDistribution applyOperator(
-			ArrayList<MassDistribution> masses, int operator)
-			throws MassDistributionNotValidException {
+	public static JointMassDistribution applyOperator(
+			ArrayList<MassDistribution> masses, JointOperator operator)
+			throws MassDistributionNotValidException, JointNotPossibleException {
+		if (masses.size() > 1) {
 
-		JointMassDistribution jointDistribution = null;
-		int i = 0;
+			JointMassDistribution jointDistribution = null;
+			int i = 0;
 
-		MassDistribution m1 = masses.get(i);
-		i++;
-		MassDistribution m2 = masses.get(i);
-		i++;
+			MassDistribution m1 = masses.get(i);
+			i++;
+			MassDistribution m2 = masses.get(i);
+			i++;
 
-		switch (operator) {
-		case 1:
-			jointDistribution = average(m1, m2, masses);
-			jointDistribution.setOperator(JointOperatorEnum.AVERAGE.getName());
-			break;
-		case 2:
-			jointDistribution = dempster(m1, m2);
-			for (int j = i; j < masses.size(); j++) {
-				jointDistribution = dempster(jointDistribution, masses.get(j));
+			switch (operator.getValue()) {
+			case 1:
+				jointDistribution = average(m1, m2, masses);
+				jointDistribution.setOperator(JointOperator.AVERAGE.getName());
+				break;
+			case 2:
+				jointDistribution = dempster(m1, m2);
+				for (int j = i; j < masses.size(); j++) {
+					jointDistribution = dempster(jointDistribution, masses
+							.get(j));
+				}
+				jointDistribution.setOperator(JointOperator.DEMPSTER.getName());
+				break;
+			case 3:
+				Double conflict = getConflict(m1.getFocalElements(), m2
+						.getFocalElements());
+				jointDistribution = yager(m1, m2, false, conflict);
+				for (int j = i; j < masses.size(); j++) {
+					conflict = conflict
+							+ getConflict(jointDistribution.getFocalElements(),
+									masses.get(j).getFocalElements());
+					if (j == (masses.size() - 1))
+						jointDistribution = yager(jointDistribution, masses
+								.get(j), true, conflict);
+					else
+						jointDistribution = yager(jointDistribution, masses
+								.get(j), false, conflict);
+				}
+				jointDistribution.setOperator(JointOperator.YAGER.getName());
+				break;
+			case 4:
+				jointDistribution = distance(masses);
+
+				JointMassDistribution dempsterDistribution = dempster(
+						jointDistribution, jointDistribution);
+
+				for (int j = 0; j < masses.size() - 2; j++) {
+					jointDistribution = dempster(dempsterDistribution,
+							jointDistribution);
+				}
+				jointDistribution.setOperator(JointOperator.DISTANCE_EVIDENCE
+						.getName());
+				break;
+
+			default:
+				break;
 			}
-			jointDistribution.setOperator(JointOperatorEnum.DEMPSTER.getName());
-			break;
-		case 3:
-			Double conflict = getConflict(m1.getFocalElements(), m2
-					.getFocalElements());
-			jointDistribution = yager(m1, m2, false, conflict);
-			for (int j = i; j < masses.size(); j++) {
-				conflict = conflict
-						+ getConflict(jointDistribution.getFocalElements(),
-								masses.get(j).getFocalElements());
-				if (j == (masses.size() - 1))
-					jointDistribution = yager(jointDistribution, masses.get(j),
-							true, conflict);
-				else
-					jointDistribution = yager(jointDistribution, masses.get(j),
-							false, conflict);
-			}
-			jointDistribution.setOperator(JointOperatorEnum.YAGER.getName());
-			break;
-		case 4:
-			jointDistribution = distance(masses);
 
-			JointMassDistribution dempsterDistribution = dempster(
-					jointDistribution, jointDistribution);
-
-			for (int j = 0; j < masses.size() - 2; j++) {
-				jointDistribution = dempster(dempsterDistribution,
-						jointDistribution);
-			}
-			jointDistribution.setOperator(JointOperatorEnum.DISTANCE_EVIDENCE
-					.getName());
-			break;
-
-		default:
-			break;
-		}
-
-		if (jointDistribution.isValid())
-			return jointDistribution;
-		else
-			throw new MassDistributionNotValidException("MassDistribution"
-					+ jointDistribution.toString() + " is not valid!");
+			if (jointDistribution.isValid())
+				return jointDistribution;
+			else
+				throw new MassDistributionNotValidException("MassDistribution"
+						+ jointDistribution.toString() + " is not valid!");
+		} else
+			throw new JointNotPossibleException(
+					"It's not possible do a joint with just one MassDistribution");
 	}
 
 	/**

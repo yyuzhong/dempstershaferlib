@@ -1,6 +1,6 @@
 package joint;
 
-public enum JointOperatorEnum {
+public enum JointOperator {
 
 	AVERAGE("AVERAGE", 1), DEMPSTER("DEMPSTER", 2), YAGER("YAGER", 3), DISTANCE_EVIDENCE(
 			"DISTANCE_EVIDENCE", 4);
@@ -8,7 +8,7 @@ public enum JointOperatorEnum {
 	private String name;
 	private int value;
 
-	JointOperatorEnum(String name, int value) {
+	JointOperator(String name, int value) {
 		this.name = name;
 		this.value = value;
 	}
