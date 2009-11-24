@@ -1,7 +1,6 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class MassDistribution implements Cloneable {
 
@@ -121,20 +120,20 @@ public class MassDistribution implements Cloneable {
 	public static MassDistribution order(MassDistribution mass) {
 		ArrayList<FocalElement> orderedElements = new ArrayList<FocalElement>();
 
-		for (Iterator iterator = orderedElements.iterator(); iterator.hasNext();) {
-			FocalElement element1 = ((FocalElement) iterator.next());
+		for (FocalElement focalElement1 : mass.getFocalElements()) {
 
-			FocalElement min = element1;
+			FocalElement min = focalElement1;
 			for (int j = 0; j < mass.getFocalElements().size(); j++) {
 				FocalElement element2 = mass.getFocalElements().get(j);
 
-				if (element2.getElement().compareTo(element1.getElement()) <= 0) {
+				if (element2.getElement().compareTo(focalElement1.getElement()) < 0
+						&& !orderedElements.contains(element2)) {
 					min = element2;
 				}
 
 			}
 			orderedElements.add(min);
-			mass.getFocalElements().remove(element1);
+			// mass.getFocalElements().remove(focalElement1);
 		}
 
 		MassDistribution orderedMass = new MassDistribution(orderedElements);

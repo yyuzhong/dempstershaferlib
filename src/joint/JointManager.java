@@ -28,10 +28,10 @@ public class JointManager {
 	 * @throws MassDistributionNotValidException
 	 */
 	public static JointMassDistribution dempsterJoint(
-			ArrayList<MassDistribution> masses)
+			ArrayList<MassDistribution> masses, FrameOfDiscernment frame)
 			throws JointNotPossibleException, MassDistributionNotValidException {
 		if (masses.size() > 1)
-			return applyOperator(masses, JointOperator.DEMPSTER);
+			return applyOperator(masses, JointOperator.DEMPSTER, frame);
 		else
 			throw new JointNotPossibleException(
 					"It's not possible do a joint with just one MassDistribution");
@@ -47,10 +47,10 @@ public class JointManager {
 	 * @throws MassDistributionNotValidException
 	 */
 	public static JointMassDistribution yagerJoint(
-			ArrayList<MassDistribution> masses)
+			ArrayList<MassDistribution> masses, FrameOfDiscernment frame)
 			throws JointNotPossibleException, MassDistributionNotValidException {
 		if (masses.size() > 1)
-			return applyOperator(masses, JointOperator.YAGER);
+			return applyOperator(masses, JointOperator.YAGER, frame);
 		else
 			throw new JointNotPossibleException(
 					"It's not possible do a joint with just one MassDistribution");
@@ -66,11 +66,11 @@ public class JointManager {
 	 * @throws MassDistributionNotValidException
 	 */
 	public static JointMassDistribution averageJoint(
-			ArrayList<MassDistribution> masses)
+			ArrayList<MassDistribution> masses, FrameOfDiscernment frame)
 			throws JointNotPossibleException, MassDistributionNotValidException {
 		if (masses.size() > 1)
 
-			return applyOperator(masses, JointOperator.AVERAGE);
+			return applyOperator(masses, JointOperator.AVERAGE, frame);
 		else
 			throw new JointNotPossibleException(
 					"It's not possible do a joint with just one MassDistribution");
@@ -88,11 +88,11 @@ public class JointManager {
 	 * @throws MassDistributionNotValidException
 	 */
 	public static JointMassDistribution distanceEvidenceJoint(
-			ArrayList<MassDistribution> masses)
+			ArrayList<MassDistribution> masses, FrameOfDiscernment frame)
 			throws JointNotPossibleException, MassDistributionNotValidException {
 		if (masses.size() > 1)
 
-			return applyOperator(masses, JointOperator.DISTANCE_EVIDENCE);
+			return applyOperator(masses, JointOperator.DISTANCE_EVIDENCE, frame);
 
 		else
 			throw new JointNotPossibleException(
@@ -101,8 +101,9 @@ public class JointManager {
 	}
 
 	public static JointMassDistribution applyOperator(
-			ArrayList<MassDistribution> masses, JointOperator operator)
-			throws MassDistributionNotValidException, JointNotPossibleException {
+			ArrayList<MassDistribution> masses, JointOperator operator,
+			FrameOfDiscernment frame) throws MassDistributionNotValidException,
+			JointNotPossibleException {
 		if (masses.size() > 1) {
 
 			JointMassDistribution jointDistribution = null;
@@ -129,17 +130,17 @@ public class JointManager {
 			case 3:
 				Double conflict = getConflict(m1.getFocalElements(), m2
 						.getFocalElements());
-				jointDistribution = yager(m1, m2, false, conflict);
+				jointDistribution = yager(m1, m2, false, conflict, frame);
 				for (int j = i; j < masses.size(); j++) {
 					conflict = conflict
 							+ getConflict(jointDistribution.getFocalElements(),
 									masses.get(j).getFocalElements());
 					if (j == (masses.size() - 1))
 						jointDistribution = yager(jointDistribution, masses
-								.get(j), true, conflict);
+								.get(j), true, conflict, frame);
 					else
 						jointDistribution = yager(jointDistribution, masses
-								.get(j), false, conflict);
+								.get(j), false, conflict, frame);
 				}
 				jointDistribution.setOperator(JointOperator.YAGER.getName());
 				break;
@@ -375,8 +376,8 @@ public class JointManager {
 	}
 
 	private static JointMassDistribution yager(MassDistribution m1,
-			MassDistribution m2, boolean last, Double conflictTransfer)
-			throws MassDistributionNotValidException {
+			MassDistribution m2, boolean last, Double conflictTransfer,
+			FrameOfDiscernment frame) throws MassDistributionNotValidException {
 		ArrayList<FocalElement> m1Elements = m1.getFocalElements();
 		ArrayList<FocalElement> m2Elements = m2.getFocalElements();
 
@@ -410,7 +411,7 @@ public class JointManager {
 		}
 
 		if (last) {
-			Element universalSet = FrameOfDiscernment.getUniversalSet();
+			Element universalSet = frame.getUniversalSet();
 
 			jointElements.add(new FocalElement(universalSet, conflictTransfer));
 

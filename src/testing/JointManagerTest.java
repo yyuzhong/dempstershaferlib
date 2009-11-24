@@ -3,24 +3,15 @@
  */
 package testing;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import joint.JointManager;
 import joint.JointOperator;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
-import core.Element;
-import core.FocalElement;
-import core.Hypothesis;
+import core.FrameOfDiscernment;
 import core.JointMassDistribution;
 import core.MassDistribution;
-import core.Source;
 import exception.JointNotPossibleException;
 import exception.MassDistributionNotValidException;
 
@@ -31,6 +22,8 @@ import exception.MassDistributionNotValidException;
 public class JointManagerTest extends TestCase {
 
 	private ArrayList<MassDistribution> masses;
+	private String filename = "test1.txt";
+	private FrameOfDiscernment frame;
 
 	/**
 	 * @param name
@@ -39,29 +32,9 @@ public class JointManagerTest extends TestCase {
 		super(name);
 
 		masses = new ArrayList<MassDistribution>();
+		frame = ReadTestUtility.readFrameOfDiscernment(filename);
 
-		readInput();
-	}
-
-	private void readInput() {
-
-		Source feedback = new Source("Feedback");
-		Source uddi = new Source("UDDI");
-		Source trustAuthority = new Source("TrustAthority");
-		MassDistribution feedbackMass = feedback
-				.getMassDistribution("feedback.txt");
-		feedbackMass.setSource(feedback);
-
-		MassDistribution uddiMass = uddi.getMassDistribution("uddi.txt");
-		uddiMass.setSource(uddi);
-
-		MassDistribution trustAuthorityMass = trustAuthority
-				.getMassDistribution("trustAuthority.txt");
-		trustAuthorityMass.setSource(trustAuthority);
-
-		masses.add(feedbackMass);
-		masses.add(uddiMass);
-		masses.add(trustAuthorityMass);
+		ReadTestUtility.readInput(filename, masses);
 	}
 
 	/*
@@ -74,7 +47,7 @@ public class JointManagerTest extends TestCase {
 		masses = null;
 		masses = new ArrayList<MassDistribution>();
 
-		readInput();
+		ReadTestUtility.readInput(filename, masses);
 
 	}
 
@@ -97,9 +70,10 @@ public class JointManagerTest extends TestCase {
 	public void testDempsterJoint() throws JointNotPossibleException,
 			MassDistributionNotValidException {
 
-		JointMassDistribution demDistribution = JointManager
-				.dempsterJoint(masses);
-		JointMassDistribution dempsterResult = readDempsterResult();
+		JointMassDistribution demDistribution = JointManager.dempsterJoint(
+				masses, frame);
+		JointMassDistribution dempsterResult = ReadTestUtility
+				.readDempsterResult(filename);
 		dempsterResult.setOperator(JointOperator.DEMPSTER.getName());
 
 		try {
@@ -114,84 +88,6 @@ public class JointManagerTest extends TestCase {
 		// fail("Not yet implemented");
 	}
 
-	private JointMassDistribution readDempsterResult() {
-		JointMassDistribution dempsterResult = null;
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(
-					"result.txt")));
-			String readLine = br.readLine();
-
-			while (!readLine.startsWith("$Output DEMPSTER")) {
-				readLine = br.readLine();
-			}
-
-			readLine = br.readLine();
-			dempsterResult = parseResult(readLine);
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return dempsterResult;
-	}
-
-	private JointMassDistribution parseResult(String readLine) {
-		readLine = readLine.replaceAll("\\{", "");
-		readLine = readLine.replaceAll("\\}", "");
-
-		JointMassDistribution results = null;
-
-		ArrayList<Hypothesis> hypothesiesList = null;
-
-		ArrayList<FocalElement> elementList = new ArrayList<FocalElement>();
-
-		StringTokenizer elementTokenizer = new StringTokenizer(readLine);
-
-		// readLine=A,B-0.5;C=0.4
-		while (elementTokenizer.hasMoreTokens()) {
-			String elementString = elementTokenizer.nextToken(";");
-
-			// elementString=A,B-0.5
-			FocalElement el = parseElement(elementString);
-
-			elementList.add(el);
-		}
-		if (elementList.size() > 0)
-			results = new JointMassDistribution(elementList);
-
-		return results;
-	}
-
-	private FocalElement parseElement(String elementString) {
-		// elementString=A,B-0.5
-		ArrayList<Hypothesis> hypothesiesList = new ArrayList<Hypothesis>();
-		StringTokenizer elementTokenizer = new StringTokenizer(elementString);
-		String hypothesiesString = elementTokenizer.nextToken("-");
-		hypothesiesList = parseHypothesies(hypothesiesString);
-		Double bpa = Double.parseDouble(elementTokenizer.nextToken("-"));
-
-		FocalElement el = new FocalElement(new Element(hypothesiesList), bpa);
-		return el;
-	}
-
-	private ArrayList<Hypothesis> parseHypothesies(String hypothesiesString) {
-		// hypothesiesString=A,B
-		ArrayList<Hypothesis> hypothesiesList = new ArrayList<Hypothesis>();
-		StringTokenizer hypTokenizer = new StringTokenizer(hypothesiesString);
-		while (hypTokenizer.hasMoreTokens()) {
-
-			Hypothesis hypothesis = new Hypothesis(hypTokenizer.nextToken(","));
-
-			hypothesiesList.add(hypothesis);
-		}
-		return hypothesiesList;
-	}
-
 	/**
 	 * Test method for
 	 * {@link joint.JointManager#yagerJoint(java.util.ArrayList)}.
@@ -202,9 +98,10 @@ public class JointManagerTest extends TestCase {
 	public void testYagerJoint() throws JointNotPossibleException,
 			MassDistributionNotValidException {
 
-		JointMassDistribution yagerDistribution = JointManager
-				.yagerJoint(masses);
-		JointMassDistribution yagerResult = readYagerResult();
+		JointMassDistribution yagerDistribution = JointManager.yagerJoint(
+				masses, frame);
+		JointMassDistribution yagerResult = ReadTestUtility
+				.readYagerResult(filename);
 		yagerResult.setOperator(JointOperator.YAGER.getName());
 
 		try {
@@ -217,32 +114,6 @@ public class JointManagerTest extends TestCase {
 
 	}
 
-	private JointMassDistribution readYagerResult() {
-		JointMassDistribution yagerResult = null;
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(
-					"result.txt")));
-			String readLine = br.readLine();
-
-			while (!readLine.startsWith("$Output YAGER")) {
-				readLine = br.readLine();
-			}
-
-			readLine = br.readLine();
-			yagerResult = parseResult(readLine);
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return yagerResult;
-	}
-
 	/**
 	 * Test method for
 	 * {@link joint.JointManager#averageJoint(java.util.ArrayList)}.
@@ -252,9 +123,10 @@ public class JointManagerTest extends TestCase {
 	 */
 	public void testAverageJoint() throws JointNotPossibleException,
 			MassDistributionNotValidException {
-		JointMassDistribution averageDistribution = JointManager
-				.averageJoint(masses);
-		JointMassDistribution averageResult = readAverageResult();
+		JointMassDistribution averageDistribution = JointManager.averageJoint(
+				masses, frame);
+		JointMassDistribution averageResult = ReadTestUtility
+				.readAverageResult(filename);
 		averageResult.setOperator(JointOperator.AVERAGE.getName());
 
 		try {
@@ -269,32 +141,6 @@ public class JointManagerTest extends TestCase {
 
 	}
 
-	private JointMassDistribution readAverageResult() {
-		JointMassDistribution averageResult = null;
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(
-					"result.txt")));
-			String readLine = br.readLine();
-
-			while (!readLine.startsWith("$Output AVERAGE")) {
-				readLine = br.readLine();
-			}
-
-			readLine = br.readLine();
-			averageResult = parseResult(readLine);
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return averageResult;
-	}
-
 	/**
 	 * Test method for
 	 * {@link joint.JointManager#distanceEvidenceJoint(java.util.ArrayList)}.
@@ -306,10 +152,10 @@ public class JointManagerTest extends TestCase {
 			MassDistributionNotValidException {
 
 		JointMassDistribution distanceDistribution = JointManager
-				.distanceEvidenceJoint(masses);
-		JointMassDistribution distanceResult = readDistanceResult();
-		distanceResult.setOperator(JointOperator.DISTANCE_EVIDENCE
-				.getName());
+				.distanceEvidenceJoint(masses, frame);
+		JointMassDistribution distanceResult = ReadTestUtility
+				.readDistanceResult(filename);
+		distanceResult.setOperator(JointOperator.DISTANCE_EVIDENCE.getName());
 		try {
 			assertEquals(distanceDistribution, distanceResult);
 		} catch (AssertionFailedError e) {
@@ -319,32 +165,6 @@ public class JointManagerTest extends TestCase {
 
 		}
 
-	}
-
-	private JointMassDistribution readDistanceResult() {
-		JointMassDistribution distanceResult = null;
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(
-					"result.txt")));
-			String readLine = br.readLine();
-
-			while (!readLine.startsWith("$Output DISTANCE")) {
-				readLine = br.readLine();
-			}
-
-			readLine = br.readLine();
-			distanceResult = parseResult(readLine);
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return distanceResult;
 	}
 
 }

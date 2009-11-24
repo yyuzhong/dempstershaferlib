@@ -7,16 +7,19 @@
 #$Output DEMPSTER oppure $Output YAGER oppure $Output AVERAGE etc. seguito dal risultato. ES:
 #$Output DEMPSTER
 #{{A-0};{B-1};{C-0};{D-0};{E-0}}
-
-$Input row-3
-{{A-0.9};{B-0.1}}
-{{A-0.1};{B-0.1};{E-0.8}}
-{{B-0.4};{C-0.5};{D-0.1}}
+$Frame of Discernment
+{A,B,C}
+$Input row-5
+{{A-0.5};{B-0.2};{C-0.3}}
+{{A-0};{B-0.9};{C-0.1}}
+{{A-0.55};{B-0.1};{C-0.35}}
+{{A-0.55};{B-0.1};{C-0.35}}
+{{A-0.55};{B-0.1};{C-0.35}}
 $Output DEMPSTER
-{{A-0};{B-1};{C-0};{D-0};{E-0}}
+{{A-0};{B-0.1228};{C-0.8772}}
 $Output YAGER
-{{A-0};{B-0.004};{C-0};{D-0};{E-0};{A,B,C,D,E,F-0.996}}
+{{A-0};{B-0.0002};{C-0.0013};{A,B,C-0.9985}}
 $Output AVERAGE
-{{A-0.3333};{B-0.2000};{C-0.1667};{D-0.0333};{E-0.2667}}
+{{A-0.43};{B-0.28};{C-0.29}}
 $Output DISTANCE
-{{A-0.354};{B-0.173};{C-0.126};{D-0.001};{E-0.347}}
+{{A-0.8827};{B-0.0142};{C-0.1031}}

@@ -38,7 +38,6 @@ public class JointMassDistribution extends MassDistribution {
 	}
 
 	public static JointMassDistribution order(JointMassDistribution mass) {
-		ArrayList<Element> orderedElements = new ArrayList<Element>();
 
 		MassDistribution ordered = MassDistribution.order(mass);
 
@@ -49,4 +48,5 @@ public class JointMassDistribution extends MassDistribution {
 		return orderedMass;
 
 	}
+
 }

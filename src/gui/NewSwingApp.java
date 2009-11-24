@@ -1,7 +1,10 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -11,6 +14,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -46,7 +50,7 @@ public class NewSwingApp extends javax.swing.JFrame {
 	private JSeparator jSeparator1;
 	private JMenuItem pasteMenuItem;
 	private JTable resultTable;
-	private JTabbedPane resultTab;
+	private JTabbedPane tabbedPane;
 	private JMenuItem copyMenuItem;
 	private JMenuItem cutMenuItem;
 	private JMenu jMenu4;
@@ -60,7 +64,6 @@ public class NewSwingApp extends javax.swing.JFrame {
 	private JMenu jMenu3;
 	private JMenuBar jMenuBar1;
 	private ArrayList<MassDistribution> jointResults;
-	private JTabbedPane inputTab;
 	private ArrayList<MassDistribution> input;
 	private JTable inputTable;
 
@@ -84,39 +87,47 @@ public class NewSwingApp extends javax.swing.JFrame {
 
 	private void setResultsTable() {
 		int rows = jointResults.size();
-		int column = 10;
-		// int column = ((MassDistribution) jointResults.get(0)).getElements()
-		// .size();
+		int column = getColumn(jointResults);
 
 		String[][] data = new String[rows][column];
 		String[] columnTitle = new String[column];
+		Hashtable<Integer, Integer> max = new Hashtable<Integer, Integer>();
 
 		for (int i = 0; i < rows; i++) {
 			JointMassDistribution massDistribution = (JointMassDistribution) jointResults
 					.get(i);
 			data[i][0] = massDistribution.getOperator();
+			int maxColumn = 0;
 
 			for (int j = 0; j < massDistribution.getFocalElements().size(); j++) {
+				double maxValue = 0;
 				FocalElement element = (FocalElement) massDistribution
 						.getFocalElements().get(j);
+				if (element.getBpa() > maxValue) {
+					maxValue = element.getBpa();
+					maxColumn = j + 1;
+				}
 				// data[i][j] = Double.toString(element.getBpa());
 				data[i][j + 1] = element.toString();
-
-				columnTitle[j + 1] = element.toString();
 			}
+			max.put(new Integer(i), new Integer(maxColumn));
 
 		}
 
 		TableModel resultTableModel = new DefaultTableModel(data, columnTitle);
+
 		resultTable = new JTable();
-		resultTab.addTab("Results", null, getResultTable(), null);
 		resultTable.setModel(resultTableModel);
 		resultTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		resultTable.setDefaultRenderer(resultTableModel.getClass(),
+				new MyTableCellRenderer(max));
+
+		tabbedPane.addTab("Results", null, getResultTable(), null);
 	}
 
 	private void setInputTable() {
 		int rows = input.size();
-		int column = 10; // ((MassDistribution)
+		int column = getColumn(input); // ((MassDistribution)
 		// input.get(0)).getElements().size();
 
 		String[][] data = new String[rows][column];
@@ -139,9 +150,20 @@ public class NewSwingApp extends javax.swing.JFrame {
 
 		TableModel inputTableModel = new DefaultTableModel(data, columnTitle);
 		inputTable = new JTable();
-		inputTab.addTab("Input", null, getInputTable(), null);
+		tabbedPane.add("Input", getInputTable());
 		inputTable.setModel(inputTableModel);
 
+	}
+
+	private int getColumn(ArrayList<MassDistribution> input) {
+		int column = 0;
+		for (MassDistribution massDistribution : input) {
+			int size = massDistribution.getFocalElements().size();
+			if (size > column)
+				column = size;
+		}
+
+		return (column + 1);
 	}
 
 	public void initGUI() {
@@ -149,103 +171,106 @@ public class NewSwingApp extends javax.swing.JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		try {
-			{
-				resultTab = new JTabbedPane();
-
-				getContentPane().add(resultTab, BorderLayout.EAST);
-				setResultsTable();
-			}
-
-			{
-				inputTab = new JTabbedPane();
-				getContentPane().add(inputTab, BorderLayout.WEST);
-				setInputTable();
-			}
-			{
-				jMenuBar1 = new JMenuBar();
-				setJMenuBar(jMenuBar1);
-				{
-					jMenu3 = new JMenu();
-					jMenuBar1.add(jMenu3);
-					jMenu3.setText("File");
-					{
-						newFileMenuItem = new JMenuItem();
-						jMenu3.add(newFileMenuItem);
-						newFileMenuItem.setText("New");
-					}
-					{
-						openFileMenuItem = new JMenuItem();
-						jMenu3.add(openFileMenuItem);
-						openFileMenuItem.setText("Open");
-					}
-					{
-						saveMenuItem = new JMenuItem();
-						jMenu3.add(saveMenuItem);
-						saveMenuItem.setText("Save");
-					}
-					{
-						saveAsMenuItem = new JMenuItem();
-						jMenu3.add(saveAsMenuItem);
-						saveAsMenuItem.setText("Save As ...");
-					}
-					{
-						closeFileMenuItem = new JMenuItem();
-						jMenu3.add(closeFileMenuItem);
-						closeFileMenuItem.setText("Close");
-					}
-					{
-						jSeparator2 = new JSeparator();
-						jMenu3.add(jSeparator2);
-					}
-					{
-						exitMenuItem = new JMenuItem();
-						jMenu3.add(exitMenuItem);
-						exitMenuItem.setText("Exit");
-					}
-				}
-				{
-					jMenu4 = new JMenu();
-					jMenuBar1.add(jMenu4);
-					jMenu4.setText("Edit");
-					{
-						cutMenuItem = new JMenuItem();
-						jMenu4.add(cutMenuItem);
-						cutMenuItem.setText("Cut");
-					}
-					{
-						copyMenuItem = new JMenuItem();
-						jMenu4.add(copyMenuItem);
-						copyMenuItem.setText("Copy");
-					}
-					{
-						pasteMenuItem = new JMenuItem();
-						jMenu4.add(pasteMenuItem);
-						pasteMenuItem.setText("Paste");
-					}
-					{
-						jSeparator1 = new JSeparator();
-						jMenu4.add(jSeparator1);
-					}
-					{
-						deleteMenuItem = new JMenuItem();
-						jMenu4.add(deleteMenuItem);
-						deleteMenuItem.setText("Delete");
-					}
-				}
-				{
-					jMenu5 = new JMenu();
-					jMenuBar1.add(jMenu5);
-					jMenu5.setText("Help");
-					{
-						helpMenuItem = new JMenuItem();
-						jMenu5.add(helpMenuItem);
-						helpMenuItem.setText("Help");
-					}
-				}
-			}
+			setTabbedPane();
+			setJMenu();
 			pack();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void setTabbedPane() {
+		{
+			tabbedPane = new JTabbedPane();
+
+			getContentPane().add(tabbedPane, BorderLayout.CENTER);
+			setInputTable();
+			setResultsTable();
+		}
+	}
+
+	private void setJMenu() {
+		{
+			jMenuBar1 = new JMenuBar();
+			setJMenuBar(jMenuBar1);
+			{
+				jMenu3 = new JMenu();
+				jMenuBar1.add(jMenu3);
+				jMenu3.setText("File");
+				{
+					newFileMenuItem = new JMenuItem();
+					jMenu3.add(newFileMenuItem);
+					newFileMenuItem.setText("New");
+				}
+				{
+					openFileMenuItem = new JMenuItem();
+					jMenu3.add(openFileMenuItem);
+					openFileMenuItem.setText("Open");
+				}
+				{
+					saveMenuItem = new JMenuItem();
+					jMenu3.add(saveMenuItem);
+					saveMenuItem.setText("Save");
+				}
+				{
+					saveAsMenuItem = new JMenuItem();
+					jMenu3.add(saveAsMenuItem);
+					saveAsMenuItem.setText("Save As ...");
+				}
+				{
+					closeFileMenuItem = new JMenuItem();
+					jMenu3.add(closeFileMenuItem);
+					closeFileMenuItem.setText("Close");
+				}
+				{
+					jSeparator2 = new JSeparator();
+					jMenu3.add(jSeparator2);
+				}
+				{
+					exitMenuItem = new JMenuItem();
+					jMenu3.add(exitMenuItem);
+					exitMenuItem.setText("Exit");
+				}
+			}
+			{
+				jMenu4 = new JMenu();
+				jMenuBar1.add(jMenu4);
+				jMenu4.setText("Edit");
+				{
+					cutMenuItem = new JMenuItem();
+					jMenu4.add(cutMenuItem);
+					cutMenuItem.setText("Cut");
+				}
+				{
+					copyMenuItem = new JMenuItem();
+					jMenu4.add(copyMenuItem);
+					copyMenuItem.setText("Copy");
+				}
+				{
+					pasteMenuItem = new JMenuItem();
+					jMenu4.add(pasteMenuItem);
+					pasteMenuItem.setText("Paste");
+				}
+				{
+					jSeparator1 = new JSeparator();
+					jMenu4.add(jSeparator1);
+				}
+				{
+					deleteMenuItem = new JMenuItem();
+					jMenu4.add(deleteMenuItem);
+					deleteMenuItem.setText("Delete");
+				}
+			}
+			{
+				jMenu5 = new JMenu();
+				jMenuBar1.add(jMenu5);
+				jMenu5.setText("Help");
+				{
+					helpMenuItem = new JMenuItem();
+					jMenu5.add(helpMenuItem);
+					helpMenuItem.setText("Help");
+				}
+			}
 		}
 	}
 
@@ -289,5 +314,33 @@ public class NewSwingApp extends javax.swing.JFrame {
 	 */
 	public void setInputTable(JTable inputTable) {
 		this.inputTable = inputTable;
+	}
+}
+
+class MyTableCellRenderer extends DefaultTableCellRenderer {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Hashtable<Integer, Integer> max;
+
+	public MyTableCellRenderer(Hashtable<Integer, Integer> max) {
+		setOpaque(true);
+		this.max = max;
+	}
+
+	@Override
+	public Component getTableCellRendererComponent(JTable table, Object value,
+			boolean isSelected, boolean hasFocus, int row, int column) {
+
+		Component c = super.getTableCellRendererComponent(table, value,
+				isSelected, hasFocus, row, column);
+		if (max.get(row) != null
+				&& max.get(new Integer(row)).equals(new Integer(column))) {
+			c.setBackground(Color.green);
+		}
+
+		return c;
 	}
 }
