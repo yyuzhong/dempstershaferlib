@@ -1,7 +1,6 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * A FrameOfDIscernemt is a set of Hypothesis. Different Sources must have the
@@ -12,19 +11,19 @@ import java.util.Collection;
  */
 public class FrameOfDiscernment {
 
-	protected Collection<Hypothesis> hipothesies;
+	protected ArrayList<Hypothesis> allHypothesis;
 
-	public FrameOfDiscernment(Collection<Hypothesis> hipothesies) {
+	public FrameOfDiscernment(ArrayList<Hypothesis> hypothesies) {
 		super();
-		this.hipothesies = hipothesies;
+		this.allHypothesis = hypothesies;
 	}
 
-	public Collection<Hypothesis> getHipothesies() {
-		return hipothesies;
+	public ArrayList<Hypothesis> getHipothesies() {
+		return allHypothesis;
 	}
 
-	public void setHipothesies(Collection<Hypothesis> hipothesies) {
-		this.hipothesies = hipothesies;
+	public void setHipothesies(ArrayList<Hypothesis> hypothesies) {
+		this.allHypothesis = hypothesies;
 	}
 
 	/**
@@ -40,18 +39,8 @@ public class FrameOfDiscernment {
 
 	}
 
-	public static Element getUniversalSet() {
-
-		ArrayList<Hypothesis> allHypothesies = new ArrayList<Hypothesis>();
-
-		allHypothesies.add(new Hypothesis("A"));
-		allHypothesies.add(new Hypothesis("B"));
-		allHypothesies.add(new Hypothesis("C"));
-		allHypothesies.add(new Hypothesis("D"));
-		allHypothesies.add(new Hypothesis("E"));
-		allHypothesies.add(new Hypothesis("F"));
-
-		return new Element(allHypothesies);
+	public Element getUniversalSet() {
+		return new Element(allHypothesis);
 	}
 
 }

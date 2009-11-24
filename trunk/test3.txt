@@ -1,0 +1,23 @@
+#Test 1 Dempster-Shafer
+#il file e'nel formato:
+#$Input row-3
+#{{A,B-0.9};{B-0.1}}
+#{{A-0.1};{B-0.1};{E-0.8}}
+#{{B-0.4};{C-0.5};{D-0.1}}
+#$Output DEMPSTER oppure $Output YAGER oppure $Output AVERAGE etc. seguito dal risultato. ES:
+#$Output DEMPSTER
+#{{A-0};{B-1};{C-0};{D-0};{E-0}}
+$Frame of Discernment"
+{A,B,C,D,E}
+$Input row-3
+{{A-0.9};{B-0.1}}
+{{A-0.1};{B-0.1};{E-0.8}}
+{{B-0.4};{C-0.5};{D-0.1}}
+$Output DEMPSTER
+{{A-0};{B-1};{C-0};{D-0};{E-0}}
+$Output YAGER
+{{A-0};{B-0.004};{C-0};{D-0};{E-0};{A,B,C,D,E,F-0.996}}
+$Output AVERAGE
+{{A-0.3333};{B-0.2000};{C-0.1667};{D-0.0333};{E-0.2667}}
+$Output DISTANCE
+{{A-0.354};{B-0.173};{C-0.126};{D-0.001};{E-0.347}}

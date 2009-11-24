@@ -1,16 +1,17 @@
-package utilities;
+package testing;
 
 import java.util.ArrayList;
 
 import joint.JointManager;
+import core.FrameOfDiscernment;
 import core.JointMassDistribution;
 import core.MassDistribution;
-import core.Source;
 import exception.JointNotPossibleException;
 import exception.MassDistributionNotValidException;
 import gui.NewSwingApp;
 
 public class Main {
+	private static String filename = "test1.txt";
 
 	/**
 	 * @param args
@@ -21,50 +22,51 @@ public class Main {
 	public static void main(String[] args) throws CloneNotSupportedException,
 			JointNotPossibleException, MassDistributionNotValidException {
 
-		// String fileName = "Hypothesis.txt";
-		// FrameOfDiscernment frameOfDiscernment = new FrameOfDiscernment(
-		// (new HypothesisFileHandler()).readHypothesis(fileName));
+		FrameOfDiscernment frameOfDiscernment = ReadTestUtility
+				.readFrameOfDiscernment(filename);
 
 		ArrayList<MassDistribution> masses = new ArrayList<MassDistribution>();
 
-		Source feedback = new Source("Feedback");
-		Source uddi = new Source("UDDI");
-		Source trustAuthority = new Source("TrustAthority");
+		// Source feedback = new Source("Feedback");
+		// Source uddi = new Source("UDDI");
+		// Source trustAuthority = new Source("TrustAthority");
+		//
+		// MassDistribution feedbackMass = feedback
+		// .getMassDistribution("feedback.txt");
+		// feedbackMass.setSource(feedback);
+		//
+		// MassDistribution uddiMass = uddi.getMassDistribution("uddi.txt");
+		// uddiMass.setSource(uddi);
 
-		MassDistribution feedbackMass = feedback
-				.getMassDistribution("feedback.txt");
-		feedbackMass.setSource(feedback);
+		// MassDistribution trustAuthorityMass = trustAuthority
+		// .getMassDistribution("trustAuthority.txt");
+		// trustAuthorityMass.setSource(trustAuthority);
+		//
+		// masses.add(feedbackMass);
+		// masses.add(uddiMass);
+		// masses.add(trustAuthorityMass);
 
-		MassDistribution uddiMass = uddi.getMassDistribution("uddi.txt");
-		uddiMass.setSource(uddi);
-
-		MassDistribution trustAuthorityMass = trustAuthority
-				.getMassDistribution("trustAuthority.txt");
-		trustAuthorityMass.setSource(trustAuthority);
-
-		masses.add(feedbackMass);
-		masses.add(uddiMass);
-		masses.add(trustAuthorityMass);
+		ReadTestUtility.readInput(filename, masses);
 
 		ArrayList<MassDistribution> input = getNewArrayList(masses);
 
-		JointMassDistribution demDistribution = JointManager
-				.dempsterJoint(input);
+		JointMassDistribution demDistribution = JointManager.dempsterJoint(
+				input, frameOfDiscernment);
 		demDistribution = JointMassDistribution.order(demDistribution);
 
-		JointMassDistribution yagerDistribution = JointManager
-				.yagerJoint(input);
+		JointMassDistribution yagerDistribution = JointManager.yagerJoint(
+				input, frameOfDiscernment);
 
 		// yagerDistribution = JointMassDistribution.order(yagerDistribution);
 
 		// input = getNewArrayList(masses);
-		JointMassDistribution averageDistribution = JointManager
-				.averageJoint(input);
+		JointMassDistribution averageDistribution = JointManager.averageJoint(
+				input, frameOfDiscernment);
 		averageDistribution = JointMassDistribution.order(averageDistribution);
 
 		// input = getNewArrayList(masses);
 		JointMassDistribution distanceDistribution = JointManager
-				.distanceEvidenceJoint(input);
+				.distanceEvidenceJoint(input, frameOfDiscernment);
 		distanceDistribution = JointMassDistribution
 				.order(distanceDistribution);
 
