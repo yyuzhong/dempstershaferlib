@@ -128,13 +128,14 @@ public class JointManager {
 				jointDistribution.setOperator(JointOperator.DEMPSTER.getName());
 				break;
 			case 3:
-				Double conflict = getConflict(m1.getFocalElements(), m2
-						.getFocalElements());
+				Double conflict = getConflict(m1.getBodyOfEvidence(), m2
+						.getBodyOfEvidence());
 				jointDistribution = yager(m1, m2, false, conflict, frame);
 				for (int j = i; j < masses.size(); j++) {
 					conflict = conflict
-							+ getConflict(jointDistribution.getFocalElements(),
-									masses.get(j).getFocalElements());
+							+ getConflict(
+									jointDistribution.getBodyOfEvidence(),
+									masses.get(j).getBodyOfEvidence());
 					if (j == (masses.size() - 1))
 						jointDistribution = yager(jointDistribution, masses
 								.get(j), true, conflict, frame);
@@ -162,9 +163,10 @@ public class JointManager {
 				break;
 			}
 
-			if (jointDistribution.isValid())
+			if (jointDistribution.isValid()) {
+				MassDistribution.setBodyOfEvidence(jointDistribution);
 				return jointDistribution;
-			else
+			} else
 				throw new MassDistributionNotValidException("MassDistribution"
 						+ jointDistribution.toString() + " is not valid!");
 		} else
@@ -215,7 +217,7 @@ public class JointManager {
 					double oldBpa = 0;
 
 					FocalElement focalElement = FocalElement.findElement(m
-							.getFocalElements(), jointElement.getElement());
+							.getBodyOfEvidence(), jointElement.getElement());
 
 					if (focalElement != null)
 						oldBpa = focalElement.getBpa();
@@ -248,8 +250,8 @@ public class JointManager {
 
 		double scalarProduct = 0;
 
-		ArrayList<FocalElement> m1Elements = m1.getFocalElements();
-		ArrayList<FocalElement> m2Elements = m2.getFocalElements();
+		ArrayList<FocalElement> m1Elements = m1.getBodyOfEvidence();
+		ArrayList<FocalElement> m2Elements = m2.getBodyOfEvidence();
 
 		for (int i = 0; i < m1Elements.size(); i++) {
 			FocalElement el1 = m1Elements.get(i);
@@ -378,8 +380,8 @@ public class JointManager {
 	private static JointMassDistribution yager(MassDistribution m1,
 			MassDistribution m2, boolean last, Double conflictTransfer,
 			FrameOfDiscernment frame) throws MassDistributionNotValidException {
-		ArrayList<FocalElement> m1Elements = m1.getFocalElements();
-		ArrayList<FocalElement> m2Elements = m2.getFocalElements();
+		ArrayList<FocalElement> m1Elements = m1.getBodyOfEvidence();
+		ArrayList<FocalElement> m2Elements = m2.getBodyOfEvidence();
 
 		// double conflict = getConflict(m1Elements, m2Elements);
 		// conflictTransfer = new Double(conflictTransfer.doubleValue() +
@@ -430,8 +432,8 @@ public class JointManager {
 	private static JointMassDistribution dempster(MassDistribution m1,
 			MassDistribution m2) throws MassDistributionNotValidException {
 
-		ArrayList<FocalElement> m1Elements = m1.getFocalElements();
-		ArrayList<FocalElement> m2Elements = m2.getFocalElements();
+		ArrayList<FocalElement> m1Elements = m1.getBodyOfEvidence();
+		ArrayList<FocalElement> m2Elements = m2.getBodyOfEvidence();
 
 		double conflict = getConflict(m1Elements, m2Elements);
 
@@ -492,15 +494,15 @@ public class JointManager {
 			MassDistribution m2, ArrayList<MassDistribution> masses)
 			throws MassDistributionNotValidException {
 
-		ArrayList<FocalElement> m1Elements = m1.getFocalElements();
-		ArrayList<FocalElement> m2Elements = m2.getFocalElements();
+		ArrayList<FocalElement> m1Elements = m1.getBodyOfEvidence();
+		ArrayList<FocalElement> m2Elements = m2.getBodyOfEvidence();
 
 		ArrayList<FocalElement> jointElements = FocalElement
 				.getMassUnionElement(m1Elements, m2Elements);
 		for (int i = 2; i < masses.size(); i++) {
 
 			MassDistribution m3 = masses.get(i);
-			ArrayList<FocalElement> el3 = m3.getFocalElements();
+			ArrayList<FocalElement> el3 = m3.getBodyOfEvidence();
 			jointElements = FocalElement
 					.getMassUnionElement(jointElements, el3);
 		}
@@ -514,7 +516,7 @@ public class JointManager {
 
 			for (int j = 0; j < masses.size(); j++) {
 				FocalElement same = FocalElement.findElement(masses.get(j)
-						.getFocalElements(), jointElement.getElement());
+						.getBodyOfEvidence(), jointElement.getElement());
 				if (same != null) {
 					sameElements.add(same);
 				}

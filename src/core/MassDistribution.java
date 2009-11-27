@@ -4,37 +4,38 @@ import java.util.ArrayList;
 
 public class MassDistribution implements Cloneable {
 
-	protected ArrayList<FocalElement> focalElements;
+	protected ArrayList<FocalElement> bodyOfEvidence;
 	protected Source source;
 
 	public MassDistribution(ArrayList<FocalElement> mass) {
 		super();
-		this.focalElements = mass;
+		this.bodyOfEvidence = mass;
 	}
 
-	public ArrayList<FocalElement> getFocalElements() {
-		return focalElements;
+	public ArrayList<FocalElement> getBodyOfEvidence() {
+		return bodyOfEvidence;
 	}
 
 	public void setElements(ArrayList<FocalElement> mass) {
-		this.focalElements = mass;
+		this.bodyOfEvidence = mass;
 	}
 
 	public void addElement(FocalElement element) {
-		if (focalElements == null)
-			focalElements = new ArrayList<FocalElement>();
-		focalElements.add(element);
+		if (bodyOfEvidence == null)
+			bodyOfEvidence = new ArrayList<FocalElement>();
+		bodyOfEvidence.add(element);
 	}
 
 	/**
-	 * Verify if the focalElements distribution is valid, hat means the sum of
-	 * all focalElements it's equal to one.
+	 * Verify if the bodyOfEvidence distribution is valid, hat means the sum of
+	 * all bodyOfEvidence it's equal to one.
 	 * 
-	 * @return true if the focalElements distribution is valid, false otherwise.
+	 * @return true if the bodyOfEvidence distribution is valid, false
+	 *         otherwise.
 	 */
 	public boolean isValid() {
 		double sum = 0;
-		for (FocalElement focalElement : focalElements) {
+		for (FocalElement focalElement : bodyOfEvidence) {
 			sum = sum + focalElement.getBpa();
 
 		}
@@ -51,8 +52,8 @@ public class MassDistribution implements Cloneable {
 	 */
 	@Override
 	public String toString() {
-		String massTOString = "MassDistribution [focalElements="
-				+ focalElements;
+		String massTOString = "MassDistribution [bodyOfEvidence="
+				+ bodyOfEvidence;
 		if (source != null)
 			massTOString = massTOString + " " + source.getName() + "]";
 		else
@@ -71,7 +72,7 @@ public class MassDistribution implements Cloneable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((focalElements == null) ? 0 : focalElements.hashCode());
+				+ ((bodyOfEvidence == null) ? 0 : bodyOfEvidence.hashCode());
 		return result;
 	}
 
@@ -85,13 +86,13 @@ public class MassDistribution implements Cloneable {
 
 		MassDistribution other = (MassDistribution) obj;
 
-		if (other.getFocalElements().size() == focalElements.size()
-				&& other.getFocalElements().containsAll(focalElements)) {
+		if (other.getBodyOfEvidence().size() == bodyOfEvidence.size()
+				&& other.getBodyOfEvidence().containsAll(bodyOfEvidence)) {
 			boolean equal = true;
-			for (int i = 0; i < other.getFocalElements().size(); i++) {
-				FocalElement el1 = other.getFocalElements().get(i);
+			for (int i = 0; i < other.getBodyOfEvidence().size(); i++) {
+				FocalElement el1 = other.getBodyOfEvidence().get(i);
 				FocalElement el2 = MassDistribution.findFocalElement(
-						focalElements, el1);
+						bodyOfEvidence, el1);
 
 				if (!el1.equals(el2))
 					equal = false;
@@ -105,8 +106,8 @@ public class MassDistribution implements Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		try {
 			ArrayList<FocalElement> elementsClone = new ArrayList<FocalElement>();
-			for (int i = 0; i < focalElements.size(); i++) {
-				FocalElement el = (FocalElement) focalElements.get(i).clone();
+			for (int i = 0; i < bodyOfEvidence.size(); i++) {
+				FocalElement el = (FocalElement) bodyOfEvidence.get(i).clone();
 				elementsClone.add(el);
 			}
 			MassDistribution clone = new MassDistribution(elementsClone);
@@ -116,15 +117,14 @@ public class MassDistribution implements Cloneable {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public static MassDistribution order(MassDistribution mass) {
 		ArrayList<FocalElement> orderedElements = new ArrayList<FocalElement>();
 
-		for (FocalElement focalElement1 : mass.getFocalElements()) {
+		for (FocalElement focalElement1 : mass.getBodyOfEvidence()) {
 
 			FocalElement min = focalElement1;
-			for (int j = 0; j < mass.getFocalElements().size(); j++) {
-				FocalElement element2 = mass.getFocalElements().get(j);
+			for (int j = 0; j < mass.getBodyOfEvidence().size(); j++) {
+				FocalElement element2 = mass.getBodyOfEvidence().get(j);
 
 				if (element2.getElement().compareTo(focalElement1.getElement()) < 0
 						&& !orderedElements.contains(element2)) {
@@ -161,7 +161,7 @@ public class MassDistribution implements Cloneable {
 	 * Look up for the <code>element</code> in the <code>elementList</code>.
 	 * 
 	 * @param elementsList
-	 *            : the list of focalElements
+	 *            : the list of bodyOfEvidence
 	 * @param element
 	 *            : the element one want to find in the list.
 	 * @return The <code>element</code> if it is in the list, <code>null</code>
@@ -174,6 +174,21 @@ public class MassDistribution implements Cloneable {
 		if (index >= 0)
 			found = elementsList.get(index);
 		return found;
+	}
+
+	/**
+	 * Set the BodyOfEvidence for each {@link FocalElement} belong to the
+	 * {@link MassDistribution}
+	 * 
+	 * @param jointDistribution
+	 */
+	public static void setBodyOfEvidence(MassDistribution massDistribution) {
+		for (FocalElement focalElement : massDistribution.getBodyOfEvidence()) {
+			focalElement
+					.setBodyOfEvidence(massDistribution.getBodyOfEvidence());
+
+		}
+
 	}
 
 }

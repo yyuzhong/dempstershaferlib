@@ -66,8 +66,10 @@ public class ReadTestUtility {
 
 			elementList.add(el);
 		}
-		if (elementList.size() > 0)
+		if (elementList.size() > 0) {
 			results = new MassDistribution(elementList);
+			MassDistribution.setBodyOfEvidence(results);
+		}
 
 		return results;
 	}
@@ -112,7 +114,7 @@ public class ReadTestUtility {
 
 			readLine = br.readLine();
 			dempsterResult = new JointMassDistribution(parseMassDistribution(
-					readLine).getFocalElements());
+					readLine).getBodyOfEvidence());
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -139,7 +141,7 @@ public class ReadTestUtility {
 
 			readLine = br.readLine();
 			yagerResult = new JointMassDistribution(parseMassDistribution(
-					readLine).getFocalElements());
+					readLine).getBodyOfEvidence());
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -166,7 +168,7 @@ public class ReadTestUtility {
 
 			readLine = br.readLine();
 			averageResult = new JointMassDistribution(parseMassDistribution(
-					readLine).getFocalElements());
+					readLine).getBodyOfEvidence());
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -193,7 +195,7 @@ public class ReadTestUtility {
 
 			readLine = br.readLine();
 			distanceResult = new JointMassDistribution(parseMassDistribution(
-					readLine).getFocalElements());
+					readLine).getBodyOfEvidence());
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

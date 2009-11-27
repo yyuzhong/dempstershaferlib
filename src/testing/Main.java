@@ -11,7 +11,7 @@ import exception.MassDistributionNotValidException;
 import gui.NewSwingApp;
 
 public class Main {
-	private static String filename = "test1.txt";
+	private static String filename = "test4.txt";
 
 	/**
 	 * @param args
