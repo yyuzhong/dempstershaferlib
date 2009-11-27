@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 /**
- * A Focal Element is an Element with an evaluated focalElements.
+ * A Focal Element is an Element with an evaluated bodyOfEvidence.
  * 
  * @author Elisa Costante
  * 
@@ -15,18 +15,18 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	private final int PRECISION = 4;
 	private BigDecimal bpa;
 	private Element element;
-
 	private Double belief;
 	private Double plausability;
+	private ArrayList<FocalElement> bodyOfEvidence;
 
 	public FocalElement(Element element, double bpa) {
-
 		this.element = element;
 		setBpa(bpa);
 	}
 
 	/**
-	 * Set the Value of bpa. It mantains only 5 decimal digit
+	 * Set the Value of bpa. It mantains only a specified number of decimal
+	 * digit
 	 * 
 	 * @param bpa
 	 */
@@ -44,24 +44,62 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 		return bpa.doubleValue();
 	}
 
+	/**
+	 * Returns the value of the belief of the element or {@link Double}.NaN if
+	 * no bpa is set.
+	 * 
+	 * @return the belief value
+	 */
 	public Double getBelief() {
-		return belief;
+		if (bpa != null) {
+			if (belief == null) {
+				setBelief();
+			}
+			return belief;
+
+		} else
+			return Double.NaN;
 	}
 
-	public void setBelief(Double belief) {
+	private void setBelief() {
+		// Bel(A)= Summation m(B) for each B| (B included A==true)
+		if (bodyOfEvidence != null) {
+			double bel = 0;
+			for (FocalElement focalElement : bodyOfEvidence) {
+
+				if (Element.isIncluded(this.getElement(), focalElement
+						.getElement())) {
+					bel = bel + focalElement.getBpa();
+				}
+			}
+			belief = new Double(bel);
+		}
 		BigDecimal bigDecimal = new BigDecimal(belief, new MathContext(5));
 		belief = bigDecimal.doubleValue();
-		this.belief = belief;
+
 	}
 
+	/**
+	 * Returns the value of the plausability of the element or {@link Double}
+	 * .NaN if no bpa is set.
+	 * 
+	 * @return the belief value
+	 */
 	public Double getPlausability() {
-		return plausability;
+		if (bpa != null) {
+			if (plausability == null) {
+				setPlausability();
+			}
+			return belief;
+
+		} else
+			return Double.NaN;
 	}
 
-	public void setPlausability(Double plausability) {
+	private void setPlausability() {
 		BigDecimal bigDecimal = new BigDecimal(plausability, new MathContext(5));
 		plausability = bigDecimal.doubleValue();
-		this.plausability = plausability;
+
 	}
 
 	/**
@@ -136,7 +174,7 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 * Look up for the <code>element</code> in the <code>elementList</code>.
 	 * 
 	 * @param elementsList
-	 *            : the list of focalElements
+	 *            : the list of bodyOfEvidence
 	 * @param element
 	 *            : the element one want to find in the list.
 	 * @return The <code>element</code> if it is in the list, <code>null</code>
@@ -157,11 +195,11 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	}
 
 	/**
-	 * Return the union of two focalElements list.
+	 * Return the union of two bodyOfEvidence list.
 	 * 
 	 * @param el1
 	 * @param el2
-	 * @return the union of two focalElements list.
+	 * @return the union of two bodyOfEvidence list.
 	 */
 	public static ArrayList<FocalElement> getMassUnionElement(
 			ArrayList<FocalElement> elementList1,
@@ -193,14 +231,14 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 
 		if (masses.size() >= 2) {
 			ArrayList<FocalElement> m1Elements = masses.get(0)
-					.getFocalElements();
+					.getBodyOfEvidence();
 			ArrayList<FocalElement> m2Elements = masses.get(1)
-					.getFocalElements();
+					.getBodyOfEvidence();
 
 			union = FocalElement.getMassUnionElement(m1Elements, m2Elements);
 			for (int i = 2; i < masses.size(); i++) {
 				union = FocalElement.getMassUnionElement(union, masses.get(i)
-						.getFocalElements());
+						.getBodyOfEvidence());
 			}
 
 		}
@@ -231,6 +269,14 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 
 	public double getUncertainity() {
 		return plausability - belief;
+	}
+
+	/**
+	 * @param massDistribution
+	 *            the massDistribution to set
+	 */
+	public void setBodyOfEvidence(ArrayList<FocalElement> bodyOfEvidence) {
+		this.bodyOfEvidence = bodyOfEvidence;
 	}
 
 }

@@ -20,7 +20,7 @@ public class JointMassDistribution extends MassDistribution {
 
 	@Override
 	public String toString() {
-		return "Elements [" + focalElements + "]; [operator=" + operator + "]";
+		return "Elements [" + bodyOfEvidence + "]; [operator=" + operator + "]";
 	}
 
 	/*
@@ -42,7 +42,7 @@ public class JointMassDistribution extends MassDistribution {
 		MassDistribution ordered = MassDistribution.order(mass);
 
 		JointMassDistribution orderedMass = new JointMassDistribution(
-				ordered.focalElements);
+				ordered.bodyOfEvidence);
 		orderedMass.setOperator(mass.getOperator());
 
 		return orderedMass;

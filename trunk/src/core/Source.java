@@ -1,8 +1,8 @@
 package core;
 
-import utilities.MassDistributionFileHandler;
-
 /**
+ * This class represents a source of evidence. Different source must have the
+ * same {@link FrameOfDiscernment} to aggregate their {@link MassDistribution}.
  * 
  * @author Elisa Costante
  * 
@@ -11,7 +11,7 @@ public class Source {
 
 	protected FrameOfDiscernment frameOfDiscernment;
 
-	protected MassDistribution massDistribution;
+	// protected MassDistribution massDistribution;
 
 	protected String name;
 
@@ -32,7 +32,7 @@ public class Source {
 			MassDistribution massDistribution) {
 		super();
 		this.frameOfDiscernment = frameOfDiscernment;
-		this.massDistribution = massDistribution;
+		// this.massDistribution = massDistribution;
 	}
 
 	public FrameOfDiscernment getFrameOfDiscernment() {
@@ -41,20 +41,6 @@ public class Source {
 
 	public void setFrameOfDiscernment(FrameOfDiscernment frameOfDiscernment) {
 		this.frameOfDiscernment = frameOfDiscernment;
-	}
-
-	public MassDistribution getMassDistribution(String filename) {
-
-		if (massDistribution == null) {
-			MassDistributionFileHandler fileHandler = new MassDistributionFileHandler();
-			massDistribution = fileHandler.getMassDistribution(filename);
-		}
-
-		return massDistribution;
-	}
-
-	public void setMassDistribution(MassDistribution massDistribution) {
-		this.massDistribution = massDistribution;
 	}
 
 }

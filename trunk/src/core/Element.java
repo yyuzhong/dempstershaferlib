@@ -79,7 +79,7 @@ public class Element implements Comparable, Cloneable {
 	 * 
 	 * @param element1
 	 * @param element2
-	 * @return the Union between the focalElements or null if the union is
+	 * @return the Union between the bodyOfEvidence or null if the union is
 	 *         empty.
 	 */
 	public static Element getUnion(Element element1, Element element2) {
@@ -93,6 +93,23 @@ public class Element implements Comparable, Cloneable {
 			return new Element(new ArrayList<Hypothesis>(union));
 		else
 			return null;
+	}
+
+	/**
+	 * Return true if b is included in a, false otherwise.
+	 * 
+	 * @param a
+	 * @param b
+	 * @return true if b is included in a.
+	 */
+	public static boolean isIncluded(Element a, Element b) {
+		// B is included in A if all the element of B belong to A
+		// that means the intersection between A and B is equals to B.
+		Element intersection = getIntersection(a, b);
+		if (intersection.equals(b))
+			return true;
+		else
+			return false;
 	}
 
 	@Override

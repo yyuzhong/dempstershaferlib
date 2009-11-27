@@ -99,10 +99,10 @@ public class NewSwingApp extends javax.swing.JFrame {
 			data[i][0] = massDistribution.getOperator();
 			int maxColumn = 0;
 
-			for (int j = 0; j < massDistribution.getFocalElements().size(); j++) {
+			for (int j = 0; j < massDistribution.getBodyOfEvidence().size(); j++) {
 				double maxValue = 0;
 				FocalElement element = (FocalElement) massDistribution
-						.getFocalElements().get(j);
+						.getBodyOfEvidence().get(j);
 				if (element.getBpa() > maxValue) {
 					maxValue = element.getBpa();
 					maxColumn = j + 1;
@@ -136,10 +136,10 @@ public class NewSwingApp extends javax.swing.JFrame {
 		for (int i = 0; i < rows; i++) {
 			MassDistribution massDistribution = (MassDistribution) input.get(i);
 			data[i][0] = "" + (i + 1);
-			for (int j = 0; j < massDistribution.getFocalElements().size(); j++) {
+			for (int j = 0; j < massDistribution.getBodyOfEvidence().size(); j++) {
 
 				FocalElement element = (FocalElement) massDistribution
-						.getFocalElements().get(j);
+						.getBodyOfEvidence().get(j);
 				// data[i][j] = Double.toString(element.getBpa());
 				data[i][j + 1] = element.toString();
 
@@ -158,7 +158,7 @@ public class NewSwingApp extends javax.swing.JFrame {
 	private int getColumn(ArrayList<MassDistribution> input) {
 		int column = 0;
 		for (MassDistribution massDistribution : input) {
-			int size = massDistribution.getFocalElements().size();
+			int size = massDistribution.getBodyOfEvidence().size();
 			if (size > column)
 				column = size;
 		}
