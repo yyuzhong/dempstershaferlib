@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 /**
- * A Focal Element is an Element with an evaluated bodyOfEvidence.
+ * A Focal Element is a couple Element-bpa.
  * 
  * @author Elisa Costante
  * 

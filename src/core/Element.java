@@ -74,13 +74,11 @@ public class Element implements Comparable, Cloneable {
 	/**
 	 * Returns the Union between <code>element1</code> and <code>element2</code>
 	 * . An union of two {@link Element} is an {@link Element} that has all the
-	 * hypothesies common to both the elemnts <code>element1</code> and
-	 * <code>element2</code>.
+	 * hypothesies common to both the elements.
 	 * 
 	 * @param element1
 	 * @param element2
-	 * @return the Union between the bodyOfEvidence or null if the union is
-	 *         empty.
+	 * @return the Union between the two elements or null if the union is empty.
 	 */
 	public static Element getUnion(Element element1, Element element2) {
 
@@ -152,6 +150,11 @@ public class Element implements Comparable, Cloneable {
 		return elementToString;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
 	@Override
 	public int compareTo(Object o) {
 		Element element = (Element) o;
@@ -173,7 +176,7 @@ public class Element implements Comparable, Cloneable {
 	}
 
 	/**
-	 * @return the number of the hypothesies of the element
+	 * @return the number of the hypothesies of the {@link Element}
 	 */
 	public int size() {
 		if (hypothesies != null)
