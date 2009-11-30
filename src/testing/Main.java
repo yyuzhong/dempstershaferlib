@@ -50,25 +50,30 @@ public class Main {
 
 		ArrayList<MassDistribution> input = getNewArrayList(masses);
 
+		// DEPMSTER
 		JointMassDistribution demDistribution = JointManager.dempsterJoint(
 				input, frameOfDiscernment);
 		demDistribution = JointMassDistribution.order(demDistribution);
+		System.out.println(demDistribution);
 
+		// YAGER
 		JointMassDistribution yagerDistribution = JointManager.yagerJoint(
 				input, frameOfDiscernment);
-
 		// yagerDistribution = JointMassDistribution.order(yagerDistribution);
+		System.out.println(yagerDistribution);
 
-		// input = getNewArrayList(masses);
+		// Average
 		JointMassDistribution averageDistribution = JointManager.averageJoint(
 				input, frameOfDiscernment);
 		averageDistribution = JointMassDistribution.order(averageDistribution);
+		System.out.println(averageDistribution);
 
-		// input = getNewArrayList(masses);
+		// DISTANCE EVIDENCE
 		JointMassDistribution distanceDistribution = JointManager
 				.distanceEvidenceJoint(input, frameOfDiscernment);
 		distanceDistribution = JointMassDistribution
 				.order(distanceDistribution);
+		System.out.println(distanceDistribution);
 
 		ArrayList<MassDistribution> results = new ArrayList<MassDistribution>();
 
