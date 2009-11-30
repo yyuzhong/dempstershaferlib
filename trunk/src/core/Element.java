@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 /**
- * An {@link Element} belong to PowerSet. It is a Singleton if has only one
- * {@link Hypothesis}
+ * An {@link Element} is a collection of Hypothesis. It is a Singleton if has
+ * only one {@link Hypothesis}.
  * 
  * @author Elisa Costante
  * 
@@ -105,24 +105,35 @@ public class Element implements Comparable, Cloneable {
 	public static boolean isIncluded(Element a, Element b) {
 		// B is included in A if all the element of B belong to A
 		// that means the intersection between A and B is equals to B.
+
 		Element intersection = getIntersection(a, b);
-		if (intersection.equals(b))
+		if (intersection != null && intersection.equals(b))
 			return true;
+
 		else
 			return false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 * 
+	 * Return true if and only if the two object have the same set of
+	 * hypothesies.
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		Element other = (Element) obj;
-		ArrayList<Hypothesis> otherHypothesies = other.getHypothesies();
-		if (other.getHypothesies().size() == hypothesies.size()
-				&& otherHypothesies.containsAll(hypothesies))
-			return true;
-		else if (this == null && obj == null)
-			return true;
-		else
-			return false;
+		if (this != null && obj != null) {
+			Element other = (Element) obj;
+			ArrayList<Hypothesis> otherHypothesies = other.getHypothesies();
+			if (other.getHypothesies().size() == hypothesies.size()
+					&& otherHypothesies.containsAll(hypothesies))
+				return true;
+			else
+				return false;
+		}
+		return false;
 	}
 
 	@Override

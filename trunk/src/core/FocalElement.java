@@ -1,7 +1,6 @@
 package core;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -15,8 +14,8 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	private final int PRECISION = 4;
 	private BigDecimal bpa;
 	private Element element;
-	private Double belief;
-	private Double plausability;
+	private BigDecimal belief;
+	private BigDecimal plausability;
 	private ArrayList<FocalElement> bodyOfEvidence;
 
 	public FocalElement(Element element, double bpa) {
@@ -52,10 +51,10 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 */
 	public Double getBelief() {
 		if (bpa != null) {
-			if (belief == null) {
+			if (belief == null && bodyOfEvidence != null) {
 				setBelief();
 			}
-			return belief;
+			return belief.doubleValue();
 
 		} else
 			return Double.NaN;
@@ -63,19 +62,17 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 
 	private void setBelief() {
 		// Bel(A)= Summation m(B) for each B| (B included A==true)
-		if (bodyOfEvidence != null) {
-			double bel = 0;
-			for (FocalElement focalElement : bodyOfEvidence) {
+		double bel = 0;
+		for (FocalElement focalElement : bodyOfEvidence) {
 
-				if (Element.isIncluded(this.getElement(), focalElement
-						.getElement())) {
-					bel = bel + focalElement.getBpa();
-				}
+			if (Element
+					.isIncluded(this.getElement(), focalElement.getElement())) {
+				bel = bel + focalElement.getBpa();
 			}
-			belief = new Double(bel);
 		}
-		BigDecimal bigDecimal = new BigDecimal(belief, new MathContext(5));
-		belief = bigDecimal.doubleValue();
+		BigDecimal beliefBigDecimal = new BigDecimal(bel).setScale(PRECISION,
+				BigDecimal.ROUND_HALF_UP);
+		this.belief = beliefBigDecimal;
 
 	}
 
@@ -87,18 +84,28 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 */
 	public Double getPlausability() {
 		if (bpa != null) {
-			if (plausability == null) {
+			if (plausability == null && bodyOfEvidence != null) {
 				setPlausability();
 			}
-			return belief;
+			return plausability.doubleValue();
 
 		} else
 			return Double.NaN;
 	}
 
 	private void setPlausability() {
-		BigDecimal bigDecimal = new BigDecimal(plausability, new MathContext(5));
-		plausability = bigDecimal.doubleValue();
+		// Pl(A)= Summation m(B) for each B| (B intersect A== empty)
+		double pl = 0;
+		for (FocalElement focalElement : bodyOfEvidence) {
+
+			if (Element.getIntersection(focalElement.getElement(), this
+					.getElement()) == null) {
+				pl = pl + focalElement.getBpa();
+			}
+		}
+		BigDecimal beliefBigDecimal = new BigDecimal(pl).setScale(PRECISION,
+				BigDecimal.ROUND_HALF_UP);
+		this.plausability = beliefBigDecimal;
 
 	}
 
@@ -124,7 +131,8 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 */
 	@Override
 	public String toString() {
-		return "[" + element + " - " + bpa + "]";
+		return "[" + element + " - bpa:" + bpa + "; belief:" + belief
+				+ "; plausability: " + plausability + "]";
 	}
 
 	/*
@@ -268,7 +276,7 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	}
 
 	public double getUncertainity() {
-		return plausability - belief;
+		return (plausability.subtract(belief)).doubleValue();
 	}
 
 	/**
@@ -277,6 +285,8 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 */
 	public void setBodyOfEvidence(ArrayList<FocalElement> bodyOfEvidence) {
 		this.bodyOfEvidence = bodyOfEvidence;
+		setBelief();
+		setPlausability();
 	}
 
 }
