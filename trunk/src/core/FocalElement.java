@@ -275,8 +275,8 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 		return (aBigDecimal.compareTo(bBigDecimal) == 0);
 	}
 
-	public double getUncertainity() {
-		return (plausability.subtract(belief)).doubleValue();
+	public double getUncertainty() {
+		return (belief.subtract(plausability)).abs().doubleValue();
 	}
 
 	/**
