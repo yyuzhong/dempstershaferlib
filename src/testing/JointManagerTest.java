@@ -5,13 +5,14 @@ package testing;
 
 import java.util.ArrayList;
 
+import massDistribution.JointMassDistribution;
+import massDistribution.MassDistribution;
+
 import joint.JointManager;
 import joint.JointOperator;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import core.FrameOfDiscernment;
-import core.JointMassDistribution;
-import core.MassDistribution;
 import exception.JointNotPossibleException;
 import exception.MassDistributionNotValidException;
 

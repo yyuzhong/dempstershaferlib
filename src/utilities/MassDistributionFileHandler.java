@@ -7,10 +7,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import massDistribution.MassDistribution;
+
 import core.Element;
 import core.FocalElement;
 import core.Hypothesis;
-import core.MassDistribution;
 
 public class MassDistributionFileHandler {
 

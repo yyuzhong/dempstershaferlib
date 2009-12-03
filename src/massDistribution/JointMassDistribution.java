@@ -1,6 +1,9 @@
-package core;
+package massDistribution;
 
 import java.util.ArrayList;
+
+import core.FocalElement;
+
 
 public class JointMassDistribution extends MassDistribution {
 

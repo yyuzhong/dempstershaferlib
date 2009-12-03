@@ -8,12 +8,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import massDistribution.JointMassDistribution;
+import massDistribution.MassDistribution;
+
 import core.Element;
 import core.FocalElement;
 import core.FrameOfDiscernment;
 import core.Hypothesis;
-import core.JointMassDistribution;
-import core.MassDistribution;
 
 public class ReadTestUtility {
 
