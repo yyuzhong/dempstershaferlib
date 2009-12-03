@@ -18,9 +18,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import massDistribution.JointMassDistribution;
+import massDistribution.MassDistribution;
+
 import core.FocalElement;
-import core.JointMassDistribution;
-import core.MassDistribution;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI

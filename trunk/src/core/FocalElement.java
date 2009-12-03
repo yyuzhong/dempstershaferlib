@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
+import massDistribution.MassDistribution;
+import utilities.DoubleUtility;
+
 /**
  * A Focal Element is a couple Element-bpa.
  * 
@@ -12,10 +15,10 @@ import java.util.TreeSet;
  */
 public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	private final int PRECISION = 4;
-	private BigDecimal bpa;
+	private Double bpa;
 	private Element element;
-	private BigDecimal belief;
-	private BigDecimal plausability;
+	private Double belief;
+	private Double plausability;
 	private ArrayList<FocalElement> bodyOfEvidence;
 
 	public FocalElement(Element element, double bpa) {
@@ -30,17 +33,20 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 * @param bpa
 	 */
 	public void setBpa(Double bpa) {
-		BigDecimal bpaBigDecimal = new BigDecimal(bpa).setScale(PRECISION,
-				BigDecimal.ROUND_HALF_UP);
-		this.bpa = bpaBigDecimal;
+		// BigDecimal bpaBigDecimal = new BigDecimal(bpa).setScale(PRECISION,
+		// BigDecimal.ROUND_HALF_UP);
+		// this.bpa = bpaBigDecimal;
+		this.bpa = bpa;
 
 	}
 
 	/**
 	 * @return the bpa
 	 */
-	public Double getBpa() {
-		return bpa.doubleValue();
+	public double getBpa() {
+		// return bpa.doubleValue();
+
+		return bpa;
 	}
 
 	/**
@@ -54,7 +60,7 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 			if (belief == null && bodyOfEvidence != null) {
 				setBelief();
 			}
-			return belief.doubleValue();
+			return belief;
 
 		} else
 			return Double.NaN;
@@ -70,9 +76,10 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 				bel = bel + focalElement.getBpa();
 			}
 		}
-		BigDecimal beliefBigDecimal = new BigDecimal(bel).setScale(PRECISION,
-				BigDecimal.ROUND_HALF_UP);
-		this.belief = beliefBigDecimal;
+		// BigDecimal beliefBigDecimal = new BigDecimal(bel).setScale(PRECISION,
+		// BigDecimal.ROUND_HALF_UP);
+		// this.belief = beliefBigDecimal;
+		this.belief = bel;
 
 	}
 
@@ -87,7 +94,7 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 			if (plausability == null && bodyOfEvidence != null) {
 				setPlausability();
 			}
-			return plausability.doubleValue();
+			return plausability;
 
 		} else
 			return Double.NaN;
@@ -103,9 +110,10 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 				pl = pl + focalElement.getBpa();
 			}
 		}
-		BigDecimal beliefBigDecimal = new BigDecimal(pl).setScale(PRECISION,
-				BigDecimal.ROUND_HALF_UP);
-		this.plausability = beliefBigDecimal;
+		// BigDecimal beliefBigDecimal = new BigDecimal(pl).setScale(PRECISION,
+		// BigDecimal.ROUND_HALF_UP);
+		// this.plausability = beliefBigDecimal;
+		this.plausability = pl;
 
 	}
 
@@ -131,46 +139,37 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 */
 	@Override
 	public String toString() {
-		return "[" + element + " - bpa:" + bpa + "; belief:" + belief
-				+ "; plausability: " + plausability + "]";
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((belief == null) ? 0 : belief.hashCode());
-		result = prime * result + ((bpa == null) ? 0 : bpa.hashCode());
-		result = prime * result + ((element == null) ? 0 : element.hashCode());
-		result = prime * result
-				+ ((plausability == null) ? 0 : plausability.hashCode());
-		return result;
+		return "[" + element + " - bpa:"
+				+ DoubleUtility.doubleToString(bpa, PRECISION)
+				// + "; belief:"
+				// + DoubleUtility.doubleToString(belief, PRECISION)
+				// + "; plausability: "
+				// + DoubleUtility.doubleToString(plausability, PRECISION)
+				+ "]";
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
+	 * 
+	 * Two Focal element are equals if the yhave the same element and the same
+	 * bpa.
 	 */
 	@Override
 	public boolean equals(Object obj) {
 		FocalElement other = (FocalElement) obj;
 
 		if (other.getElement().equals(element)
-				&& compareSamePrecision(other.getBpa().doubleValue(), bpa
-						.doubleValue(), PRECISION))
+				&& (DoubleUtility.areEqualsDouble(other.getBpa(), bpa,
+						DoubleUtility.EPSILON)))
 			return true;
 		else
 			return false;
 	}
 
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
+	public Object clone() throws CloneNotSupportedException {
 		Element cloneElement = (Element) element.clone();
 		FocalElement clone = new FocalElement(cloneElement, bpa.doubleValue());
 		// clone.setBelief(belief);
@@ -264,7 +263,8 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 *            : number of decimal digit
 	 * @return true if the two number are equal, false otherwise
 	 */
-	public static boolean compareSamePrecision(double a, double b, int precision) {
+	private static boolean compareSamePrecision(double a, double b,
+			int precision) {
 
 		BigDecimal aBigDecimal = new BigDecimal(a).setScale(precision,
 				BigDecimal.ROUND_HALF_UP);
@@ -276,7 +276,8 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	}
 
 	public double getUncertainty() {
-		return (belief.subtract(plausability)).abs().doubleValue();
+		// return (belief.subtract(plausability)).abs().doubleValue();
+		return Math.abs(plausability - belief);
 	}
 
 	/**

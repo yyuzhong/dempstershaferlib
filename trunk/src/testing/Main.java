@@ -2,16 +2,17 @@ package testing;
 
 import java.util.ArrayList;
 
+import massDistribution.JointMassDistribution;
+import massDistribution.MassDistribution;
+
 import joint.JointManager;
 import core.FrameOfDiscernment;
-import core.JointMassDistribution;
-import core.MassDistribution;
 import exception.JointNotPossibleException;
 import exception.MassDistributionNotValidException;
 import gui.NewSwingApp;
 
 public class Main {
-	private static String filename = "test4.txt";
+	private static String filename = "test5.txt";
 
 	/**
 	 * @param args

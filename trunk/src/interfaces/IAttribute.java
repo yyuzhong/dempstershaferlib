@@ -1,8 +1,6 @@
 package interfaces;
 
-import java.util.ArrayList;
-
-import core.Hypothesis;
+import massDistribution.IMeasure;
 
 /**
  * This interface allows the definition of the attributes which allow one to
@@ -11,14 +9,38 @@ import core.Hypothesis;
  * @author Elisa Costante
  * 
  */
-public interface IAttribute {
+public abstract class IAttribute {
 
-	public ArrayList<Hypothesis> getHypotheses();
+	protected String identifier;
 
-	public String getName();
+	protected IMeasure measure;
 
-	public double getWeight();
+	/**
+	 * @return the identifier
+	 */
+	public String getIdentifier() {
+		return identifier;
+	}
 
-	public Object getValue();
+	/**
+	 * @param identifier
+	 *            the identifier to set
+	 */
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	/**
+	 * @param measure
+	 *            the value to set
+	 */
+	public void setMeasure(IMeasure measure) {
+		this.measure = measure;
+	}
+
+	/**
+	 * @return the IMeasure of the attribute.
+	 */
+	public abstract IMeasure getMeasure();
 
 }

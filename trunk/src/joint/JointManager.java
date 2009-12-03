@@ -2,11 +2,12 @@ package joint;
 
 import java.util.ArrayList;
 
+import massDistribution.JointMassDistribution;
+import massDistribution.MassDistribution;
+
 import core.Element;
 import core.FocalElement;
 import core.FrameOfDiscernment;
-import core.JointMassDistribution;
-import core.MassDistribution;
 import exception.JointNotPossibleException;
 import exception.MassDistributionNotValidException;
 
@@ -275,7 +276,7 @@ public class JointManager {
 				// scalarProduct= Summation [el1*el2] . |intersect(el1,el2)| /
 				// |union(el1,el2)|
 				scalarProduct = scalarProduct
-						+ ((el1.getBpa() * el2.getBpa()) * (intersectionSize / unionSize));
+						+ ((el1.getBpa() * el2.getBpa()) * ((double) (intersectionSize / unionSize)));
 			}
 		}
 
@@ -526,7 +527,7 @@ public class JointManager {
 				bpa = bpa + element.getBpa();
 			}
 
-			jointElement.setBpa(new Double(bpa / masses.size()));
+			jointElement.setBpa(bpa / masses.size());
 
 		}
 

@@ -1,11 +1,13 @@
-package core;
+package massDistribution;
 
 import java.util.ArrayList;
+
+import utilities.DoubleUtility;
+import core.FocalElement;
 
 public class MassDistribution implements Cloneable {
 
 	protected ArrayList<FocalElement> bodyOfEvidence;
-	protected Source source;
 
 	public MassDistribution(ArrayList<FocalElement> mass) {
 		super();
@@ -39,7 +41,7 @@ public class MassDistribution implements Cloneable {
 			sum = sum + focalElement.getBpa();
 
 		}
-		if (Math.round(sum) == 1)
+		if (DoubleUtility.areEqualsDouble(sum, 1, DoubleUtility.EPSILON))
 			return true;
 		else
 			return false;
@@ -54,10 +56,7 @@ public class MassDistribution implements Cloneable {
 	public String toString() {
 		String massTOString = "MassDistribution [bodyOfEvidence="
 				+ bodyOfEvidence;
-		if (source != null)
-			massTOString = massTOString + " " + source.getName() + "]";
-		else
-			massTOString = massTOString + "]";
+		massTOString = massTOString + "]";
 
 		return massTOString;
 	}
@@ -140,21 +139,6 @@ public class MassDistribution implements Cloneable {
 
 		return orderedMass;
 
-	}
-
-	/**
-	 * @return the source
-	 */
-	public Source getSource() {
-		return source;
-	}
-
-	/**
-	 * @param source
-	 *            the source to set
-	 */
-	public void setSource(Source source) {
-		this.source = source;
 	}
 
 	/**
