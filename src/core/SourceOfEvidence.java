@@ -5,8 +5,11 @@ import interfaces.ISource;
 import java.util.ArrayList;
 
 import massDistribution.ClassAttributeMap;
+import massDistribution.ClassificationAttribute;
+import massDistribution.IMeasure;
 import massDistribution.MassDistribution;
 import massDistribution.MeasuredAttribute;
+import massDistribution.Range;
 
 /**
  * This class represents a source of evidence. Different source must have the
@@ -19,11 +22,11 @@ public abstract class SourceOfEvidence implements ISource {
 
 	private FrameOfDiscernment frameOfDiscernment;
 
-	private String url;
-
 	private String name;
 
-	public SourceOfEvidence() {
+	public SourceOfEvidence(FrameOfDiscernment frameOfDiscernment, String name) {
+		this.frameOfDiscernment = frameOfDiscernment;
+		this.name = name;
 	}
 
 	public String getName() {
@@ -44,12 +47,47 @@ public abstract class SourceOfEvidence implements ISource {
 
 	public MassDistribution getMassDistribution(
 			ClassAttributeMap classAttributeMap) {
+
+		MassDistribution mass = new MassDistribution();
+
 		ArrayList<MeasuredAttribute> measureAttributesList = readMeasureAttribute();
 
 		for (MeasuredAttribute measuredAttribute : measureAttributesList) {
 
+			ClassificationAttribute classAttribute = classAttributeMap
+					.getClassificationAttribute(measuredAttribute
+							.getIdentifier());
+			IMeasure measuredValue = measuredAttribute.getMeasure();
+
+			Element element = computeElement(classAttribute, measuredValue);
+
+			FocalElement focalElement = new FocalElement(element,
+					classAttribute.getWeight());
+
+			mass.addElement(focalElement);
+
 		}
 		return null;
+	}
+
+	private Element computeElement(ClassificationAttribute classAttribute,
+			IMeasure measuredValue) {
+		ArrayList<Hypothesis> allHypothesis = frameOfDiscernment
+				.getHipothesies();
+
+		Element element = new Element();
+		for (Hypothesis hypothesis : allHypothesis) {
+
+			ArrayList<Range> allRange = classAttribute.getRanges(hypothesis);
+
+			for (Range range : allRange) {
+				if (range.contains(measuredValue)) {
+					element.addHypothesis(hypothesis);
+				}
+			}
+		}
+
+		return element;
 	}
 
 	/**

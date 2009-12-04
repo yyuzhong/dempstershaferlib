@@ -1,6 +1,6 @@
 package massDistribution;
 
-import interfaces.IAttribute;
+import interfaces.Attribute;
 
 /**
  * This class
@@ -8,13 +8,25 @@ import interfaces.IAttribute;
  * @author Elisa Costante
  * 
  */
-public class MeasuredAttribute extends IAttribute {
+public class MeasuredAttribute extends Attribute {
 
-	private IMeasure measure;
+	protected IMeasure measure;
 
-	@Override
+	/**
+	 * @return the measure.
+	 */
 	public IMeasure getMeasure() {
 		return measure;
+	}
+
+	/**
+	 * Set the field measure.
+	 * 
+	 * @param measure
+	 *            : The measure to set.
+	 */
+	public void setMeasure(IMeasure measure) {
+		this.measure = measure;
 	}
 
 }

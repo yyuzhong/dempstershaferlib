@@ -1,6 +1,5 @@
 package interfaces;
 
-import massDistribution.IMeasure;
 
 /**
  * This interface allows the definition of the attributes which allow one to
@@ -9,11 +8,9 @@ import massDistribution.IMeasure;
  * @author Elisa Costante
  * 
  */
-public abstract class IAttribute {
+public class Attribute {
 
 	protected String identifier;
-
-	protected IMeasure measure;
 
 	/**
 	 * @return the identifier
@@ -34,13 +31,5 @@ public abstract class IAttribute {
 	 * @param measure
 	 *            the value to set
 	 */
-	public void setMeasure(IMeasure measure) {
-		this.measure = measure;
-	}
-
-	/**
-	 * @return the IMeasure of the attribute.
-	 */
-	public abstract IMeasure getMeasure();
 
 }

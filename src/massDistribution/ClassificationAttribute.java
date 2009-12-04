@@ -1,22 +1,31 @@
 package massDistribution;
 
-import interfaces.IAttribute;
+import interfaces.Attribute;
 
-public class ClassificationAttribute extends IAttribute {
+import java.util.ArrayList;
+import java.util.Hashtable;
+
+import core.Hypothesis;
+
+/**
+ * A {@link ClassificationAttribute} is an {@link Attribute} with a weight and a
+ * map with couples Hypothesis-Ranges. This map for each Hypothesis says the
+ * interval that the attribute should have to belongs from that Hypothesis.
+ * 
+ * @author Elisa Costante
+ * 
+ */
+
+public class ClassificationAttribute extends Attribute {
 
 	private double weight;
 
-	private RangeValues rangeValues;
+	private Hashtable<Hypothesis, ArrayList<Range>> map;
 
-	public ClassificationAttribute(double weight, RangeValues rangeValues) {
+	public ClassificationAttribute(double weight,
+			Hashtable<Hypothesis, ArrayList<Range>> classificationRanges) {
 		this.weight = weight;
-		this.rangeValues = rangeValues;
-	}
-
-	@Override
-	public IMeasure getMeasure() {
-		// TODO Auto-generated method stub
-		return null;
+		this.map = classificationRanges;
 	}
 
 	/**
@@ -35,18 +44,26 @@ public class ClassificationAttribute extends IAttribute {
 	}
 
 	/**
-	 * @return the rangeValues
+	 * @return the <code>map</code>
 	 */
-	public RangeValues getRangeValues() {
-		return rangeValues;
+	public Hashtable<Hypothesis, ArrayList<Range>> getMAp() {
+		return map;
 	}
 
 	/**
-	 * @param rangeValues
-	 *            the rangeValues to set
+	 * @param map
+	 *            : <code>map</code> to set.
 	 */
-	public void setRangeValues(RangeValues rangeValues) {
-		this.rangeValues = rangeValues;
+	public void setMap(
+			Hashtable<Hypothesis, ArrayList<Range>> classificationRanges) {
+		this.map = classificationRanges;
+	}
+
+	public ArrayList<Range> getRanges(Hypothesis hypothesis) {
+		if (map != null)
+			return map.get(hypothesis);
+		else
+			return null;
 	}
 
 }
