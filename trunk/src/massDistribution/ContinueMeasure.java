@@ -1,11 +1,23 @@
 package massDistribution;
 
-public class ContinueMeasure implements IMeasure {
+public class ContinueMeasure implements IMeasure, Comparable<IMeasure> {
+
+	protected Comparable value;
 
 	@Override
-	public ContinueMeasure getMeasure() {
-		// TODO Auto-generated method stub
-		return null;
+	public Object getValue() {
+
+		return this.value;
 	}
 
+	@Override
+	public void setValue(Object value) {
+		this.value = (Comparable) value;
+
+	}
+
+	@Override
+	public int compareTo(IMeasure o) {
+		return this.compareTo((ContinueMeasure) o);
+	}
 }

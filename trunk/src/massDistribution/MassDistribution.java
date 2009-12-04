@@ -14,6 +14,10 @@ public class MassDistribution implements Cloneable {
 		this.bodyOfEvidence = mass;
 	}
 
+	public MassDistribution() {
+
+	}
+
 	public ArrayList<FocalElement> getBodyOfEvidence() {
 		return bodyOfEvidence;
 	}

@@ -19,12 +19,22 @@ public class Element implements Comparable, Cloneable {
 		this.hypothesies = hypothesies;
 	}
 
+	public Element() {
+	}
+
 	public ArrayList<Hypothesis> getHypothesies() {
 		return hypothesies;
 	}
 
 	public void setHypothesies(ArrayList<Hypothesis> hypothesies) {
 		this.hypothesies = hypothesies;
+	}
+
+	public void addHypothesis(Hypothesis hypothesis) {
+		if (hypothesies == null) {
+			hypothesies = new ArrayList<Hypothesis>();
+		}
+		hypothesies.add(hypothesis);
 	}
 
 	/**
