@@ -2,7 +2,18 @@ package massDistribution;
 
 public class DiscreteMeasure implements IMeasure {
 
+	/**
+	 * The default value assumed if no value is founded for the attribute.
+	 */
+	public static final DiscreteMeasure NOT_MEASURED = new DiscreteMeasure(
+			Double.NaN);
+
 	protected Object value;
+
+	public DiscreteMeasure(Object value) {
+		super();
+		this.value = value;
+	}
 
 	@Override
 	public Object getValue() {
@@ -20,5 +31,23 @@ public class DiscreteMeasure implements IMeasure {
 		DiscreteMeasure other = (DiscreteMeasure) obj;
 		return value.equals(other.getValue());
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "DiscreteMeasure: " + value;
+	}
+
+	@Override
+	public boolean hasMeasuredValue() {
+		if (value.equals(NOT_MEASURED.value))
+			return false;
+		else
+			return true;
 	}
 }

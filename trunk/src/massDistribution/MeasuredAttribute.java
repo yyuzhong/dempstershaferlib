@@ -10,6 +10,10 @@ import interfaces.Attribute;
  */
 public class MeasuredAttribute extends Attribute {
 
+	public MeasuredAttribute(String identifier) {
+		super(identifier);
+	}
+
 	protected IMeasure measure;
 
 	/**

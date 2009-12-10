@@ -16,4 +16,12 @@ public interface IMeasure {
 	 */
 	public void setValue(Object value);
 
+	/**
+	 * Returns true if the {@link IMeasure} has a value.
+	 * 
+	 * @return true if and only if the <code>value</code> of the measure is
+	 *         different from <code>NOT_MEASURED</code>, false otherwise.
+	 */
+	public boolean hasMeasuredValue();
+
 }

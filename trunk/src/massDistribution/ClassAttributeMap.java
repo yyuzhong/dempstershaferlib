@@ -5,6 +5,18 @@ import java.util.Hashtable;
 public class ClassAttributeMap {
 
 	/**
+	 * Constructs a nex {@link ClassAttributeMap} with the hashtable passed as
+	 * argument.
+	 * 
+	 * @param allClassificationAttribute
+	 */
+	public ClassAttributeMap(
+			Hashtable<String, ClassificationAttribute> allClassificationAttribute) {
+		super();
+		this.allClassificationAttribute = allClassificationAttribute;
+	}
+
+	/**
 	 * The key of the map is the identifier of the Attribute, the value is a
 	 * ClassificationAttribute
 	 */

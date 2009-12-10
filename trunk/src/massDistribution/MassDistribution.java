@@ -40,11 +40,7 @@ public class MassDistribution implements Cloneable {
 	 *         otherwise.
 	 */
 	public boolean isValid() {
-		double sum = 0;
-		for (FocalElement focalElement : bodyOfEvidence) {
-			sum = sum + focalElement.getBpa();
-
-		}
+		double sum = getTotalBpa();
 		if (DoubleUtility.areEqualsDouble(sum, 1, DoubleUtility.EPSILON))
 			return true;
 		else
@@ -177,6 +173,15 @@ public class MassDistribution implements Cloneable {
 
 		}
 
+	}
+
+	public double getTotalBpa() {
+		double sum = 0;
+		for (FocalElement focalElement : bodyOfEvidence) {
+			sum = sum + focalElement.getBpa();
+
+		}
+		return sum;
 	}
 
 }
