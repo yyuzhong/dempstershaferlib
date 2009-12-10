@@ -1,6 +1,5 @@
 package interfaces;
 
-
 /**
  * This interface allows the definition of the attributes which allow one to
  * establish the mass probability of an hypothesis.
@@ -9,6 +8,11 @@ package interfaces;
  * 
  */
 public class Attribute {
+
+	public Attribute(String identifier) {
+		super();
+		this.identifier = identifier;
+	}
 
 	protected String identifier;
 
@@ -27,9 +31,14 @@ public class Attribute {
 		this.identifier = identifier;
 	}
 
-	/**
-	 * @param measure
-	 *            the value to set
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
 	 */
+	@Override
+	public String toString() {
+		return identifier;
+	}
 
 }

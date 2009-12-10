@@ -22,8 +22,9 @@ public class ClassificationAttribute extends Attribute {
 
 	private Hashtable<Hypothesis, ArrayList<Range>> map;
 
-	public ClassificationAttribute(double weight,
+	public ClassificationAttribute(String identifier, double weight,
 			Hashtable<Hypothesis, ArrayList<Range>> classificationRanges) {
+		super(identifier);
 		this.weight = weight;
 		this.map = classificationRanges;
 	}
@@ -64,6 +65,16 @@ public class ClassificationAttribute extends Attribute {
 			return map.get(hypothesis);
 		else
 			return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return identifier + "; weight: " + weight + "; map: " + "{" + map + "}";
 	}
 
 }

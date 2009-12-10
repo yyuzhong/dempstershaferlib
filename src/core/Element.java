@@ -149,7 +149,7 @@ public class Element implements Comparable, Cloneable {
 		String elementToString = "{";
 		for (int i = 0; i < hypothesies.size(); i++) {
 			Hypothesis hypothesis = (Hypothesis) hypothesies.get(i);
-			elementToString = elementToString + hypothesis.getName();
+			elementToString = elementToString + hypothesis.getIdentifier();
 			if (i != (hypothesies.size() - 1)) {
 				elementToString = elementToString + ",";
 			}
@@ -173,12 +173,12 @@ public class Element implements Comparable, Cloneable {
 		// String compare1 = element.getHypothesies().toString();
 		String compare1 = "";
 		for (Hypothesis hypothesis : elementHypList) {
-			compare1 = compare1 + hypothesis.getName();
+			compare1 = compare1 + hypothesis.getIdentifier();
 		}
 		String compare2 = "";
 
 		for (Hypothesis hypothesis : hypothesies) {
-			compare2 = compare2 + hypothesis.getName();
+			compare2 = compare2 + hypothesis.getIdentifier();
 		}
 		int value = compare2.compareTo(compare1);
 

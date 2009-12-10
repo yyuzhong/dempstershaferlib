@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class DiscreteRange implements Range {
 
-	private ArrayList<IMeasure> discreteRange = new ArrayList<IMeasure>();
+	private ArrayList<Object> rangeElements = new ArrayList<Object>();
 
 	private static final String type = "CONTINUE";
 
@@ -16,16 +16,26 @@ public class DiscreteRange implements Range {
 	}
 
 	public void addElement(DiscreteMeasure discreteMeasure) {
-		discreteRange.add(discreteMeasure);
+		rangeElements.add(discreteMeasure.getValue());
 	}
 
 	@Override
-	public boolean contains(IMeasure measuredValue) {
-		if (discreteRange != null) {
-			return discreteRange.contains(measuredValue);
+	public boolean containsMeasure(IMeasure measuredValue) {
+		if (rangeElements != null) {
+			return rangeElements.contains(measuredValue.getValue());
 
 		} else
 			return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "DiscreteRange: {rangeElements=" + rangeElements + "}";
 	}
 
 }

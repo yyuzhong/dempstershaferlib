@@ -27,7 +27,7 @@ public class JointManagerTest extends TestCase {
 	private FrameOfDiscernment frame;
 
 	/**
-	 * @param name
+	 * @param identifier
 	 */
 	public JointManagerTest(String name) {
 		super(name);
