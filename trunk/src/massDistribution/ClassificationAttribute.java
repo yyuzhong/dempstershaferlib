@@ -1,6 +1,5 @@
 package massDistribution;
 
-import interfaces.Attribute;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

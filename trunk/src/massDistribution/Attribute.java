@@ -1,4 +1,4 @@
-package interfaces;
+package massDistribution;
 
 /**
  * This interface allows the definition of the attributes which allow one to
@@ -9,12 +9,12 @@ package interfaces;
  */
 public class Attribute {
 
+	protected String identifier;
+
 	public Attribute(String identifier) {
 		super();
 		this.identifier = identifier;
 	}
-
-	protected String identifier;
 
 	/**
 	 * @return the identifier

@@ -1,20 +1,20 @@
 package massDistribution;
 
-import interfaces.Attribute;
+import interfaces.IMeasure;
 
 /**
- * This class
+ * 
  * 
  * @author Elisa Costante
  * 
  */
 public class MeasuredAttribute extends Attribute {
 
+	protected IMeasure measure;
+
 	public MeasuredAttribute(String identifier) {
 		super(identifier);
 	}
-
-	protected IMeasure measure;
 
 	/**
 	 * @return the measure.

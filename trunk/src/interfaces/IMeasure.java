@@ -1,4 +1,4 @@
-package massDistribution;
+package interfaces;
 
 public interface IMeasure {
 

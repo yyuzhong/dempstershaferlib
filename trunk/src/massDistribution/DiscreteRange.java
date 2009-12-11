@@ -1,5 +1,7 @@
 package massDistribution;
 
+import interfaces.IMeasure;
+
 import java.util.ArrayList;
 
 public class DiscreteRange implements Range {

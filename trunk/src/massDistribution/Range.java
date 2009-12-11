@@ -1,5 +1,7 @@
 package massDistribution;
 
+import interfaces.IMeasure;
+
 public interface Range {
 
 	/**
