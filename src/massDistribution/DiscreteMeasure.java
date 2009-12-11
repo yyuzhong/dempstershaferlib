@@ -1,5 +1,7 @@
 package massDistribution;
 
+import interfaces.IMeasure;
+
 public class DiscreteMeasure implements IMeasure {
 
 	/**

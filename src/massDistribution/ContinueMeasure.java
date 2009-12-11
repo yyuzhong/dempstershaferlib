@@ -1,5 +1,7 @@
 package massDistribution;
 
+import interfaces.IMeasure;
+
 @SuppressWarnings("unchecked")
 public class ContinueMeasure implements IMeasure, Comparable<IMeasure> {
 

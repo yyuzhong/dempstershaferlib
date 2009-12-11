@@ -289,7 +289,7 @@ public class SourceOfEvidenceTest extends TestCase {
 		}
 
 		@Override
-		public ArrayList<MeasuredAttribute> readMeasureAttribute() {
+		public ArrayList<MeasuredAttribute> readMeasuredAttributes() {
 
 			ArrayList<MeasuredAttribute> allMEasuredAttribute = new ArrayList<MeasuredAttribute>();
 

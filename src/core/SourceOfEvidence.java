@@ -1,12 +1,12 @@
 package core;
 
+import interfaces.IMeasure;
 import interfaces.ISource;
 
 import java.util.ArrayList;
 
 import massDistribution.ClassAttributeMap;
 import massDistribution.ClassificationAttribute;
-import massDistribution.IMeasure;
 import massDistribution.MassDistribution;
 import massDistribution.MeasuredAttribute;
 import massDistribution.Range;
@@ -50,7 +50,7 @@ public abstract class SourceOfEvidence implements ISource {
 
 		ArrayList<FocalElement> focalEvidence = new ArrayList<FocalElement>();
 
-		ArrayList<MeasuredAttribute> measureAttributesList = readMeasureAttribute();
+		ArrayList<MeasuredAttribute> measureAttributesList = readMeasuredAttributes();
 
 		for (MeasuredAttribute measuredAttribute : measureAttributesList) {
 
@@ -145,6 +145,6 @@ public abstract class SourceOfEvidence implements ISource {
 	 * 
 	 * @return a list of {@link MeasuredAttribute}.
 	 */
-	public abstract ArrayList<MeasuredAttribute> readMeasureAttribute();
+	public abstract ArrayList<MeasuredAttribute> readMeasuredAttributes();
 
 }

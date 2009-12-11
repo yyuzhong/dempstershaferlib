@@ -1,5 +1,7 @@
 package massDistribution;
 
+import interfaces.IMeasure;
+
 public class ContinueRange implements Range {
 
 	private final static String type = "CONTINUE";
