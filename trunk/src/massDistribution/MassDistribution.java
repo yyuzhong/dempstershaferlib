@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import utilities.DoubleUtility;
 import core.FocalElement;
+import core.FrameOfDiscernment;
 
 public class MassDistribution implements Cloneable {
 
 	protected ArrayList<FocalElement> bodyOfEvidence;
+	private FrameOfDiscernment frameOfDiscernment;
 
 	public MassDistribution(ArrayList<FocalElement> mass) {
 		super();
@@ -22,8 +24,8 @@ public class MassDistribution implements Cloneable {
 		return bodyOfEvidence;
 	}
 
-	public void setElements(ArrayList<FocalElement> mass) {
-		this.bodyOfEvidence = mass;
+	public void setElements(ArrayList<FocalElement> focalElements) {
+		this.bodyOfEvidence = focalElements;
 	}
 
 	public void addElement(FocalElement element) {
@@ -182,6 +184,21 @@ public class MassDistribution implements Cloneable {
 
 		}
 		return sum;
+	}
+
+	/**
+	 * @return the frameOfDiscernment
+	 */
+	public FrameOfDiscernment getFrameOfDiscernment() {
+		return this.frameOfDiscernment;
+	}
+
+	/**
+	 * @param frameOfDiscernment
+	 *            the frameOfDiscernment to set
+	 */
+	public void setFrameOfDiscernment(FrameOfDiscernment frameOfDiscernment) {
+		this.frameOfDiscernment = frameOfDiscernment;
 	}
 
 }

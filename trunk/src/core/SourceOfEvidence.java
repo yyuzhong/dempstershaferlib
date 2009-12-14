@@ -24,8 +24,7 @@ public abstract class SourceOfEvidence implements ISource {
 
 	private String name;
 
-	public SourceOfEvidence(FrameOfDiscernment frameOfDiscernment, String name) {
-		this.frameOfDiscernment = frameOfDiscernment;
+	public SourceOfEvidence(String name) {
 		this.name = name;
 	}
 
@@ -45,9 +44,12 @@ public abstract class SourceOfEvidence implements ISource {
 		this.frameOfDiscernment = frameOfDiscernment;
 	}
 
+	@Override
 	public MassDistribution getMassDistribution(
+			FrameOfDiscernment frameOfDiscernment,
 			ClassAttributeMap classAttributeMap) {
 
+		this.frameOfDiscernment = frameOfDiscernment;
 		ArrayList<FocalElement> focalEvidence = new ArrayList<FocalElement>();
 
 		ArrayList<MeasuredAttribute> measureAttributesList = readMeasuredAttributes();
@@ -139,12 +141,7 @@ public abstract class SourceOfEvidence implements ISource {
 		return element;
 	}
 
-	/**
-	 * This method must be implemented in order to read the attribute collected
-	 * and measured from the source.
-	 * 
-	 * @return a list of {@link MeasuredAttribute}.
-	 */
+	@Override
 	public abstract ArrayList<MeasuredAttribute> readMeasuredAttributes();
 
 }

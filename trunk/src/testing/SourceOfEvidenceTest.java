@@ -39,7 +39,7 @@ public class SourceOfEvidenceTest extends TestCase {
 		allHypothesis.add(h3);
 		allHypothesis.add(h4);
 		this.frame = new FrameOfDiscernment(allHypothesis);
-		this.source = new MySource(frame, "TestSource");
+		this.source = new MySource("TestSource");
 	}
 
 	protected void tearDown() throws Exception {
@@ -49,44 +49,41 @@ public class SourceOfEvidenceTest extends TestCase {
 	public void testGetMassDistribution() {
 
 		ClassAttributeMap classAttributeMap = setClassAttributeMap();
-		MassDistribution testMass = source
-				.getMassDistribution(classAttributeMap);
+		MassDistribution testMass = source.getMassDistribution(frame,
+				classAttributeMap);
 
 		System.out.println(testMass);
 		assertTrue(testMass.isValid());
 	}
 
 	private ClassAttributeMap setClassAttributeMap() {
-		Hashtable<String, ClassificationAttribute> hashTable = new Hashtable<String, ClassificationAttribute>();
+		ArrayList<ClassificationAttribute> allAttribute = new ArrayList<ClassificationAttribute>();
 
 		// Set ClassificationAttribute Accessibility
 		double weight = (double) 1 / 7;
 		ClassificationAttribute accessibility = new ClassificationAttribute(
 				"Accessibility", weight, getAccessibilityRanges());
-		hashTable.put(accessibility.getIdentifier(), accessibility);
+		allAttribute.add(accessibility);
 
 		// Set ClassificationAttribute Reliability
 		ClassificationAttribute reliability = new ClassificationAttribute(
 				"Reliability", weight, getReliabilityRanges());
-		hashTable.put(reliability.getIdentifier(), reliability);
-
+		allAttribute.add(reliability);
 		// Set ClassificationAttribute Availability
 		ClassificationAttribute availability = new ClassificationAttribute(
 				"Availability", weight, getAvailabilityRanges());
-		hashTable.put(availability.getIdentifier(), availability);
-
+		allAttribute.add(availability);
 		// Set ClassificationAttribute Criptography
 		ClassificationAttribute criptography = new ClassificationAttribute(
 				"Criptography", weight, getCriptographyRanges());
-		hashTable.put(criptography.getIdentifier(), criptography);
-
+		allAttribute.add(criptography);
 		// Set ClassificationAttribute Restrictions
 		weight = (double) 3 / 7;
 		ClassificationAttribute restrictions = new ClassificationAttribute(
 				"Restrictions", weight, getRestrictionsRanges());
-		hashTable.put(restrictions.getIdentifier(), restrictions);
-
-		ClassAttributeMap classAttributeMap = new ClassAttributeMap(hashTable);
+		allAttribute.add(restrictions);
+		ClassAttributeMap classAttributeMap = new ClassAttributeMap(
+				allAttribute);
 		return classAttributeMap;
 	}
 
@@ -284,8 +281,8 @@ public class SourceOfEvidenceTest extends TestCase {
 
 	private class MySource extends SourceOfEvidence {
 
-		public MySource(FrameOfDiscernment frameOfDiscernment, String name) {
-			super(frameOfDiscernment, name);
+		public MySource(String name) {
+			super(name);
 		}
 
 		@Override
