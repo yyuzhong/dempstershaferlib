@@ -1,26 +1,36 @@
 package massDistribution;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class ClassAttributeMap {
 
 	/**
-	 * Constructs a nex {@link ClassAttributeMap} with the hashtable passed as
+	 * The key of the map is the identifier of the Attribute, the value is a
+	 * ClassificationAttribute
+	 */
+	private Hashtable<String, ClassificationAttribute> map;
+	private ArrayList<ClassificationAttribute> allAttributes;
+
+	/**
+	 * Constructs a new {@link ClassAttributeMap} with the hashtable passed as
 	 * argument.
 	 * 
 	 * @param allClassificationAttribute
 	 */
 	public ClassAttributeMap(
-			Hashtable<String, ClassificationAttribute> allClassificationAttribute) {
+			ArrayList<ClassificationAttribute> allClassificationAttribute) {
 		super();
-		this.allClassificationAttribute = allClassificationAttribute;
+		this.allAttributes = allClassificationAttribute;
+		for (ClassificationAttribute classificationAttribute : allAttributes) {
+			map.put(classificationAttribute.getIdentifier(),
+					classificationAttribute);
+		}
 	}
 
-	/**
-	 * The key of the map is the identifier of the Attribute, the value is a
-	 * ClassificationAttribute
-	 */
-	private Hashtable<String, ClassificationAttribute> allClassificationAttribute;
+	public ArrayList<ClassificationAttribute> getAllAttributes() {
+		return allAttributes;
+	}
 
 	/**
 	 *Returns the value to which the specified identifier is mapped, or {@code
@@ -30,8 +40,8 @@ public class ClassAttributeMap {
 	 * @return
 	 */
 	public ClassificationAttribute getClassificationAttribute(String identifier) {
-		if (allClassificationAttribute != null) {
-			return allClassificationAttribute.get(identifier);
+		if (map != null) {
+			return map.get(identifier);
 		} else
 			return null;
 
