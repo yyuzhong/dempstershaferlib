@@ -1,5 +1,7 @@
 package testing;
 
+import interfaces.IRange;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -12,7 +14,6 @@ import massDistribution.DiscreteMeasure;
 import massDistribution.DiscreteRange;
 import massDistribution.MassDistribution;
 import massDistribution.MeasuredAttribute;
-import massDistribution.Range;
 import core.FrameOfDiscernment;
 import core.Hypothesis;
 import core.SourceOfEvidence;
@@ -87,16 +88,16 @@ public class SourceOfEvidenceTest extends TestCase {
 		return classAttributeMap;
 	}
 
-	private Hashtable<Hypothesis, ArrayList<Range>> getRestrictionsRanges() {
-		Hashtable<Hypothesis, ArrayList<Range>> hash = new Hashtable<Hypothesis, ArrayList<Range>>();
+	private Hashtable<Hypothesis, ArrayList<IRange>> getRestrictionsRanges() {
+		Hashtable<Hypothesis, ArrayList<IRange>> hash = new Hashtable<Hypothesis, ArrayList<IRange>>();
 
-		ArrayList<Range> rangeList1 = new ArrayList<Range>();
+		ArrayList<IRange> rangeList1 = new ArrayList<IRange>();
 		DiscreteRange r1 = new DiscreteRange();
 		r1.addElement(new DiscreteMeasure(new Boolean("true")));
 		rangeList1.add(r1);
 		hash.put(h1, rangeList1);
 
-		ArrayList<Range> rangeList2 = new ArrayList<Range>();
+		ArrayList<IRange> rangeList2 = new ArrayList<IRange>();
 		DiscreteRange r2 = new DiscreteRange();
 		r2.addElement(new DiscreteMeasure(new Boolean("false")));
 		rangeList2.add(r2);
@@ -105,16 +106,16 @@ public class SourceOfEvidenceTest extends TestCase {
 		return hash;
 	}
 
-	private Hashtable<Hypothesis, ArrayList<Range>> getCriptographyRanges() {
-		Hashtable<Hypothesis, ArrayList<Range>> hash = new Hashtable<Hypothesis, ArrayList<Range>>();
+	private Hashtable<Hypothesis, ArrayList<IRange>> getCriptographyRanges() {
+		Hashtable<Hypothesis, ArrayList<IRange>> hash = new Hashtable<Hypothesis, ArrayList<IRange>>();
 
-		ArrayList<Range> rangeList1 = new ArrayList<Range>();
+		ArrayList<IRange> rangeList1 = new ArrayList<IRange>();
 		DiscreteRange r1 = new DiscreteRange();
 		r1.addElement(new DiscreteMeasure(new Boolean("true")));
 		rangeList1.add(r1);
 		hash.put(h1, rangeList1);
 
-		ArrayList<Range> rangeList2 = new ArrayList<Range>();
+		ArrayList<IRange> rangeList2 = new ArrayList<IRange>();
 		DiscreteRange r2 = new DiscreteRange();
 		r2.addElement(new DiscreteMeasure(new Boolean("false")));
 		rangeList2.add(r2);
@@ -123,10 +124,10 @@ public class SourceOfEvidenceTest extends TestCase {
 		return hash;
 	}
 
-	private Hashtable<Hypothesis, ArrayList<Range>> getAvailabilityRanges() {
-		Hashtable<Hypothesis, ArrayList<Range>> hash = new Hashtable<Hypothesis, ArrayList<Range>>();
+	private Hashtable<Hypothesis, ArrayList<IRange>> getAvailabilityRanges() {
+		Hashtable<Hypothesis, ArrayList<IRange>> hash = new Hashtable<Hypothesis, ArrayList<IRange>>();
 
-		ArrayList<Range> rangeListTmp = new ArrayList<Range>();
+		ArrayList<IRange> rangeListTmp = new ArrayList<IRange>();
 		// Set the lowerBound
 		ContinueMeasure lowerBoundTemp = new ContinueMeasure(new Double(0));
 		// Set the upperBound
@@ -137,7 +138,7 @@ public class SourceOfEvidenceTest extends TestCase {
 		rangeListTmp.add(rangeTemp);
 		hash.put(h1, rangeListTmp);
 
-		rangeListTmp = new ArrayList<Range>();
+		rangeListTmp = new ArrayList<IRange>();
 		// Set the lowerBound
 		lowerBoundTemp = new ContinueMeasure(new Double(5));
 		// Set the upperBound
@@ -148,7 +149,7 @@ public class SourceOfEvidenceTest extends TestCase {
 		rangeListTmp.add(rangeTemp);
 		hash.put(h2, rangeListTmp);
 
-		rangeListTmp = new ArrayList<Range>();
+		rangeListTmp = new ArrayList<IRange>();
 		// Set the lowerBound
 		lowerBoundTemp = new ContinueMeasure(new Double(25));
 		// Set the upperBound
@@ -159,7 +160,7 @@ public class SourceOfEvidenceTest extends TestCase {
 		rangeListTmp.add(rangeTemp);
 		hash.put(h3, rangeListTmp);
 
-		rangeListTmp = new ArrayList<Range>();
+		rangeListTmp = new ArrayList<IRange>();
 		// Set the lowerBound
 		lowerBoundTemp = new ContinueMeasure(new Double(60));
 		// Set the upperBound
@@ -173,10 +174,10 @@ public class SourceOfEvidenceTest extends TestCase {
 		return hash;
 	}
 
-	private Hashtable<Hypothesis, ArrayList<Range>> getReliabilityRanges() {
-		Hashtable<Hypothesis, ArrayList<Range>> hash = new Hashtable<Hypothesis, ArrayList<Range>>();
+	private Hashtable<Hypothesis, ArrayList<IRange>> getReliabilityRanges() {
+		Hashtable<Hypothesis, ArrayList<IRange>> hash = new Hashtable<Hypothesis, ArrayList<IRange>>();
 
-		ArrayList<Range> rangeListTmp = new ArrayList<Range>();
+		ArrayList<IRange> rangeListTmp = new ArrayList<IRange>();
 		// Set the lowerBound
 		ContinueMeasure lowerBoundTemp = new ContinueMeasure(new Double(0));
 
@@ -188,7 +189,7 @@ public class SourceOfEvidenceTest extends TestCase {
 		rangeListTmp.add(rangeTemp);
 		hash.put(h1, rangeListTmp);
 
-		rangeListTmp = new ArrayList<Range>();
+		rangeListTmp = new ArrayList<IRange>();
 		// Set the lowerBound
 		lowerBoundTemp = new ContinueMeasure(new Double(5));
 		// Set the upperBound
@@ -199,7 +200,7 @@ public class SourceOfEvidenceTest extends TestCase {
 		rangeListTmp.add(rangeTemp);
 		hash.put(h2, rangeListTmp);
 
-		rangeListTmp = new ArrayList<Range>();
+		rangeListTmp = new ArrayList<IRange>();
 		// Set the lowerBound
 		lowerBoundTemp = new ContinueMeasure(new Double(15));
 		// Set the upperBound
@@ -211,7 +212,7 @@ public class SourceOfEvidenceTest extends TestCase {
 		hash.put(h3, rangeListTmp);
 
 		// >20 & null
-		rangeListTmp = new ArrayList<Range>();
+		rangeListTmp = new ArrayList<IRange>();
 		// Set the lowerBound
 		lowerBoundTemp = new ContinueMeasure(new Double(20));
 		// Set the upperBound
@@ -225,10 +226,10 @@ public class SourceOfEvidenceTest extends TestCase {
 		return hash;
 	}
 
-	private Hashtable<Hypothesis, ArrayList<Range>> getAccessibilityRanges() {
-		Hashtable<Hypothesis, ArrayList<Range>> hash = new Hashtable<Hypothesis, ArrayList<Range>>();
+	private Hashtable<Hypothesis, ArrayList<IRange>> getAccessibilityRanges() {
+		Hashtable<Hypothesis, ArrayList<IRange>> hash = new Hashtable<Hypothesis, ArrayList<IRange>>();
 
-		ArrayList<Range> rangeListTmp = new ArrayList<Range>();
+		ArrayList<IRange> rangeListTmp = new ArrayList<IRange>();
 		// Set the lowerBound
 		ContinueMeasure lowerBoundTemp = new ContinueMeasure(new Double(1));
 		// Set the upperBound
@@ -239,7 +240,7 @@ public class SourceOfEvidenceTest extends TestCase {
 		rangeListTmp.add(rangeTemp);
 		hash.put(h1, rangeListTmp);
 
-		rangeListTmp = new ArrayList<Range>();
+		rangeListTmp = new ArrayList<IRange>();
 		// Set the lowerBound
 		lowerBoundTemp = new ContinueMeasure(new Double(0.5));
 		// Set the upperBound
@@ -251,7 +252,7 @@ public class SourceOfEvidenceTest extends TestCase {
 		hash.put(h2, rangeListTmp);
 
 		// [0.5 , 0.3) or null
-		rangeListTmp = new ArrayList<Range>();
+		rangeListTmp = new ArrayList<IRange>();
 		rangeTemp = new ContinueRange(ContinueMeasure.NOT_MEASURED,
 				ContinueMeasure.NOT_MEASURED, false, false);
 		rangeListTmp.add(rangeTemp);
@@ -267,7 +268,7 @@ public class SourceOfEvidenceTest extends TestCase {
 
 		// [0.3 , 0]
 		// Set the lowerBound
-		rangeListTmp = new ArrayList<Range>();
+		rangeListTmp = new ArrayList<IRange>();
 		lowerBoundTemp = new ContinueMeasure(new Double(0));
 		// Set the upperBound
 		upperBoundTemp = new ContinueMeasure(new Double(0.4));

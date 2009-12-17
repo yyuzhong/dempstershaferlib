@@ -1,12 +1,14 @@
 package massDistribution;
 
-import interfaces.IMeasure;
+import interfaces.IRange;
 
-public class ContinueRange implements Range {
+@SuppressWarnings("unchecked")
+public class ContinueRange implements IRange {
 
-	private final static String type = "CONTINUE";
-	private ContinueMeasure lowerBound;
-	private ContinueMeasure upperBound;
+	private final static MeasureType type = MeasureType.CONTINUOUS;
+
+	private Comparable lowerBound;
+	private Comparable upperBound;
 	boolean openedLeft;
 	boolean openedRight;
 
@@ -27,8 +29,8 @@ public class ContinueRange implements Range {
 	 *            : <code>true</code> if the range is right opened, false if it
 	 *            is right closed.
 	 */
-	public ContinueRange(ContinueMeasure lowerBound,
-			ContinueMeasure upperBound, boolean openedLeft, boolean openedRight) {
+	public ContinueRange(Comparable lowerBound, Comparable upperBound,
+			boolean openedLeft, boolean openedRight) {
 		super();
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
@@ -39,14 +41,14 @@ public class ContinueRange implements Range {
 	/**
 	 * @return "the type of the range. "CONTINUE" in this case.
 	 */
-	public String getType() {
+	public MeasureType getType() {
 		return type;
 	}
 
 	/**
 	 * @return the lowerBound
 	 */
-	public ContinueMeasure getLowerBound() {
+	public Comparable getLowerBound() {
 		return lowerBound;
 	}
 
@@ -54,14 +56,14 @@ public class ContinueRange implements Range {
 	 * @param lowerBound
 	 *            the lowerBound to set
 	 */
-	public void setLowerBound(ContinueMeasure lowerBound) {
+	public void setLowerBound(Comparable lowerBound) {
 		this.lowerBound = lowerBound;
 	}
 
 	/**
 	 * @return the upperBound
 	 */
-	public ContinueMeasure getUpperBound() {
+	public Comparable getUpperBound() {
 		return upperBound;
 	}
 
@@ -69,37 +71,36 @@ public class ContinueRange implements Range {
 	 * @param upperBound
 	 *            the upperBound to set
 	 */
-	public void setUpperBound(ContinueMeasure upperBound) {
+	public void setUpperBound(Comparable upperBound) {
 		this.upperBound = upperBound;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean containsMeasure(IMeasure measuredValue) {
-		ContinueMeasure continueMeasuredValue = (ContinueMeasure) measuredValue;
-		Comparable otherValue = (Comparable) continueMeasuredValue.getValue();
+	public boolean containsValue(Object value) {
+		Comparable comparableValue = (Comparable) value;
 		if (openedLeft && openedRight) {
 			// (a,b)
-			if (otherValue.compareTo(lowerBound.value) > 0
-					&& continueMeasuredValue.value.compareTo(upperBound.value) < 0)
+			if (comparableValue.compareTo(lowerBound) > 0
+					&& comparableValue.compareTo(upperBound) < 0)
 				return true;
 
 		} else if (openedLeft && !openedRight) {
 			// (a,b]
-			if (otherValue.compareTo(lowerBound.value) > 0
-					&& continueMeasuredValue.value.compareTo(upperBound.value) <= 0)
+			if (comparableValue.compareTo(lowerBound) > 0
+					&& comparableValue.compareTo(upperBound) <= 0)
 				return true;
 
 		} else if (!openedLeft && openedRight) {
 			// [a,b)
-			if (otherValue.compareTo(lowerBound.value) >= 0
-					&& continueMeasuredValue.value.compareTo(upperBound.value) < 0)
+			if (comparableValue.compareTo(lowerBound) >= 0
+					&& comparableValue.compareTo(upperBound) < 0)
 				return true;
 
 		} else if (!openedLeft && !openedRight) {
 			// [a,b]
-			if (otherValue.compareTo(lowerBound.value) >= 0
-					&& continueMeasuredValue.value.compareTo(upperBound.value) <= 0)
+			if (comparableValue.compareTo(lowerBound) >= 0
+					&& comparableValue.compareTo(upperBound) <= 0)
 				return true;
 		}
 		return false;

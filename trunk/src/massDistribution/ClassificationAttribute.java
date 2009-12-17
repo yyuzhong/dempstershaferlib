@@ -1,5 +1,7 @@
 package massDistribution;
 
+import interfaces.Attribute;
+import interfaces.IRange;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -19,10 +21,10 @@ public class ClassificationAttribute extends Attribute {
 
 	private double weight;
 
-	private Hashtable<Hypothesis, ArrayList<Range>> map;
+	private Hashtable<Hypothesis, ArrayList<IRange>> map;
 
 	public ClassificationAttribute(String identifier, double weight,
-			Hashtable<Hypothesis, ArrayList<Range>> classificationRanges) {
+			Hashtable<Hypothesis, ArrayList<IRange>> classificationRanges) {
 		super(identifier);
 		this.weight = weight;
 		this.map = classificationRanges;
@@ -46,7 +48,7 @@ public class ClassificationAttribute extends Attribute {
 	/**
 	 * @return the <code>map</code>
 	 */
-	public Hashtable<Hypothesis, ArrayList<Range>> getMAp() {
+	public Hashtable<Hypothesis, ArrayList<IRange>> getMAp() {
 		return map;
 	}
 
@@ -55,11 +57,11 @@ public class ClassificationAttribute extends Attribute {
 	 *            : <code>map</code> to set.
 	 */
 	public void setMap(
-			Hashtable<Hypothesis, ArrayList<Range>> classificationRanges) {
+			Hashtable<Hypothesis, ArrayList<IRange>> classificationRanges) {
 		this.map = classificationRanges;
 	}
 
-	public ArrayList<Range> getRanges(Hypothesis hypothesis) {
+	public ArrayList<IRange> getRanges(Hypothesis hypothesis) {
 		if (map != null)
 			return map.get(hypothesis);
 		else
