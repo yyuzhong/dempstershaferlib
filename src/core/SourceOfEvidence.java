@@ -1,6 +1,7 @@
 package core;
 
 import interfaces.IMeasure;
+import interfaces.IRange;
 import interfaces.ISource;
 
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import massDistribution.ClassAttributeMap;
 import massDistribution.ClassificationAttribute;
 import massDistribution.MassDistribution;
 import massDistribution.MeasuredAttribute;
-import massDistribution.Range;
 
 /**
  * This class represents a source of evidence. Different source must have the
@@ -125,11 +125,12 @@ public abstract class SourceOfEvidence implements ISource {
 		Element element = new Element();
 		for (Hypothesis hypothesis : allHypothesis) {
 
-			ArrayList<Range> allRange = classAttribute.getRanges(hypothesis);
+			ArrayList<IRange> allRange = classAttribute.getRanges(hypothesis);
 
 			if (allRange != null) {
-				for (Range range : allRange) {
-					if (range.containsMeasure(measuredValue)) {
+				for (IRange iRange : allRange) {
+					if (iRange.containsValue((Comparable) measuredValue
+							.getValue())) {
 						element.addHypothesis(hypothesis);
 					}
 				}

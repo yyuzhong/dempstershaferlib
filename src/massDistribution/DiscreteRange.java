@@ -1,19 +1,19 @@
 package massDistribution;
 
-import interfaces.IMeasure;
+import interfaces.IRange;
 
 import java.util.ArrayList;
 
-public class DiscreteRange implements Range {
+public class DiscreteRange implements IRange {
 
 	private ArrayList<Object> rangeElements = new ArrayList<Object>();
 
-	private static final String type = "CONTINUE";
+	private static final MeasureType type = MeasureType.DISCRETE;
 
 	/**
 	 * @return "the type of the range. "CONTINUE" in this case.
 	 */
-	public String getType() {
+	public MeasureType getType() {
 		return type;
 	}
 
@@ -22,9 +22,9 @@ public class DiscreteRange implements Range {
 	}
 
 	@Override
-	public boolean containsMeasure(IMeasure measuredValue) {
+	public boolean containsValue(Object value) {
 		if (rangeElements != null) {
-			return rangeElements.contains(measuredValue.getValue());
+			return rangeElements.contains(value);
 
 		} else
 			return false;

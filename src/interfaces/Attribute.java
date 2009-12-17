@@ -1,13 +1,12 @@
-package massDistribution;
+package interfaces;
+
 
 /**
- * This interface allows the definition of the attributes which allow one to
- * establish the mass probability of an hypothesis.
  * 
  * @author Elisa Costante
  * 
  */
-public class Attribute {
+public abstract class Attribute {
 
 	protected String identifier;
 

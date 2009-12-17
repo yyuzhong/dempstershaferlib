@@ -1,5 +1,6 @@
 package massDistribution;
 
+import interfaces.Attribute;
 import interfaces.IMeasure;
 
 /**
