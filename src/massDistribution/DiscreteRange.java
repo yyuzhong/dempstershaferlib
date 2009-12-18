@@ -17,8 +17,10 @@ public class DiscreteRange implements IRange {
 		return type;
 	}
 
-	public void addElement(DiscreteMeasure discreteMeasure) {
-		rangeElements.add(discreteMeasure.getValue());
+	public void addElement(Object value) {
+		if (rangeElements == null)
+			rangeElements = new ArrayList<Object>();
+		rangeElements.add(value);
 	}
 
 	@Override
