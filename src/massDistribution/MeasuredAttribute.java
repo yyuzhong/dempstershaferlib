@@ -1,37 +1,51 @@
+/**
+ * 
+ */
 package massDistribution;
 
 import interfaces.Attribute;
-import interfaces.IMeasure;
 
 /**
- * 
+ * A {@link MeasuredAttribute} has a Metric (IMeasure) an Identifier and a list
+ * of valid iRanges.
  * 
  * @author Elisa Costante
  * 
  */
 public class MeasuredAttribute extends Attribute {
 
-	protected IMeasure measure;
+	private Metric metric;
 
+	/**
+	 * @param identifier
+	 */
 	public MeasuredAttribute(String identifier) {
 		super(identifier);
 	}
 
 	/**
-	 * @return the measure.
+	 * @return the metric
 	 */
-	public IMeasure getMeasure() {
-		return measure;
+	public Metric getMetric() {
+		return this.metric;
 	}
 
 	/**
-	 * Set the field measure.
-	 * 
-	 * @param measure
-	 *            : The measure to set.
+	 * @param metric
+	 *            the metric to set
 	 */
-	public void setMeasure(IMeasure measure) {
-		this.measure = measure;
+	public void setMetric(Metric metric) {
+		this.metric = metric;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "{" + this.identifier + " - " + this.metric + ", " + "}";
 	}
 
 }

@@ -41,17 +41,37 @@ public class Hypothesis implements Comparable, Cloneable {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((this.identifier == null) ? 0 : this.identifier.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * Two Hypothesis are equals if they have the sae identifier
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		Hypothesis other = (Hypothesis) obj;
-		if (other.getIdentifier().equals(this.getIdentifier()))
+		if (this == obj)
 			return true;
-		else
+		if (obj == null)
 			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Hypothesis other = (Hypothesis) obj;
+		if (this.identifier == null) {
+			if (other.identifier != null)
+				return false;
+		} else if (!this.identifier.equals(other.identifier))
+			return false;
+		return true;
 	}
 
 	@Override

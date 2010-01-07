@@ -23,4 +23,15 @@ public interface IRange {
 	 */
 	public boolean containsValue(Object value);
 
+	/**
+	 * Return true if and only if this range includes the
+	 * <code>otherRange</code>.
+	 * 
+	 * @param otherRange
+	 *            : the range one wants to check if it is included.
+	 * @return true if <code>otherRange</code> is included in this range, false
+	 *         otherwise.
+	 */
+	public boolean include(IRange otherRange);
+
 }

@@ -17,7 +17,7 @@ import core.Hypothesis;
  * 
  */
 
-public class ClassificationAttribute extends Attribute {
+public class ClassificationAttribute extends MeasuredAttribute {
 
 	private double weight;
 
@@ -31,9 +31,16 @@ public class ClassificationAttribute extends Attribute {
 	}
 
 	/**
+	 * @param attributeIdentifier
+	 */
+	public ClassificationAttribute(String attributeIdentifier) {
+		super(attributeIdentifier);
+	}
+
+	/**
 	 * @return the weight
 	 */
-	public double getWeight() {
+	public Double getWeight() {
 		return weight;
 	}
 
@@ -48,7 +55,7 @@ public class ClassificationAttribute extends Attribute {
 	/**
 	 * @return the <code>map</code>
 	 */
-	public Hashtable<Hypothesis, ArrayList<IRange>> getMAp() {
+	public Hashtable<Hypothesis, ArrayList<IRange>> getMap() {
 		return map;
 	}
 
@@ -62,8 +69,11 @@ public class ClassificationAttribute extends Attribute {
 	}
 
 	public ArrayList<IRange> getRanges(Hypothesis hypothesis) {
-		if (map != null)
-			return map.get(hypothesis);
+		if (map != null) {
+			ArrayList<IRange> ranges = map.get(hypothesis);
+			return ranges;
+		}
+
 		else
 			return null;
 	}

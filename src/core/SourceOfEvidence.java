@@ -24,6 +24,8 @@ public abstract class SourceOfEvidence implements ISource {
 
 	private String name;
 
+	protected ArrayList<MeasuredAttribute> measuredAttributes;
+
 	public SourceOfEvidence(String name) {
 		this.name = name;
 	}
@@ -52,14 +54,12 @@ public abstract class SourceOfEvidence implements ISource {
 		this.frameOfDiscernment = frameOfDiscernment;
 		ArrayList<FocalElement> focalEvidence = new ArrayList<FocalElement>();
 
-		ArrayList<MeasuredAttribute> measureAttributesList = readMeasuredAttributes();
-
-		for (MeasuredAttribute measuredAttribute : measureAttributesList) {
+		for (MeasuredAttribute measuredAttribute : measuredAttributes) {
 
 			ClassificationAttribute classAttribute = classAttributeMap
 					.getClassificationAttribute(measuredAttribute
 							.getIdentifier());
-			IMeasure measuredValue = measuredAttribute.getMeasure();
+			IMeasure measuredValue = measuredAttribute.getMetric().getMeasure();
 
 			if (measuredValue.hasMeasuredValue()) {
 				Element element = computeElement(classAttribute, measuredValue);
@@ -142,7 +142,26 @@ public abstract class SourceOfEvidence implements ISource {
 		return element;
 	}
 
-	@Override
-	public abstract ArrayList<MeasuredAttribute> readMeasuredAttributes();
+	/**
+	 * @return the measuredAttributes
+	 */
+	public ArrayList<MeasuredAttribute> getMeasuredAttributes() {
+		return this.measuredAttributes;
+	}
 
+	/**
+	 * @param measuredAttributes
+	 *            the measuredAttributes to set
+	 */
+	public void setMeasuredAttributes(
+			ArrayList<MeasuredAttribute> measuredAttributes) {
+		this.measuredAttributes = measuredAttributes;
+	}
+
+	public void addMeasuredAttribute(MeasuredAttribute qAttribute) {
+		if (measuredAttributes == null)
+			measuredAttributes = new ArrayList<MeasuredAttribute>();
+		measuredAttributes.add(qAttribute);
+
+	}
 }
