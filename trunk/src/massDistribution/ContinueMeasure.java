@@ -11,9 +11,9 @@ public class ContinueMeasure implements IMeasure, Comparable<IMeasure> {
 	public static final ContinueMeasure NOT_MEASURED = new ContinueMeasure(
 			Double.NaN);
 
-	protected Comparable value;
+	protected Double value;
 
-	public ContinueMeasure(Comparable value) {
+	public ContinueMeasure(Double value) {
 		super();
 		this.value = value;
 	}
@@ -26,13 +26,13 @@ public class ContinueMeasure implements IMeasure, Comparable<IMeasure> {
 
 	@Override
 	public void setValue(Object value) {
-		this.value = (Comparable) value;
+		this.value = (Double) value;
 
 	}
 
 	@Override
 	public int compareTo(IMeasure o) {
-		return value.compareTo((ContinueMeasure) o.getValue());
+		return value.compareTo((Double) o.getValue());
 	}
 
 	/*

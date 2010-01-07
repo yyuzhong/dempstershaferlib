@@ -9,8 +9,8 @@ public class ContinueRange implements IRange {
 
 	private Comparable lowerBound;
 	private Comparable upperBound;
-	boolean openedLeft;
-	boolean openedRight;
+	private boolean openedLeft;
+	private boolean openedRight;
 
 	/**
 	 * Creates a range (<code>lowerBound</code>, <code>upperBound</code>). If
@@ -126,6 +126,47 @@ public class ContinueRange implements IRange {
 		else
 			rightBrace = "]";
 		return leftBrace + lowerBound + ", " + upperBound + rightBrace;
+	}
+
+	@Override
+	public boolean include(IRange otherRange) {
+		if (otherRange instanceof ContinueRange) {
+			ContinueRange other = (ContinueRange) otherRange;
+			if (this.containsValue(other.getLowerBound())
+					&& this.containsValue(other.getUpperBound()))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @return the openedLeft
+	 */
+	public boolean isOpenedLeft() {
+		return this.openedLeft;
+	}
+
+	/**
+	 * @param openedLeft
+	 *            the openedLeft to set
+	 */
+	public void setOpenedLeft(boolean openedLeft) {
+		this.openedLeft = openedLeft;
+	}
+
+	/**
+	 * @return the openedRight
+	 */
+	public boolean isOpenedRight() {
+		return this.openedRight;
+	}
+
+	/**
+	 * @param openedRight
+	 *            the openedRight to set
+	 */
+	public void setOpenedRight(boolean openedRight) {
+		this.openedRight = openedRight;
 	}
 
 }

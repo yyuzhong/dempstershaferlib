@@ -32,14 +32,51 @@ public class DiscreteRange implements IRange {
 			return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "DiscreteRange: {rangeElements=" + rangeElements + "}";
+		if (rangeElements == null || rangeElements.size() == 0) {
+			return "{}";
+		} else {
+			String range = "{";
+			for (int i = 0; i < rangeElements.size(); i++) {
+				range = range + rangeElements.get(i).toString();
+				if (i < rangeElements.size() - 1)
+					range = range + ";";
+			}
+			range = range + "}";
+			return range;
+
+		}
+	}
+
+	/**
+	 * @return the rangeElements
+	 */
+	public ArrayList<Object> getRangeElements() {
+		return this.rangeElements;
+	}
+
+	/**
+	 * @param rangeElements
+	 *            the rangeElements to set
+	 */
+	public void setRangeElements(ArrayList<Object> rangeElements) {
+		this.rangeElements = rangeElements;
+	}
+
+	@Override
+	public boolean include(IRange otherRange) {
+		if (otherRange instanceof DiscreteRange) {
+			DiscreteRange other = (DiscreteRange) otherRange;
+			ArrayList<Object> elements = other.getRangeElements();
+			for (Object element : elements) {
+				if (!this.containsValue(element))
+					return false;
+
+			}
+			return true;
+		}
+		return false;
 	}
 
 }

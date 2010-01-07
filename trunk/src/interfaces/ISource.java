@@ -29,11 +29,11 @@ public interface ISource {
 			FrameOfDiscernment frameOfDiscernment,
 			ClassAttributeMap classificationDB);
 
-	/**
-	 * Read the attribute collected and measured from the source.
-	 * 
-	 * @return a list of {@link MeasuredAttribute}.
-	 */
-	public ArrayList<MeasuredAttribute> readMeasuredAttributes();
+	public ArrayList<MeasuredAttribute> getMeasuredAttributes();
+
+	public void setMeasuredAttributes(
+			ArrayList<MeasuredAttribute> attributesList);
+
+	public void addMeasuredAttribute(MeasuredAttribute qAttribute);
 
 }

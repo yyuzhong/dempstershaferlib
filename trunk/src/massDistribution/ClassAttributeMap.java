@@ -9,7 +9,7 @@ public class ClassAttributeMap {
 	 * The key of the map is the identifier of the Attribute, the value is a
 	 * ClassificationAttribute
 	 */
-	private Hashtable<String, ClassificationAttribute> map;
+	private Hashtable<String, ClassificationAttribute> map = new Hashtable<String, ClassificationAttribute>();
 	private ArrayList<ClassificationAttribute> allAttributes;
 
 	/**
