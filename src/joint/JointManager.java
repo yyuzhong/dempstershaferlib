@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import massDistribution.JointMassDistribution;
 import massDistribution.MassDistribution;
-
 import core.Element;
 import core.FocalElement;
 import core.FrameOfDiscernment;
@@ -118,7 +117,7 @@ public class JointManager {
 			switch (operator.getValue()) {
 			case 1:
 				jointDistribution = average(m1, m2, masses);
-				jointDistribution.setOperator(JointOperator.AVERAGE.getName());
+				jointDistribution.setOperator(JointOperator.AVERAGE);
 				break;
 			case 2:
 				jointDistribution = dempster(m1, m2);
@@ -126,7 +125,7 @@ public class JointManager {
 					jointDistribution = dempster(jointDistribution, masses
 							.get(j));
 				}
-				jointDistribution.setOperator(JointOperator.DEMPSTER.getName());
+				jointDistribution.setOperator(JointOperator.DEMPSTER);
 				break;
 			case 3:
 				Double conflict = getConflict(m1.getBodyOfEvidence(), m2
@@ -144,7 +143,7 @@ public class JointManager {
 						jointDistribution = yager(jointDistribution, masses
 								.get(j), false, conflict, frame);
 				}
-				jointDistribution.setOperator(JointOperator.YAGER.getName());
+				jointDistribution.setOperator(JointOperator.YAGER);
 				break;
 			case 4:
 				jointDistribution = distance(masses);
@@ -156,8 +155,7 @@ public class JointManager {
 					jointDistribution = dempster(dempsterDistribution,
 							jointDistribution);
 				}
-				jointDistribution.setOperator(JointOperator.DISTANCE_EVIDENCE
-						.getName());
+				jointDistribution.setOperator(JointOperator.DISTANCE_EVIDENCE);
 				break;
 
 			default:
@@ -273,10 +271,17 @@ public class JointManager {
 				if (union != null)
 					unionSize = union.size();
 
-				// scalarProduct= Summation [el1*el2] . |intersect(el1,el2)| /
-				// |union(el1,el2)|
-				scalarProduct = scalarProduct
-						+ ((el1.getBpa() * el2.getBpa()) * ((double) (intersectionSize / unionSize)));
+				if (unionSize > 0) {
+
+					// TODO controllare che sia corretto
+
+					// scalarProduct= Summation [el1*el2] . |intersect(el1,el2)|
+					// /
+					// |union(el1,el2)|
+					scalarProduct = scalarProduct
+							+ ((el1.getBpa() * el2.getBpa()) * ((double) (intersectionSize / unionSize)));
+
+				}
 			}
 		}
 
@@ -403,7 +408,7 @@ public class JointManager {
 					Element intersection = Element.getIntersection(el1
 							.getElement(), el2.getElement());
 
-					if (intersection != null
+					if (!intersection.isEmptySet()
 							&& intersection.equals(jointElement.getElement())) {
 						bpa = bpa + (el1.getBpa() * el2.getBpa());
 					}
@@ -453,7 +458,7 @@ public class JointManager {
 					Element intersection = Element.getIntersection(el1
 							.getElement(), el2.getElement());
 
-					if (intersection != null
+					if (!intersection.isEmptySet()
 							&& intersection.equals(jointElement.getElement())) {
 						bpa = bpa + (el1.getBpa() * el2.getBpa());
 					}
@@ -482,7 +487,8 @@ public class JointManager {
 			for (int j = 0; j < m2Elements.size(); j++) {
 				FocalElement el2 = m2Elements.get(j);
 
-				if (Element.getIntersection(el1.getElement(), el2.getElement()) == null) {
+				if (Element.getIntersection(el1.getElement(), el2.getElement())
+						.isEmptySet()) {
 					conflict = conflict + (el1.getBpa() * el2.getBpa());
 				}
 			}

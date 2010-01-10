@@ -2,22 +2,22 @@ package massDistribution;
 
 import java.util.ArrayList;
 
+import joint.JointOperator;
 import core.FocalElement;
-
 
 public class JointMassDistribution extends MassDistribution {
 
-	protected String operator;
+	protected JointOperator operator;
 
 	public JointMassDistribution(ArrayList<FocalElement> elements) {
 		super(elements);
 	}
 
-	public String getOperator() {
+	public JointOperator getOperator() {
 		return operator;
 	}
 
-	public void setOperator(String operator) {
+	public void setOperator(JointOperator operator) {
 		this.operator = operator;
 	}
 

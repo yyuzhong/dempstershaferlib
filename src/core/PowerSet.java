@@ -38,4 +38,33 @@ public class PowerSet {
 		elements.add(element);
 	}
 
+	/**
+	 * @return the size of power set or -1 if it has null elements.
+	 */
+	public int size() {
+		if (elements != null)
+			return elements.size();
+		else
+			return -1;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		if (this.elements == null) {
+			return "{}";
+		} else {
+			String powerSetToString = "{";
+			for (int i = 0; i < elements.size(); i++) {
+				powerSetToString = powerSetToString + elements.get(i);
+			}
+			powerSetToString = powerSetToString + "}";
+			return powerSetToString;
+		}
+	}
+
 }

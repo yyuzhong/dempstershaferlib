@@ -11,9 +11,9 @@ public class ContinueMeasure implements IMeasure, Comparable<IMeasure> {
 	public static final ContinueMeasure NOT_MEASURED = new ContinueMeasure(
 			Double.NaN);
 
-	protected Double value;
+	protected Comparable value;
 
-	public ContinueMeasure(Double value) {
+	public ContinueMeasure(Comparable value) {
 		super();
 		this.value = value;
 	}
@@ -42,7 +42,10 @@ public class ContinueMeasure implements IMeasure, Comparable<IMeasure> {
 	 */
 	@Override
 	public String toString() {
-		return "" + value;
+		if (hasMeasuredValue())
+			return "" + value;
+		else
+			return "NOT_MEASURED";
 	}
 
 	@Override

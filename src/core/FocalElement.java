@@ -105,8 +105,8 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 		double pl = 0;
 		for (FocalElement focalElement : bodyOfEvidence) {
 
-			if (Element.getIntersection(focalElement.getElement(), this
-					.getElement()) == null) {
+			if (Element.getIntersection(focalElement.getElement(),
+					this.getElement()).isEmptySet()) {
 				pl = pl + focalElement.getBpa();
 			}
 		}
