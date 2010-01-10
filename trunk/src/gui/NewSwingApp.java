@@ -20,7 +20,6 @@ import javax.swing.table.TableModel;
 
 import massDistribution.JointMassDistribution;
 import massDistribution.MassDistribution;
-
 import core.FocalElement;
 
 /**
@@ -97,7 +96,7 @@ public class NewSwingApp extends javax.swing.JFrame {
 		for (int i = 0; i < rows; i++) {
 			JointMassDistribution massDistribution = (JointMassDistribution) jointResults
 					.get(i);
-			data[i][0] = massDistribution.getOperator();
+			data[i][0] = massDistribution.getOperator().getName();
 			int maxColumn = 0;
 
 			for (int j = 0; j < massDistribution.getBodyOfEvidence().size(); j++) {

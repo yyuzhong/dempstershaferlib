@@ -42,7 +42,10 @@ public class DiscreteMeasure implements IMeasure {
 	 */
 	@Override
 	public String toString() {
-		return "DiscreteMeasure: " + value;
+		if (hasMeasuredValue())
+			return "" + value;
+		else
+			return "NOT_MEASURED";
 	}
 
 	@Override

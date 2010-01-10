@@ -2,6 +2,8 @@ package core;
 
 import java.util.ArrayList;
 
+import utilities.PowerSetIterator;
+
 /**
  * A FrameOfDIscernemt is a set of Hypothesis. Different Sources must have the
  * same FrameOfDiscernemt to be aggregate.
@@ -27,15 +29,45 @@ public class FrameOfDiscernment {
 	}
 
 	/**
-	 * Compute and returns the power set of the specific FrameOfDiscernment
+	 * Compute and returns the power set of the specific FrameOfDiscernment or
+	 * null if there is any element into the FrameOfDIscernment.<br>
+	 * 
+	 * A power Set is "The set of all the subsets of a set"
+	 * 
+	 * Example: If we have a set {a,b,c}:
+	 * 
+	 * Then a subset of it could be {a} or {b}, or {a,c}, and so on, And {a,b,c}
+	 * is also a subset of {a,b,c} And the empty set {} is also a subset of
+	 * {a,b,c}
+	 * 
+	 * So all the subsets together make the Power Set:
+	 * 
+	 * P(S) = { {}, {a}, {b}, {c}, {a, b}, {a, c}, {b, c}, {a, b, c} }
 	 * 
 	 * @return the <code>powerSet</code> derived from the FrameOfDiscernment
 	 */
 
-	// TODO
+	@SuppressWarnings("unchecked")
 	public PowerSet getPowerSet() {
 
-		return null;
+		int n = allHypothesis.size();
+		if (n > 0) {
+			PowerSet powerSet = new PowerSet();
+
+			PowerSetIterator powerSetIter = new PowerSetIterator(allHypothesis);
+			while (powerSetIter.hasNext()) {
+				ArrayList<Hypothesis> object = (ArrayList<Hypothesis>) powerSetIter
+						.next();
+				powerSet.addElement(new Element(object));
+
+			}
+			powerSet.addElement(new Element(null));
+			return powerSet;
+
+		} else {
+			return null;
+
+		}
 
 	}
 

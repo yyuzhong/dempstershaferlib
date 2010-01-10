@@ -1,6 +1,7 @@
 package utilities;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 /**
  * This class is a Wrapper to the {@link Double} class which has only 5
@@ -39,5 +40,15 @@ public class DoubleUtility {
 
 		} else
 			return null;
+	}
+
+	public String doubleToString(int numberOfDigit, double number) {
+		NumberFormat formatter = NumberFormat.getNumberInstance();
+
+		// si imposta il numero massimo di cifre decimali
+		// (2 in questo esempio)
+		formatter.setMaximumFractionDigits(numberOfDigit);
+		return formatter.format(number);
+
 	}
 }

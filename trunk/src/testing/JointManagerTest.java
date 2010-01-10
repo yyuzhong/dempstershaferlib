@@ -5,13 +5,12 @@ package testing;
 
 import java.util.ArrayList;
 
-import massDistribution.JointMassDistribution;
-import massDistribution.MassDistribution;
-
 import joint.JointManager;
 import joint.JointOperator;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+import massDistribution.JointMassDistribution;
+import massDistribution.MassDistribution;
 import core.FrameOfDiscernment;
 import exception.JointNotPossibleException;
 import exception.MassDistributionNotValidException;
@@ -75,7 +74,7 @@ public class JointManagerTest extends TestCase {
 				masses, frame);
 		JointMassDistribution dempsterResult = ReadTestUtility
 				.readDempsterResult(filename);
-		dempsterResult.setOperator(JointOperator.DEMPSTER.getName());
+		dempsterResult.setOperator(JointOperator.DEMPSTER);
 
 		try {
 			assertEquals(demDistribution, dempsterResult);
@@ -103,7 +102,7 @@ public class JointManagerTest extends TestCase {
 				masses, frame);
 		JointMassDistribution yagerResult = ReadTestUtility
 				.readYagerResult(filename);
-		yagerResult.setOperator(JointOperator.YAGER.getName());
+		yagerResult.setOperator(JointOperator.YAGER);
 
 		try {
 			assertEquals(yagerDistribution, yagerResult);
@@ -128,7 +127,7 @@ public class JointManagerTest extends TestCase {
 				masses, frame);
 		JointMassDistribution averageResult = ReadTestUtility
 				.readAverageResult(filename);
-		averageResult.setOperator(JointOperator.AVERAGE.getName());
+		averageResult.setOperator(JointOperator.AVERAGE);
 
 		try {
 			assertEquals(averageDistribution, averageResult);
@@ -156,7 +155,7 @@ public class JointManagerTest extends TestCase {
 				.distanceEvidenceJoint(masses, frame);
 		JointMassDistribution distanceResult = ReadTestUtility
 				.readDistanceResult(filename);
-		distanceResult.setOperator(JointOperator.DISTANCE_EVIDENCE.getName());
+		distanceResult.setOperator(JointOperator.DISTANCE_EVIDENCE);
 		try {
 			assertEquals(distanceDistribution, distanceResult);
 		} catch (AssertionFailedError e) {

@@ -60,19 +60,11 @@ public abstract class Attribute {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		Attribute otherAttr = (Attribute) obj;
+		if (this.identifier.equalsIgnoreCase(otherAttr.identifier))
 			return true;
-		if (obj == null)
+		else
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Attribute other = (Attribute) obj;
-		if (this.identifier == null) {
-			if (other.identifier != null)
-				return false;
-		} else if (!this.identifier.equals(other.identifier))
-			return false;
-		return true;
 	}
 
 }

@@ -53,21 +53,30 @@ public abstract class SourceOfEvidence implements ISource {
 
 		this.frameOfDiscernment = frameOfDiscernment;
 		ArrayList<FocalElement> focalEvidence = new ArrayList<FocalElement>();
+		// La massa si calcola per gli attributi presenti nella
+		// classAttributeMap
+		for (ClassificationAttribute classificationAttribute : classAttributeMap
+				.getAllAttributes()) {
 
-		for (MeasuredAttribute measuredAttribute : measuredAttributes) {
+			if (measuredAttributes.contains(classificationAttribute)) {
+				int indexOfAttribute = measuredAttributes
+						.indexOf(classificationAttribute);
+				MeasuredAttribute measuredFromSourceAttribute = measuredAttributes
+						.get(indexOfAttribute);
 
-			ClassificationAttribute classAttribute = classAttributeMap
-					.getClassificationAttribute(measuredAttribute
-							.getIdentifier());
-			IMeasure measuredValue = measuredAttribute.getMetric().getMeasure();
+				IMeasure measuredValue = measuredFromSourceAttribute
+						.getMetric().getMeasure();
 
-			if (measuredValue.hasMeasuredValue()) {
-				Element element = computeElement(classAttribute, measuredValue);
+				if (measuredValue.hasMeasuredValue()) {
+					Element element = computeElement(classificationAttribute,
+							measuredValue);
 
-				FocalElement focalElement = new FocalElement(element,
-						classAttribute.getWeight());
+					FocalElement focalElement = new FocalElement(element,
+							classificationAttribute.getWeight());
 
-				focalEvidence.add(focalElement);
+					focalEvidence.add(focalElement);
+				}
+
 			}
 
 		}
@@ -111,7 +120,10 @@ public abstract class SourceOfEvidence implements ISource {
 	}
 
 	/**
-	 * Returns the {@link Element} or null
+	 * Given a measured value for a classattribute returns the element with the
+	 * relatives Hypothesis. If no Hypothesis match with the measured value an
+	 * Element with the empty set as hyphotesis is returned Returns the
+	 * {@link Element} or null
 	 * 
 	 * @param classAttribute
 	 * @param measuredValue
@@ -135,10 +147,8 @@ public abstract class SourceOfEvidence implements ISource {
 					}
 				}
 			}
-		}
-
-		if (element.getHypothesies() == null)
-			System.out.println(classAttribute);
+		}// TODO vedere se è corretto far ritornare l'elemento con l'insieme
+			// vuoto delle ipotesi.
 		return element;
 	}
 

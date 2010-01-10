@@ -3,6 +3,7 @@ package massDistribution;
 import java.util.ArrayList;
 
 import utilities.DoubleUtility;
+import core.Element;
 import core.FocalElement;
 import core.FrameOfDiscernment;
 
@@ -199,6 +200,24 @@ public class MassDistribution implements Cloneable {
 	 */
 	public void setFrameOfDiscernment(FrameOfDiscernment frameOfDiscernment) {
 		this.frameOfDiscernment = frameOfDiscernment;
+	}
+
+	/**
+	 * Returns the {@link FocalElement} given a String wich rapresents the
+	 * element or null if no match is found.
+	 * 
+	 * @param element
+	 * @return va focal element which match with the element or null if any
+	 *         match is found.
+	 */
+	public FocalElement getFocalElement(String element) {
+		for (int i = 0; i < bodyOfEvidence.size(); i++) {
+			FocalElement focalElement = bodyOfEvidence.get(i);
+			Element thisElement = focalElement.getElement();
+			if (thisElement.toString().equalsIgnoreCase(element))
+				return focalElement;
+		}
+		return null;
 	}
 
 }

@@ -19,6 +19,7 @@ public class Hypothesis implements Comparable, Cloneable {
 	}
 
 	public Hypothesis(String identifier) {
+		super();
 		this.identifier = identifier;
 	}
 
