@@ -36,4 +36,8 @@ public interface ISource {
 
 	public void addMeasuredAttribute(MeasuredAttribute qAttribute);
 
+	public String getIdentifierName();
+
+	public void setIdentifierName(String name);
+
 }

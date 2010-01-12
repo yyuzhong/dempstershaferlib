@@ -20,9 +20,9 @@ import massDistribution.MeasuredAttribute;
  */
 public abstract class SourceOfEvidence implements ISource {
 
-	private FrameOfDiscernment frameOfDiscernment;
+	protected FrameOfDiscernment frameOfDiscernment;
 
-	private String name;
+	protected String name;
 
 	protected ArrayList<MeasuredAttribute> measuredAttributes;
 
@@ -30,11 +30,11 @@ public abstract class SourceOfEvidence implements ISource {
 		this.name = name;
 	}
 
-	public String getName() {
+	public String getIdentifierName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setIdentifierName(String name) {
 		this.name = name;
 	}
 
@@ -148,7 +148,7 @@ public abstract class SourceOfEvidence implements ISource {
 				}
 			}
 		}// TODO vedere se è corretto far ritornare l'elemento con l'insieme
-			// vuoto delle ipotesi.
+		// vuoto delle ipotesi.
 		return element;
 	}
 
