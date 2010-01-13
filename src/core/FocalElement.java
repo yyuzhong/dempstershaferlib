@@ -148,13 +148,11 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 				+ "]";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 * 
-	 * Two Focal element are equals if the yhave the same element and the same
-	 * bpa.
+	 *      Two Focal element are equals if they have the same element and the
+	 *      same bpa.
 	 */
 	@Override
 	public boolean equals(Object obj) {
