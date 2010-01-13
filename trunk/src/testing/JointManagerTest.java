@@ -30,11 +30,6 @@ public class JointManagerTest extends TestCase {
 	 */
 	public JointManagerTest(String name) {
 		super(name);
-
-		masses = new ArrayList<MassDistribution>();
-		frame = ReadTestUtility.readFrameOfDiscernment(filename);
-
-		ReadTestUtility.readInput(filename, masses);
 	}
 
 	/*
@@ -44,9 +39,7 @@ public class JointManagerTest extends TestCase {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		masses = null;
 		masses = new ArrayList<MassDistribution>();
-
 		ReadTestUtility.readInput(filename, masses);
 
 	}
@@ -79,9 +72,10 @@ public class JointManagerTest extends TestCase {
 		try {
 			assertEquals(demDistribution, dempsterResult);
 		} catch (AssertionFailedError e) {
-			System.out.println("Oracolo: " + dempsterResult.toString());
-			System.out
-					.println("Dempster result: " + demDistribution.toString());
+			System.out.println("Oracolo: "
+					+ MassDistribution.order(dempsterResult).toString());
+			System.out.println("Dempster result: "
+					+ MassDistribution.order(demDistribution).toString());
 
 		}
 
@@ -107,8 +101,10 @@ public class JointManagerTest extends TestCase {
 		try {
 			assertEquals(yagerDistribution, yagerResult);
 		} catch (AssertionFailedError e) {
-			System.out.println("Oracolo: " + yagerResult.toString());
-			System.out.println("Yager result: " + yagerDistribution.toString());
+			System.out.println("Oracolo: "
+					+ MassDistribution.order(yagerResult).toString());
+			System.out.println("Yager result: "
+					+ MassDistribution.order(yagerDistribution).toString());
 
 		}
 
@@ -133,9 +129,10 @@ public class JointManagerTest extends TestCase {
 			assertEquals(averageDistribution, averageResult);
 
 		} catch (AssertionFailedError e) {
-			System.out.println("Oracolo: " + averageResult.toString());
+			System.out.println("Oracolo: "
+					+ MassDistribution.order(averageResult).toString());
 			System.out.println("Average result: "
-					+ averageDistribution.toString());
+					+ MassDistribution.order(averageDistribution).toString());
 
 		}
 
@@ -159,9 +156,10 @@ public class JointManagerTest extends TestCase {
 		try {
 			assertEquals(distanceDistribution, distanceResult);
 		} catch (AssertionFailedError e) {
-			System.out.println("Oracolo: " + distanceResult.toString());
+			System.out.println("Oracolo: "
+					+ MassDistribution.order(distanceResult).toString());
 			System.out.println("Evidence result: "
-					+ distanceDistribution.toString());
+					+ MassDistribution.order(distanceDistribution).toString());
 
 		}
 

@@ -10,7 +10,6 @@ import java.util.StringTokenizer;
 
 import massDistribution.JointMassDistribution;
 import massDistribution.MassDistribution;
-
 import core.Element;
 import core.FocalElement;
 import core.FrameOfDiscernment;
@@ -18,6 +17,13 @@ import core.Hypothesis;
 
 public class ReadTestUtility {
 
+	/**
+	 * Read the input from the file<code>filename</code> and put the
+	 * {@link MassDistribution} into the <code>mass</code> list
+	 * 
+	 * @param filename
+	 * @param masses
+	 */
 	public static void readInput(String filename,
 			ArrayList<MassDistribution> masses) {
 
@@ -48,6 +54,13 @@ public class ReadTestUtility {
 
 	}
 
+	/**
+	 * Return a {@link MassDistribution} parsing the <code>readLine</code> or
+	 * null if a exception is found.
+	 * 
+	 * @param readLine
+	 * @return
+	 */
 	private static MassDistribution parseMassDistribution(String readLine) {
 		readLine = readLine.replaceAll("\\{", "");
 		readLine = readLine.replaceAll("\\}", "");
