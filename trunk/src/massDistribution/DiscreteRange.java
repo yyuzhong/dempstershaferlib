@@ -1,12 +1,13 @@
 package massDistribution;
 
+import interfaces.IMeasure;
 import interfaces.IRange;
 
 import java.util.ArrayList;
 
 public class DiscreteRange implements IRange {
 
-	private ArrayList<Object> rangeElements = new ArrayList<Object>();
+	private ArrayList<DiscreteMeasure> rangeElements = new ArrayList<DiscreteMeasure>();
 
 	private static final MeasureType type = MeasureType.DISCRETE;
 
@@ -17,16 +18,23 @@ public class DiscreteRange implements IRange {
 		return type;
 	}
 
-	public void addElement(Object value) {
+	public void addElement(DiscreteMeasure value) {
 		if (rangeElements == null)
-			rangeElements = new ArrayList<Object>();
+			rangeElements = new ArrayList<DiscreteMeasure>();
 		rangeElements.add(value);
 	}
 
+	/**
+	 * Returns true if this cotains the {@link DiscreteMeasure} passed as
+	 * argoument.
+	 * 
+	 * @see interfaces.IRange#containsValue(java.lang.Object)
+	 */
 	@Override
-	public boolean containsValue(Object value) {
-		if (rangeElements != null) {
-			return rangeElements.contains(value);
+	public boolean containsValue(IMeasure measure) {
+		if (measure != null && rangeElements != null) {
+			DiscreteMeasure discreteMeasure = (DiscreteMeasure) measure;
+			return rangeElements.contains(discreteMeasure);
 
 		} else
 			return false;
@@ -52,7 +60,7 @@ public class DiscreteRange implements IRange {
 	/**
 	 * @return the rangeElements
 	 */
-	public ArrayList<Object> getRangeElements() {
+	public ArrayList<DiscreteMeasure> getRangeElements() {
 		return this.rangeElements;
 	}
 
@@ -60,7 +68,7 @@ public class DiscreteRange implements IRange {
 	 * @param rangeElements
 	 *            the rangeElements to set
 	 */
-	public void setRangeElements(ArrayList<Object> rangeElements) {
+	public void setRangeElements(ArrayList<DiscreteMeasure> rangeElements) {
 		this.rangeElements = rangeElements;
 	}
 
@@ -68,8 +76,8 @@ public class DiscreteRange implements IRange {
 	public boolean include(IRange otherRange) {
 		if (otherRange instanceof DiscreteRange) {
 			DiscreteRange other = (DiscreteRange) otherRange;
-			ArrayList<Object> elements = other.getRangeElements();
-			for (Object element : elements) {
+			ArrayList<DiscreteMeasure> elements = other.getRangeElements();
+			for (DiscreteMeasure element : elements) {
 				if (!this.containsValue(element))
 					return false;
 

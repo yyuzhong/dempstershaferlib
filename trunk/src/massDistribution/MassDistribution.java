@@ -50,6 +50,22 @@ public class MassDistribution implements Cloneable {
 			return false;
 	}
 
+	/**
+	 * Returns true if and only if all the bpa of the mass is associeted to the
+	 * universal set.
+	 * 
+	 * @return
+	 */
+	public boolean hasTotalLackOfKnowledge() {
+		Element universalSet = frameOfDiscernment.getUniversalSet();
+		FocalElement universalFocalElement = getFocalElement(universalSet
+				.toString());
+		if (DoubleUtility.areEqualsDouble(universalFocalElement.getBpa(), 1.0,
+				DoubleUtility.EPSILON))
+			return true;
+		return false;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

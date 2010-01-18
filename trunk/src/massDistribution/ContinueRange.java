@@ -1,5 +1,6 @@
 package massDistribution;
 
+import interfaces.IMeasure;
 import interfaces.IRange;
 
 @SuppressWarnings("unchecked")
@@ -75,10 +76,17 @@ public class ContinueRange implements IRange {
 		this.upperBound = upperBound;
 	}
 
+	/**
+	 * Returns true if this cotains the {@link ContinueMeasure} passed as
+	 * argoument.
+	 * 
+	 * @see interfaces.IRange#containsValue(java.lang.Object)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean containsValue(Object value) {
-		Comparable comparableValue = (Comparable) value;
+	public boolean containsValue(IMeasure measure) {
+		ContinueMeasure continuMeasure = (ContinueMeasure) measure;
+		Comparable comparableValue = (Comparable) continuMeasure.getValue();
 		if (openedLeft && openedRight) {
 			// (a,b)
 			if (comparableValue.compareTo(lowerBound) > 0
@@ -132,8 +140,9 @@ public class ContinueRange implements IRange {
 	public boolean include(IRange otherRange) {
 		if (otherRange instanceof ContinueRange) {
 			ContinueRange other = (ContinueRange) otherRange;
-			if (this.containsValue(other.getLowerBound())
-					&& this.containsValue(other.getUpperBound()))
+			if (this.containsValue(new ContinueMeasure(other.getLowerBound()))
+					&& this.containsValue(new ContinueMeasure(other
+							.getUpperBound())))
 				return true;
 		}
 		return false;

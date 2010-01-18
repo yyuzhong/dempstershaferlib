@@ -141,8 +141,7 @@ public abstract class SourceOfEvidence implements ISource {
 
 			if (allRange != null) {
 				for (IRange iRange : allRange) {
-					if (iRange.containsValue((Comparable) measuredValue
-							.getValue())) {
+					if (iRange.containsValue(measuredValue)) {
 						element.addHypothesis(hypothesis);
 					}
 				}

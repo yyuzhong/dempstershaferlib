@@ -128,21 +128,26 @@ public class JointManager {
 				jointDistribution.setOperator(JointOperator.DEMPSTER);
 				break;
 			case 3:
+				// Yager
+				// m(A)= m1(B)*m2(C) if B.intersect(c)=A
 				Double conflict = getConflict(m1.getBodyOfEvidence(), m2
 						.getBodyOfEvidence());
-				jointDistribution = yager(m1, m2, false, conflict, frame);
+				jointDistribution = yager(m1, m2, conflict, frame);
 				for (int j = i; j < masses.size(); j++) {
 					conflict = conflict
 							+ getConflict(
 									jointDistribution.getBodyOfEvidence(),
 									masses.get(j).getBodyOfEvidence());
-					if (j == (masses.size() - 1))
-						jointDistribution = yager(jointDistribution, masses
-								.get(j), true, conflict, frame);
-					else
-						jointDistribution = yager(jointDistribution, masses
-								.get(j), false, conflict, frame);
+
+					jointDistribution = yager(jointDistribution, masses.get(j),
+							conflict, frame);
 				}
+
+				Element universalSet = frame.getUniversalSet();
+
+				jointDistribution.getBodyOfEvidence().add(
+						new FocalElement(universalSet, conflict));
+
 				jointDistribution.setOperator(JointOperator.YAGER);
 				break;
 			case 4:
@@ -384,7 +389,7 @@ public class JointManager {
 	}
 
 	private static JointMassDistribution yager(MassDistribution m1,
-			MassDistribution m2, boolean last, Double conflictTransfer,
+			MassDistribution m2, Double conflictTransfer,
 			FrameOfDiscernment frame) throws MassDistributionNotValidException {
 		ArrayList<FocalElement> m1Elements = m1.getBodyOfEvidence();
 		ArrayList<FocalElement> m2Elements = m2.getBodyOfEvidence();
@@ -418,12 +423,6 @@ public class JointManager {
 			jointElement.setBpa(bpa);
 		}
 
-		if (last) {
-			Element universalSet = frame.getUniversalSet();
-
-			jointElements.add(new FocalElement(universalSet, conflictTransfer));
-
-		}
 		JointMassDistribution jointMass = new JointMassDistribution(
 				jointElements);
 		return jointMass;

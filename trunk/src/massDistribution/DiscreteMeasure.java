@@ -12,6 +12,8 @@ public class DiscreteMeasure implements IMeasure {
 
 	protected Object value;
 
+	protected DiscreteType discreteType;
+
 	public DiscreteMeasure(Object value) {
 		super();
 		this.value = value;
@@ -28,11 +30,40 @@ public class DiscreteMeasure implements IMeasure {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((this.value == null) ? 0 : this.value.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		DiscreteMeasure other = (DiscreteMeasure) obj;
-		return value.equals(other.getValue());
-
+		if (this.value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!this.value.equals(other.value))
+			return false;
+		return true;
 	}
 
 	/*
@@ -54,5 +85,20 @@ public class DiscreteMeasure implements IMeasure {
 			return false;
 		else
 			return true;
+	}
+
+	/**
+	 * @return the discreteType
+	 */
+	public DiscreteType getDiscreteType() {
+		return this.discreteType;
+	}
+
+	/**
+	 * @param discreteType
+	 *            the discreteType to set
+	 */
+	public void setDiscreteType(DiscreteType discreteType) {
+		this.discreteType = discreteType;
 	}
 }

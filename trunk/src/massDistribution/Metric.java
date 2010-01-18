@@ -19,6 +19,7 @@ public class Metric {
 	private IMeasure measure;
 	private IMeasure bestCase;
 	private IMeasure worstCase;
+	private IMeasure mediumCase;
 	private ArrayList<IRange> validRanges;
 
 	public Metric(String name, MetricType type) {
@@ -134,4 +135,64 @@ public class Metric {
 		this.worstCase = worstCase;
 	}
 
+	/**
+	 * @return the mediumCase
+	 */
+	public IMeasure getMediumCase() {
+		return this.mediumCase;
+	}
+
+	/**
+	 * @param mediumCase
+	 *            the mediumCase to set
+	 */
+	public void setMediumCase(IMeasure mediumCase) {
+		this.mediumCase = mediumCase;
+	}
+
+	/**
+	 * Return the number of element which compose this metric for a
+	 * discreteType. if no validRanges is defined it returns -1.
+	 * 
+	 * @return
+	 */
+	public int getElementsSize() {
+		if (this.type != null && this.type.equals(MetricType.DISCRETE)
+				&& validRanges != null) {
+			int size = 0;
+			for (int i = 0; i < validRanges.size(); i++) {
+				DiscreteRange range = (DiscreteRange) validRanges.get(i);
+				int elementsSize = range.getRangeElements().size();
+				size = size + elementsSize;
+			}
+			return size;
+		} else
+			return -1;
+	}
+
+	/**
+	 * Returns true if the {@link IMeasure} is compliant with the Metric, false
+	 * otherwise.
+	 * 
+	 * @param measure
+	 * @return true if the <code>measure</code> is compliant with the Metric,
+	 *         false otherwise.
+	 */
+	public boolean isMeasureValidForTheMetric(IMeasure measure) {
+		if (validRanges != null && measure != null) {
+			if (this.type.equals(MetricType.INTEGER)
+					|| this.type.equals(MetricType.REAL))
+				measure = (ContinueMeasure) measure;
+			else
+				measure = (DiscreteMeasure) measure;
+
+			for (int i = 0; i < validRanges.size(); i++) {
+				IRange range = validRanges.get(i);
+				if (range.containsValue(measure))
+					return true;
+			}
+
+		}
+		return false;
+	}
 }
