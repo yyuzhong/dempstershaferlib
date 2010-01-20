@@ -84,6 +84,13 @@ public abstract class SourceOfEvidence implements ISource {
 		return computeMass(focalEvidence);
 	}
 
+	/**
+	 * Return the {@link MassDistribution} for the body of evidence
+	 * <code>focalEvidence</code>.
+	 * 
+	 * @param focalEvidence
+	 * @return
+	 */
 	private MassDistribution computeMass(ArrayList<FocalElement> focalEvidence) {
 		MassDistribution mass = new MassDistribution();
 
@@ -109,9 +116,9 @@ public abstract class SourceOfEvidence implements ISource {
 		mass = new MassDistribution(bodyOfEvidence);
 
 		if (!mass.isValid()) {
-			FocalElement universalSet = new FocalElement(new Element(
-					frameOfDiscernment.getHipothesies()), (double) (1.0 - mass
-					.getTotalBpa()));
+			// add the unknown mass to the universal set
+			FocalElement universalSet = new FocalElement(frameOfDiscernment
+					.getUniversalSet(), (double) (1.0 - mass.getTotalBpa()));
 			mass.addElement(universalSet);
 		}
 		MassDistribution.setBodyOfEvidence(mass);
