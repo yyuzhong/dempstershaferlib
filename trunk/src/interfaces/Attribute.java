@@ -5,7 +5,7 @@ package interfaces;
  * @author Elisa Costante
  * 
  */
-public abstract class Attribute {
+public abstract class Attribute implements Cloneable {
 
 	protected String identifier;
 

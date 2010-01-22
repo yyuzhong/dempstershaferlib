@@ -57,12 +57,15 @@ public class MassDistribution implements Cloneable {
 	 * @return
 	 */
 	public boolean hasTotalLackOfKnowledge() {
-		Element universalSet = frameOfDiscernment.getUniversalSet();
-		FocalElement universalFocalElement = getFocalElement(universalSet
-				.toString());
-		if (DoubleUtility.areEqualsDouble(universalFocalElement.getBpa(), 1.0,
-				DoubleUtility.EPSILON))
-			return true;
+		if (frameOfDiscernment != null) {
+			Element universalSet = frameOfDiscernment.getUniversalSet();
+			FocalElement universalFocalElement = getFocalElement(universalSet
+					.toString());
+			if (DoubleUtility.areEqualsDouble(universalFocalElement.getBpa(),
+					1.0, DoubleUtility.EPSILON))
+				return true;
+
+		}
 		return false;
 	}
 

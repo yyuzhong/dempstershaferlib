@@ -23,7 +23,7 @@ public class JointMassDistribution extends MassDistribution {
 
 	@Override
 	public String toString() {
-		return "Elements [" + bodyOfEvidence + "]; [operator=" + operator + "]";
+		return "[" + bodyOfEvidence + "]; [operator=" + operator + "]";
 	}
 
 	/*

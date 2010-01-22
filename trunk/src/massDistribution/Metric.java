@@ -195,4 +195,32 @@ public class Metric {
 		}
 		return false;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		if (this != null) {
+			Metric cloned = new Metric(this.name, this.type);
+			if (this.bestCase != null)
+				cloned.setBestCase((IMeasure) bestCase.clone());
+			if (this.mediumCase != null)
+				cloned.setMediumCase((IMeasure) mediumCase.clone());
+			if (this.worstCase != null)
+				cloned.setWorstCase((IMeasure) worstCase.clone());
+			if (this.measure != null)
+				cloned.setMeasure((IMeasure) measure.clone());
+			if (validRanges != null) {
+				for (IRange range : validRanges) {
+					cloned.addRange((IRange) range.clone());
+				}
+
+			}
+			return cloned;
+		}
+		return null;
+	}
 }

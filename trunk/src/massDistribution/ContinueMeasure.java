@@ -53,4 +53,17 @@ public class ContinueMeasure implements IMeasure, Comparable<IMeasure> {
 		return !value.equals(NOT_MEASURED);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		if (this != null && this.value != null) {
+			ContinueMeasure cloned = new ContinueMeasure(this.value);
+			return cloned;
+		} else
+			return this;
+	}
 }

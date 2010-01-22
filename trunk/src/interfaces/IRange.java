@@ -2,7 +2,7 @@ package interfaces;
 
 import massDistribution.MeasureType;
 
-public interface IRange {
+public interface IRange extends Cloneable {
 
 	/**
 	 * Return a {@link MeasureType} which represents the type of the IRange.
@@ -33,5 +33,7 @@ public interface IRange {
 	 *         otherwise.
 	 */
 	public boolean include(IRange otherRange);
+
+	public Object clone();
 
 }
