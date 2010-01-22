@@ -1,6 +1,6 @@
 package interfaces;
 
-public interface IMeasure {
+public interface IMeasure extends Cloneable {
 
 	/**
 	 * Returns the value of the measure.
@@ -23,5 +23,7 @@ public interface IMeasure {
 	 *         different from <code>NOT_MEASURED</code>, false otherwise.
 	 */
 	public boolean hasMeasuredValue();
+
+	public Object clone() throws CloneNotSupportedException;
 
 }

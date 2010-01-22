@@ -87,4 +87,23 @@ public class DiscreteRange implements IRange {
 		return false;
 	}
 
+	@Override
+	public Object clone() {
+		if (this != null) {
+			DiscreteRange cloned = new DiscreteRange();
+			if (rangeElements != null) {
+				for (DiscreteMeasure measure : rangeElements) {
+					try {
+						cloned.addElement((DiscreteMeasure) measure.clone());
+					} catch (CloneNotSupportedException e) {
+						e.printStackTrace();
+					}
+
+				}
+			}
+			return cloned;
+		} else
+			return null;
+	}
+
 }

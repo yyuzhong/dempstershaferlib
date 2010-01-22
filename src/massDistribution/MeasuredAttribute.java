@@ -48,4 +48,21 @@ public class MeasuredAttribute extends Attribute {
 		return "{" + this.identifier + " - " + this.metric + ", " + "}";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		if (this.identifier != null) {
+			MeasuredAttribute cloned = new MeasuredAttribute(this.identifier);
+			if (this.getMetric() != null) {
+				cloned.setMetric((Metric) metric.clone());
+			}
+			return cloned;
+		}
+		return null;
+	}
+
 }

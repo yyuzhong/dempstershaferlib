@@ -101,4 +101,20 @@ public class DiscreteMeasure implements IMeasure {
 	public void setDiscreteType(DiscreteType discreteType) {
 		this.discreteType = discreteType;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		if (this != null && this.value != null) {
+			DiscreteMeasure cloned = new DiscreteMeasure(this.value);
+			cloned.setDiscreteType(this.discreteType);
+			return cloned;
+		} else
+			return this;
+	}
+
 }

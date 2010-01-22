@@ -178,4 +178,14 @@ public class ContinueRange implements IRange {
 		this.openedRight = openedRight;
 	}
 
+	@Override
+	public Object clone() {
+		if (this != null) {
+			ContinueRange cloned = new ContinueRange(this.lowerBound,
+					this.upperBound, this.openedLeft, this.openedRight);
+			return cloned;
+
+		} else
+			return null;
+	}
 }
