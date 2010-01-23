@@ -92,7 +92,7 @@ public class JointManager {
 			throws JointNotPossibleException, MassDistributionNotValidException {
 		if (masses.size() > 1)
 
-			return applyOperator(masses, JointOperator.DISTANCE_EVIDENCE, frame);
+			return applyOperator(masses, JointOperator.DISTANCE, frame);
 
 		else
 			throw new JointNotPossibleException(
@@ -160,7 +160,7 @@ public class JointManager {
 					jointDistribution = dempster(dempsterDistribution,
 							jointDistribution);
 				}
-				jointDistribution.setOperator(JointOperator.DISTANCE_EVIDENCE);
+				jointDistribution.setOperator(JointOperator.DISTANCE);
 				break;
 
 			default:

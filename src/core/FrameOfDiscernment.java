@@ -11,7 +11,7 @@ import utilities.PowerSetIterator;
  * @author Elisa Costante
  * 
  */
-public class FrameOfDiscernment {
+public class FrameOfDiscernment implements Cloneable {
 
 	protected ArrayList<Hypothesis> allHypothesis;
 
@@ -73,6 +73,21 @@ public class FrameOfDiscernment {
 
 	public Element getUniversalSet() {
 		return new Element(allHypothesis);
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		if (this != null) {
+			if (this.allHypothesis != null) {
+				ArrayList<Hypothesis> clonedHypList = new ArrayList<Hypothesis>();
+				for (Hypothesis hypothesis : clonedHypList) {
+					clonedHypList.add((Hypothesis) hypothesis.clone());
+				}
+				return new FrameOfDiscernment(clonedHypList);
+
+			}
+		}
+		return null;
 	}
 
 }

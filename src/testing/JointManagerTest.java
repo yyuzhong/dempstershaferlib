@@ -152,7 +152,7 @@ public class JointManagerTest extends TestCase {
 				.distanceEvidenceJoint(masses, frame);
 		JointMassDistribution distanceResult = ReadTestUtility
 				.readDistanceResult(filename);
-		distanceResult.setOperator(JointOperator.DISTANCE_EVIDENCE);
+		distanceResult.setOperator(JointOperator.DISTANCE);
 		try {
 			assertEquals(distanceDistribution, distanceResult);
 		} catch (AssertionFailedError e) {
