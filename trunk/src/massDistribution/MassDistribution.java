@@ -125,17 +125,23 @@ public class MassDistribution implements Cloneable {
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		try {
+		MassDistribution clonedMass = new MassDistribution();
+		if (bodyOfEvidence != null) {
 			ArrayList<FocalElement> elementsClone = new ArrayList<FocalElement>();
 			for (int i = 0; i < bodyOfEvidence.size(); i++) {
 				FocalElement el = (FocalElement) bodyOfEvidence.get(i).clone();
 				elementsClone.add(el);
 			}
-			MassDistribution clone = new MassDistribution(elementsClone);
-			return clone;
-		} catch (CloneNotSupportedException e) {
-			throw new InternalError(e.toString());
+			clonedMass.setElements(elementsClone);
 		}
+		if (frameOfDiscernment != null) {
+			FrameOfDiscernment clonedFrame = (FrameOfDiscernment) frameOfDiscernment
+					.clone();
+			clonedMass.setFrameOfDiscernment(clonedFrame);
+		}
+
+		return clonedMass;
+
 	}
 
 	public static MassDistribution order(MassDistribution mass) {

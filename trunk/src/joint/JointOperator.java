@@ -2,8 +2,8 @@ package joint;
 
 public enum JointOperator {
 
-	AVERAGE("AVERAGE", 1), DEMPSTER("DEMPSTER", 2), YAGER("YAGER", 3), DISTANCE_EVIDENCE(
-			"DISTANCE_EVIDENCE", 4);
+	AVERAGE("AVERAGE", 1), DEMPSTER("DEMPSTER", 2), YAGER("YAGER", 3), DISTANCE(
+			"DISTANCE", 4);
 
 	private String name;
 	private int value;

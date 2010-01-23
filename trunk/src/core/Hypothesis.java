@@ -53,8 +53,8 @@ public class Hypothesis implements Comparable, Cloneable {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Two Hypothesis are equals if they have the same identifier.
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */

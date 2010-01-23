@@ -52,4 +52,22 @@ public class JointMassDistribution extends MassDistribution {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see massDistribution.MassDistribution#clone()
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+
+		MassDistribution mass = (MassDistribution) super.clone();
+		JointMassDistribution cloned = new JointMassDistribution(mass
+				.getBodyOfEvidence());
+		cloned.setFrameOfDiscernment(mass.getFrameOfDiscernment());
+		cloned.setOperator(this.operator);
+
+		return cloned;
+
+	}
+
 }
