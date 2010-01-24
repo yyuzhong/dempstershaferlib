@@ -122,6 +122,7 @@ public abstract class SourceOfEvidence implements ISource {
 			mass.addElement(universalSet);
 		}
 		MassDistribution.setBodyOfEvidence(mass);
+		mass.setFrameOfDiscernment(frameOfDiscernment);
 
 		return mass;
 	}
