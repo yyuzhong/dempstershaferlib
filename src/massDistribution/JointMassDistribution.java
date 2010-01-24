@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 import joint.JointOperator;
 import core.FocalElement;
+import core.FrameOfDiscernment;
 
 public class JointMassDistribution extends MassDistribution {
 
-	protected JointOperator operator;
+	private JointOperator operator;
 
 	public JointMassDistribution(ArrayList<FocalElement> elements) {
 		super(elements);
@@ -60,14 +61,23 @@ public class JointMassDistribution extends MassDistribution {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 
-		MassDistribution mass = (MassDistribution) super.clone();
-		JointMassDistribution cloned = new JointMassDistribution(mass
-				.getBodyOfEvidence());
-		cloned.setFrameOfDiscernment(mass.getFrameOfDiscernment());
-		cloned.setOperator(this.operator);
+		if (this.bodyOfEvidence != null) {
+			ArrayList<FocalElement> clonedBOF = new ArrayList<FocalElement>();
+			for (FocalElement focalElement : bodyOfEvidence) {
+				clonedBOF.add((FocalElement) focalElement.clone());
+			}
+			JointMassDistribution cloned = new JointMassDistribution(clonedBOF);
+			if (this.frameOfDiscernment != null) {
+				cloned
+						.setFrameOfDiscernment((FrameOfDiscernment) frameOfDiscernment
+								.clone());
+			}
+			if (this.operator != null)
+				cloned.setOperator(operator);
+			return cloned;
+		}
 
-		return cloned;
+		return null;
 
 	}
-
 }

@@ -80,7 +80,7 @@ public class FrameOfDiscernment implements Cloneable {
 		if (this != null) {
 			if (this.allHypothesis != null) {
 				ArrayList<Hypothesis> clonedHypList = new ArrayList<Hypothesis>();
-				for (Hypothesis hypothesis : clonedHypList) {
+				for (Hypothesis hypothesis : allHypothesis) {
 					clonedHypList.add((Hypothesis) hypothesis.clone());
 				}
 				return new FrameOfDiscernment(clonedHypList);

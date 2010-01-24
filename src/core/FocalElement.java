@@ -170,7 +170,6 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	public Object clone() throws CloneNotSupportedException {
 		Element cloneElement = (Element) element.clone();
 		FocalElement clone = new FocalElement(cloneElement, bpa.doubleValue());
-		// clone.setBelief(belief);
 		// clone.setPlausability(plausability);
 		return clone;
 	}

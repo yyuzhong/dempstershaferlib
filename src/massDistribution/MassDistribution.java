@@ -10,7 +10,7 @@ import core.FrameOfDiscernment;
 public class MassDistribution implements Cloneable {
 
 	protected ArrayList<FocalElement> bodyOfEvidence;
-	private FrameOfDiscernment frameOfDiscernment;
+	protected FrameOfDiscernment frameOfDiscernment;
 
 	public MassDistribution(ArrayList<FocalElement> mass) {
 		super();
@@ -61,9 +61,11 @@ public class MassDistribution implements Cloneable {
 			Element universalSet = frameOfDiscernment.getUniversalSet();
 			FocalElement universalFocalElement = getFocalElement(universalSet
 					.toString());
-			if (DoubleUtility.areEqualsDouble(universalFocalElement.getBpa(),
-					1.0, DoubleUtility.EPSILON))
-				return true;
+			if (universalFocalElement != null) {
+				if (DoubleUtility.areEqualsDouble(universalFocalElement
+						.getBpa(), 1.0, DoubleUtility.EPSILON))
+					return true;
+			}
 
 		}
 		return false;

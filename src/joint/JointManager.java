@@ -169,6 +169,7 @@ public class JointManager {
 
 			if (jointDistribution.isValid()) {
 				MassDistribution.setBodyOfEvidence(jointDistribution);
+				jointDistribution.setFrameOfDiscernment(frame);
 				return jointDistribution;
 			} else
 				throw new MassDistributionNotValidException("MassDistribution"
