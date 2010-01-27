@@ -80,4 +80,16 @@ public class JointMassDistribution extends MassDistribution {
 		return null;
 
 	}
+
+	public static JointMassDistribution getEmptySetKnowledge() {
+		ArrayList<FocalElement> bodyOfEvidence = new ArrayList<FocalElement>();
+		FocalElement emptSet = new FocalElement(FrameOfDiscernment
+				.getEmptySet(), 1.0);
+		bodyOfEvidence.add(emptSet);
+
+		JointMassDistribution mass = new JointMassDistribution(bodyOfEvidence);
+
+		return mass;
+
+	}
 }

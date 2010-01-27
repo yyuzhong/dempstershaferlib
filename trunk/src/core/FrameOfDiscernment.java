@@ -71,8 +71,22 @@ public class FrameOfDiscernment implements Cloneable {
 
 	}
 
+	/**
+	 * Returns the universal set of this {@link FrameOfDiscernment}.
+	 * 
+	 * @return
+	 */
 	public Element getUniversalSet() {
 		return new Element(allHypothesis);
+	}
+
+	/**
+	 * Returns the empty set.
+	 * 
+	 * @return
+	 */
+	public static Element getEmptySet() {
+		return new Element(null);
 	}
 
 	@Override

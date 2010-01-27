@@ -247,4 +247,19 @@ public class MassDistribution implements Cloneable {
 		return null;
 	}
 
+	/**
+	 * Retruns a {@link MassDistribution} where all the knowledge is associated
+	 * to the Universal Set.
+	 * 
+	 * @param mass
+	 */
+	public static MassDistribution getLackOfKnowledge(
+			FrameOfDiscernment frameOfDiscernment) {
+		MassDistribution mass = new MassDistribution();
+		mass.addElement(new FocalElement(frameOfDiscernment.getUniversalSet(),
+				1.0));
+		mass.setFrameOfDiscernment(frameOfDiscernment);
+		return mass;
+	}
+
 }
