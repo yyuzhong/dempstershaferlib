@@ -2,11 +2,11 @@ package testing;
 
 import java.util.ArrayList;
 
+import joint.JointManager;
 import massDistribution.JointMassDistribution;
 import massDistribution.MassDistribution;
-
-import joint.JointManager;
 import core.FrameOfDiscernment;
+import exception.DempsterTotalConflictException;
 import exception.JointNotPossibleException;
 import exception.MassDistributionNotValidException;
 import gui.NewSwingApp;
@@ -19,9 +19,11 @@ public class Main {
 	 * @throws CloneNotSupportedException
 	 * @throws MassDistributionNotValidException
 	 * @throws JointNotPossibleException
+	 * @throws DempsterTotalConflictException
 	 */
 	public static void main(String[] args) throws CloneNotSupportedException,
-			JointNotPossibleException, MassDistributionNotValidException {
+			JointNotPossibleException, MassDistributionNotValidException,
+			DempsterTotalConflictException {
 
 		FrameOfDiscernment frameOfDiscernment = ReadTestUtility
 				.readFrameOfDiscernment(filename);

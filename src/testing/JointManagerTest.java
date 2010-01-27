@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 import massDistribution.JointMassDistribution;
 import massDistribution.MassDistribution;
 import core.FrameOfDiscernment;
+import exception.DempsterTotalConflictException;
 import exception.JointNotPossibleException;
 import exception.MassDistributionNotValidException;
 
@@ -59,9 +60,10 @@ public class JointManagerTest extends TestCase {
 	 * 
 	 * @throws MassDistributionNotValidException
 	 * @throws JointNotPossibleException
+	 * @throws DempsterTotalConflictException
 	 */
 	public void testDempsterJoint() throws JointNotPossibleException,
-			MassDistributionNotValidException {
+			MassDistributionNotValidException, DempsterTotalConflictException {
 
 		JointMassDistribution demDistribution = JointManager.dempsterJoint(
 				masses, frame);
@@ -88,9 +90,10 @@ public class JointManagerTest extends TestCase {
 	 * 
 	 * @throws MassDistributionNotValidException
 	 * @throws JointNotPossibleException
+	 * @throws DempsterTotalConflictException
 	 */
 	public void testYagerJoint() throws JointNotPossibleException,
-			MassDistributionNotValidException {
+			MassDistributionNotValidException, DempsterTotalConflictException {
 
 		JointMassDistribution yagerDistribution = JointManager.yagerJoint(
 				masses, frame);
@@ -116,9 +119,10 @@ public class JointManagerTest extends TestCase {
 	 * 
 	 * @throws MassDistributionNotValidException
 	 * @throws JointNotPossibleException
+	 * @throws DempsterTotalConflictException
 	 */
 	public void testAverageJoint() throws JointNotPossibleException,
-			MassDistributionNotValidException {
+			MassDistributionNotValidException, DempsterTotalConflictException {
 		JointMassDistribution averageDistribution = JointManager.averageJoint(
 				masses, frame);
 		JointMassDistribution averageResult = ReadTestUtility
@@ -144,9 +148,10 @@ public class JointManagerTest extends TestCase {
 	 * 
 	 * @throws MassDistributionNotValidException
 	 * @throws JointNotPossibleException
+	 * @throws DempsterTotalConflictException
 	 */
 	public void testDistanceEvidenceJoint() throws JointNotPossibleException,
-			MassDistributionNotValidException {
+			MassDistributionNotValidException, DempsterTotalConflictException {
 
 		JointMassDistribution distanceDistribution = JointManager
 				.distanceEvidenceJoint(masses, frame);

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import massDistribution.JointMassDistribution;
 import massDistribution.MassDistribution;
+import utilities.DoubleUtility;
 import core.Element;
 import core.FocalElement;
 import core.FrameOfDiscernment;
+import exception.DempsterTotalConflictException;
 import exception.JointNotPossibleException;
 import exception.MassDistributionNotValidException;
 
@@ -26,10 +28,12 @@ public class JointManager {
 	 *         list
 	 * @throws JointNotPossibleException
 	 * @throws MassDistributionNotValidException
+	 * @throws DempsterTotalConflictException
 	 */
 	public static JointMassDistribution dempsterJoint(
 			ArrayList<MassDistribution> masses, FrameOfDiscernment frame)
-			throws JointNotPossibleException, MassDistributionNotValidException {
+			throws JointNotPossibleException,
+			MassDistributionNotValidException, DempsterTotalConflictException {
 		if (masses.size() > 1)
 			return applyOperator(masses, JointOperator.DEMPSTER, frame);
 		else
@@ -45,10 +49,12 @@ public class JointManager {
 	 *         list
 	 * @throws JointNotPossibleException
 	 * @throws MassDistributionNotValidException
+	 * @throws DempsterTotalConflictException
 	 */
 	public static JointMassDistribution yagerJoint(
 			ArrayList<MassDistribution> masses, FrameOfDiscernment frame)
-			throws JointNotPossibleException, MassDistributionNotValidException {
+			throws JointNotPossibleException,
+			MassDistributionNotValidException, DempsterTotalConflictException {
 		if (masses.size() > 1)
 			return applyOperator(masses, JointOperator.YAGER, frame);
 		else
@@ -64,10 +70,12 @@ public class JointManager {
 	 *         list
 	 * @throws JointNotPossibleException
 	 * @throws MassDistributionNotValidException
+	 * @throws DempsterTotalConflictException
 	 */
 	public static JointMassDistribution averageJoint(
 			ArrayList<MassDistribution> masses, FrameOfDiscernment frame)
-			throws JointNotPossibleException, MassDistributionNotValidException {
+			throws JointNotPossibleException,
+			MassDistributionNotValidException, DempsterTotalConflictException {
 		if (masses.size() > 1)
 
 			return applyOperator(masses, JointOperator.AVERAGE, frame);
@@ -86,10 +94,12 @@ public class JointManager {
 	 *         {@link MassDistribution} list
 	 * @throws JointNotPossibleException
 	 * @throws MassDistributionNotValidException
+	 * @throws DempsterTotalConflictException
 	 */
 	public static JointMassDistribution distanceEvidenceJoint(
 			ArrayList<MassDistribution> masses, FrameOfDiscernment frame)
-			throws JointNotPossibleException, MassDistributionNotValidException {
+			throws JointNotPossibleException,
+			MassDistributionNotValidException, DempsterTotalConflictException {
 		if (masses.size() > 1)
 
 			return applyOperator(masses, JointOperator.DISTANCE, frame);
@@ -103,7 +113,7 @@ public class JointManager {
 	public static JointMassDistribution applyOperator(
 			ArrayList<MassDistribution> masses, JointOperator operator,
 			FrameOfDiscernment frame) throws MassDistributionNotValidException,
-			JointNotPossibleException {
+			JointNotPossibleException, DempsterTotalConflictException {
 		if (masses.size() > 1) {
 
 			JointMassDistribution jointDistribution = null;
@@ -264,18 +274,20 @@ public class JointManager {
 			for (int j = 0; j < m2Elements.size(); j++) {
 
 				FocalElement el2 = m2Elements.get(j);
+				// compute the intersection
 				Element intersection = Element.getIntersection(
 						el1.getElement(), el2.getElement());
+				// compute the union
 				Element union = Element.getUnion(el1.getElement(), el2
 						.getElement());
 
-				int unionSize = 0;
-				int intersectionSize = 0;
+				double unionSize = 0;
+				double intersectionSize = 0;
 
 				if (intersection != null)
-					intersectionSize = intersection.size();
+					intersectionSize = (double) intersection.size();
 				if (union != null)
-					unionSize = union.size();
+					unionSize = (double) union.size();
 
 				if (unionSize > 0) {
 
@@ -436,46 +448,59 @@ public class JointManager {
 	}
 
 	private static JointMassDistribution dempster(MassDistribution m1,
-			MassDistribution m2) throws MassDistributionNotValidException {
+			MassDistribution m2) throws MassDistributionNotValidException,
+			DempsterTotalConflictException {
 
 		ArrayList<FocalElement> m1Elements = m1.getBodyOfEvidence();
 		ArrayList<FocalElement> m2Elements = m2.getBodyOfEvidence();
 
 		double conflict = getConflict(m1Elements, m2Elements);
+		if (!DoubleUtility
+				.areEqualsDouble(conflict, 1.0, DoubleUtility.EPSILON)) {
+			ArrayList<FocalElement> jointElements = FocalElement
+					.getMassUnionElement(m1Elements, m2Elements);
 
-		ArrayList<FocalElement> jointElements = FocalElement
-				.getMassUnionElement(m1Elements, m2Elements);
+			for (int i = 0; i < jointElements.size(); i++) {
+				FocalElement jointElement = jointElements.get(i);
+				double bpa = 0;
+				for (int k = 0; k < m1Elements.size(); k++) {
+					FocalElement el1 = m1Elements.get(k);
 
-		for (int i = 0; i < jointElements.size(); i++) {
-			FocalElement jointElement = jointElements.get(i);
-			double bpa = 0;
-			for (int k = 0; k < m1Elements.size(); k++) {
-				FocalElement el1 = m1Elements.get(k);
+					for (int j = 0; j < m2Elements.size(); j++) {
+						FocalElement el2 = m2Elements.get(j);
 
-				for (int j = 0; j < m2Elements.size(); j++) {
-					FocalElement el2 = m2Elements.get(j);
+						Element intersection = Element.getIntersection(el1
+								.getElement(), el2.getElement());
 
-					Element intersection = Element.getIntersection(el1
-							.getElement(), el2.getElement());
-
-					if (!intersection.isEmptySet()
-							&& intersection.equals(jointElement.getElement())) {
-						bpa = bpa + (el1.getBpa() * el2.getBpa());
+						if (!intersection.isEmptySet()
+								&& intersection.equals(jointElement
+										.getElement())) {
+							bpa = bpa + (el1.getBpa() * el2.getBpa());
+						}
 					}
+
 				}
 
+				bpa = bpa / (1 - conflict);
+				jointElement.setBpa(bpa);
+
 			}
-			bpa = bpa / (1 - conflict);
-			jointElement.setBpa(bpa);
+
+			JointMassDistribution jointMass = new JointMassDistribution(
+					jointElements);
+			if (jointMass.isValid()) {
+				return jointMass;
+			} else
+				throw new MassDistributionNotValidException("MassDistribution"
+						+ jointMass.toString() + " is not valid!");
+		} else {
+			// When the conflict is total (conflict==1.0) the Dempster rule
+			// cannot be applied
+			// throw new DempsterTotalConflictException(
+			// "The dempster aggregation is not applicable");
+			return JointMassDistribution.getEmptySetKnowledge();
 		}
 
-		JointMassDistribution jointMass = new JointMassDistribution(
-				jointElements);
-		if (jointMass.isValid()) {
-			return jointMass;
-		} else
-			throw new MassDistributionNotValidException("MassDistribution"
-					+ jointMass.toString() + " is not valid!");
 	}
 
 	private static double getConflict(ArrayList<FocalElement> m1Elements,
