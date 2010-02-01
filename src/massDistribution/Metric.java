@@ -101,8 +101,8 @@ public class Metric {
 	 */
 	@Override
 	public String toString() {
-		return " metric=" + this.name + " - " + this.type + " - "
-				+ this.validRanges + "]";
+		return this.name;//
+		// ": " + this.validRanges;
 	}
 
 	/**
