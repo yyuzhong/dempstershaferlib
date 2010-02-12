@@ -140,9 +140,16 @@ public class JointManager {
 			case 3:
 				// Yager
 				// m(A)= m1(B)*m2(C) if B.intersect(c)=A
+
+				// Algorithm
+				// Given N masses
+				// Apply Yager to m1 and m2
+				// Store m1(x)m2
+				// Put conflict to the universal set
+				// Combine
 				Double conflict = getConflict(m1.getBodyOfEvidence(), m2
 						.getBodyOfEvidence());
-				jointDistribution = yager(m1, m2, conflict, frame);
+				jointDistribution = yager(m1, m2, frame);
 				for (int j = i; j < masses.size(); j++) {
 					conflict = conflict
 							+ getConflict(
@@ -150,13 +157,27 @@ public class JointManager {
 									masses.get(j).getBodyOfEvidence());
 
 					jointDistribution = yager(jointDistribution, masses.get(j),
-							conflict, frame);
+							frame);
 				}
 
-				Element universalSet = frame.getUniversalSet();
+				if (FocalElement.containsElement(jointDistribution
+						.getBodyOfEvidence(), frame.getUniversalSet())) {
+					// if the BOE already contains the universal set it just add
+					// to it
+					// the conflict mass
 
-				jointDistribution.getBodyOfEvidence().add(
-						new FocalElement(universalSet, conflict));
+					FocalElement universalSet = FocalElement.findElement(
+							jointDistribution.getBodyOfEvidence(), frame
+									.getUniversalSet());
+					universalSet.setBpa(universalSet.getBpa() + conflict);
+				} else {
+					// create a new Focal element as the universal set
+					Element universalElement = frame.getUniversalSet();
+					FocalElement universalFocalElement = new FocalElement(
+							universalElement, conflict);
+					jointDistribution.getBodyOfEvidence().add(
+							universalFocalElement);
+				}
 
 				jointDistribution.setOperator(JointOperator.YAGER);
 				break;
@@ -402,8 +423,8 @@ public class JointManager {
 	}
 
 	private static JointMassDistribution yager(MassDistribution m1,
-			MassDistribution m2, Double conflictTransfer,
-			FrameOfDiscernment frame) throws MassDistributionNotValidException {
+			MassDistribution m2, FrameOfDiscernment frame)
+			throws MassDistributionNotValidException {
 		ArrayList<FocalElement> m1Elements = m1.getBodyOfEvidence();
 		ArrayList<FocalElement> m2Elements = m2.getBodyOfEvidence();
 
@@ -439,11 +460,6 @@ public class JointManager {
 		JointMassDistribution jointMass = new JointMassDistribution(
 				jointElements);
 		return jointMass;
-		// if (jointMass.isValid()) {
-		// return jointMass;
-		// } else
-		// throw new MassDistributionNotValidException("MassDistribution"
-		// + jointMass.toString() + " is not valid!");
 
 	}
 

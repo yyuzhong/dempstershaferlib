@@ -1,6 +1,5 @@
 package core;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -186,10 +185,13 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 */
 	public static FocalElement findElement(ArrayList<FocalElement> focalList,
 			Element element) {
-		for (FocalElement focalElement : focalList) {
-			if (focalElement.getElement().equals(element))
-				return focalElement;
+		if (focalList != null) {
+			for (FocalElement focalElement : focalList) {
+				if (focalElement.getElement().equals(element))
+					return focalElement;
+			}
 		}
+
 		return null;
 	}
 
@@ -249,29 +251,6 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 		return union;
 	}
 
-	/**
-	 * Compare the two double values using the same precision.
-	 * 
-	 * @param a
-	 *            : the first value
-	 * @param b
-	 *            : the second value
-	 * @param precision
-	 *            : number of decimal digit
-	 * @return true if the two number are equal, false otherwise
-	 */
-	private static boolean compareSamePrecision(double a, double b,
-			int precision) {
-
-		BigDecimal aBigDecimal = new BigDecimal(a).setScale(precision,
-				BigDecimal.ROUND_HALF_UP);
-
-		BigDecimal bBigDecimal = new BigDecimal(b).setScale(precision,
-				BigDecimal.ROUND_HALF_UP);
-
-		return (aBigDecimal.compareTo(bBigDecimal) == 0);
-	}
-
 	public double getUncertainty() {
 		// return (belief.subtract(plausability)).abs().doubleValue();
 		return Math.abs(plausability - belief);
@@ -285,6 +264,25 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 		this.bodyOfEvidence = bodyOfEvidence;
 		setBelief();
 		setPlausability();
+	}
+
+	/**
+	 * Returns true if the focal element list contains the element, false
+	 * otherwise.
+	 * 
+	 * @param focalElements
+	 * @param element
+	 * @return
+	 */
+	public static boolean containsElement(
+			ArrayList<FocalElement> focalElements, Element element) {
+		if (focalElements != null && element != null) {
+			for (FocalElement focalElement : focalElements) {
+				if (focalElement.getElement().equals(element))
+					return true;
+			}
+		}
+		return false;
 	}
 
 }
