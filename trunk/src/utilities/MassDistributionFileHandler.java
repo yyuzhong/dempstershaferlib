@@ -1,5 +1,8 @@
 package utilities;
 
+import interfaces.IFocalElement;
+import interfaces.IHypothesis;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,7 +11,6 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import massDistribution.MassDistribution;
-
 import core.Element;
 import core.FocalElement;
 import core.Hypothesis;
@@ -32,10 +34,10 @@ public class MassDistributionFileHandler {
 			return null;
 		}
 
-		ArrayList<FocalElement> elements = new ArrayList<FocalElement>();
+		ArrayList<IFocalElement> elements = new ArrayList<IFocalElement>();
 
 		try {
-			ArrayList<Hypothesis> hypothesies = new ArrayList<Hypothesis>();
+			ArrayList<IHypothesis> hypothesies = new ArrayList<IHypothesis>();
 
 			String line = br.readLine();
 
@@ -68,8 +70,8 @@ public class MassDistributionFileHandler {
 
 	}
 
-	private ArrayList<Hypothesis> readHypothesies(String allHypothesies) {
-		ArrayList<Hypothesis> hypothesies = new ArrayList<Hypothesis>();
+	private ArrayList<IHypothesis> readHypothesies(String allHypothesies) {
+		ArrayList<IHypothesis> hypothesies = new ArrayList<IHypothesis>();
 
 		allHypothesies = allHypothesies.replaceAll("\\{", "");
 		allHypothesies = allHypothesies.replaceAll("\\}", "");

@@ -1,5 +1,9 @@
 package core;
 
+import interfaces.IElement;
+import interfaces.IFrameOfDiscernment;
+import interfaces.IHypothesis;
+
 import java.util.ArrayList;
 
 import utilities.PowerSetIterator;
@@ -11,20 +15,20 @@ import utilities.PowerSetIterator;
  * @author Elisa Costante
  * 
  */
-public class FrameOfDiscernment implements Cloneable {
+public class FrameOfDiscernment implements IFrameOfDiscernment {
 
-	protected ArrayList<Hypothesis> allHypothesis;
+	protected ArrayList<IHypothesis> allHypothesis;
 
-	public FrameOfDiscernment(ArrayList<Hypothesis> hypothesies) {
+	public FrameOfDiscernment(ArrayList<IHypothesis> hypothesies) {
 		super();
 		this.allHypothesis = hypothesies;
 	}
 
-	public ArrayList<Hypothesis> getHipothesies() {
+	public ArrayList<IHypothesis> getHipothesies() {
 		return allHypothesis;
 	}
 
-	public void setHipothesies(ArrayList<Hypothesis> hypothesies) {
+	public void setHipothesies(ArrayList<IHypothesis> hypothesies) {
 		this.allHypothesis = hypothesies;
 	}
 
@@ -56,7 +60,7 @@ public class FrameOfDiscernment implements Cloneable {
 
 			PowerSetIterator powerSetIter = new PowerSetIterator(allHypothesis);
 			while (powerSetIter.hasNext()) {
-				ArrayList<Hypothesis> object = (ArrayList<Hypothesis>) powerSetIter
+				ArrayList<IHypothesis> object = (ArrayList<IHypothesis>) powerSetIter
 						.next();
 				powerSet.addElement(new Element(object));
 
@@ -76,7 +80,7 @@ public class FrameOfDiscernment implements Cloneable {
 	 * 
 	 * @return
 	 */
-	public Element getUniversalSet() {
+	public IElement getUniversalSet() {
 		return new Element(allHypothesis);
 	}
 
@@ -93,8 +97,8 @@ public class FrameOfDiscernment implements Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		if (this != null) {
 			if (this.allHypothesis != null) {
-				ArrayList<Hypothesis> clonedHypList = new ArrayList<Hypothesis>();
-				for (Hypothesis hypothesis : allHypothesis) {
+				ArrayList<IHypothesis> clonedHypList = new ArrayList<IHypothesis>();
+				for (IHypothesis hypothesis : allHypothesis) {
 					clonedHypList.add((Hypothesis) hypothesis.clone());
 				}
 				return new FrameOfDiscernment(clonedHypList);

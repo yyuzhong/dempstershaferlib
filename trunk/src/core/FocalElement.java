@@ -1,5 +1,8 @@
 package core;
 
+import interfaces.IElement;
+import interfaces.IFocalElement;
+
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -12,15 +15,15 @@ import utilities.DoubleUtility;
  * @author Elisa Costante
  * 
  */
-public class FocalElement implements Cloneable, Comparable<FocalElement> {
+public class FocalElement implements IFocalElement {
 	private final int PRECISION = 4;
 	private Double bpa;
-	private Element element;
+	private IElement element;
 	private Double belief;
 	private Double plausability;
-	private ArrayList<FocalElement> bodyOfEvidence;
+	private ArrayList<IFocalElement> bodyOfEvidence;
 
-	public FocalElement(Element element, double bpa) {
+	public FocalElement(IElement element, double bpa) {
 		this.element = element;
 		setBpa(bpa);
 	}
@@ -68,7 +71,7 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	private void setBelief() {
 		// Bel(A)= Summation m(B) for each B| (B included A==true)
 		double bel = 0;
-		for (FocalElement focalElement : bodyOfEvidence) {
+		for (IFocalElement focalElement : bodyOfEvidence) {
 
 			if (Element
 					.isIncluded(this.getElement(), focalElement.getElement())) {
@@ -102,7 +105,7 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	private void setPlausability() {
 		// Pl(A)= Summation m(B) for each B| (B intersect A== empty)
 		double pl = 0;
-		for (FocalElement focalElement : bodyOfEvidence) {
+		for (IFocalElement focalElement : bodyOfEvidence) {
 
 			if (Element.getIntersection(focalElement.getElement(),
 					this.getElement()).isEmptySet()) {
@@ -119,7 +122,7 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	/**
 	 * @return the element
 	 */
-	public Element getElement() {
+	public IElement getElement() {
 		return element;
 	}
 
@@ -127,8 +130,11 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 * @param element
 	 *            the element to set
 	 */
-	public void setElement(Element element) {
-		this.element = element;
+	public void setElement(IElement element) {
+		if (element != null)
+			this.element = (Element) element;
+		else
+			this.element = null;
 	}
 
 	/*
@@ -183,10 +189,10 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 * @return The <code>element</code> if it is in the list, <code>null</code>
 	 *         otherwise.
 	 */
-	public static FocalElement findElement(ArrayList<FocalElement> focalList,
-			Element element) {
+	public static IFocalElement findElement(ArrayList<IFocalElement> focalList,
+			IElement element) {
 		if (focalList != null) {
-			for (FocalElement focalElement : focalList) {
+			for (IFocalElement focalElement : focalList) {
 				if (focalElement.getElement().equals(element))
 					return focalElement;
 			}
@@ -195,6 +201,11 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see interfaces.IFocalElement#compareTo(core.FocalElement)
+	 */
 	@Override
 	public int compareTo(FocalElement o) {
 		return this.getElement().compareTo(o.getElement());
@@ -207,38 +218,39 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 * @param el2
 	 * @return the union of two bodyOfEvidence list.
 	 */
-	public static ArrayList<FocalElement> getMassUnionElement(
-			ArrayList<FocalElement> elementList1,
-			ArrayList<FocalElement> elementList2) {
+	public static ArrayList<IFocalElement> getMassUnionElement(
+			ArrayList<IFocalElement> elementList1,
+			ArrayList<IFocalElement> elementList2) {
 
-		ArrayList<FocalElement> newElementList1 = new ArrayList<FocalElement>();
+		ArrayList<IFocalElement> newElementList1 = new ArrayList<IFocalElement>();
 
-		for (FocalElement element : elementList1) {
+		for (IFocalElement element : elementList1) {
 			newElementList1.add(new FocalElement(element.getElement(), 0));
 		}
 
-		ArrayList<FocalElement> newElementList2 = new ArrayList<FocalElement>();
+		ArrayList<IFocalElement> newElementList2 = new ArrayList<IFocalElement>();
 
-		for (FocalElement element : elementList2) {
+		for (IFocalElement element : elementList2) {
 			newElementList2.add(new FocalElement(element.getElement(), 0));
 		}
 
-		TreeSet<FocalElement> union = new TreeSet<FocalElement>(newElementList1);
+		TreeSet<IFocalElement> union = new TreeSet<IFocalElement>(
+				newElementList1);
 
-		union.addAll(new TreeSet<FocalElement>(newElementList2));
+		union.addAll(new TreeSet<IFocalElement>(newElementList2));
 
-		return new ArrayList<FocalElement>(union);
+		return new ArrayList<IFocalElement>(union);
 	}
 
-	public static ArrayList<FocalElement> getMassUnionElement(
+	public static ArrayList<IFocalElement> getMassUnionElement(
 			ArrayList<MassDistribution> masses) {
 
-		ArrayList<FocalElement> union = null;
+		ArrayList<IFocalElement> union = null;
 
 		if (masses.size() >= 2) {
-			ArrayList<FocalElement> m1Elements = masses.get(0)
+			ArrayList<IFocalElement> m1Elements = masses.get(0)
 					.getBodyOfEvidence();
-			ArrayList<FocalElement> m2Elements = masses.get(1)
+			ArrayList<IFocalElement> m2Elements = masses.get(1)
 					.getBodyOfEvidence();
 
 			union = FocalElement.getMassUnionElement(m1Elements, m2Elements);
@@ -260,10 +272,13 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 * @param massDistribution
 	 *            the massDistribution to set
 	 */
-	public void setBodyOfEvidence(ArrayList<FocalElement> bodyOfEvidence) {
-		this.bodyOfEvidence = bodyOfEvidence;
-		setBelief();
-		setPlausability();
+	public void setBodyOfEvidence(ArrayList<IFocalElement> bodyOfEvidence) {
+		if (bodyOfEvidence != null) {
+			this.bodyOfEvidence = bodyOfEvidence;
+			setBelief();
+			setPlausability();
+
+		}
 	}
 
 	/**
@@ -275,9 +290,9 @@ public class FocalElement implements Cloneable, Comparable<FocalElement> {
 	 * @return
 	 */
 	public static boolean containsElement(
-			ArrayList<FocalElement> focalElements, Element element) {
+			ArrayList<IFocalElement> focalElements, IElement element) {
 		if (focalElements != null && element != null) {
-			for (FocalElement focalElement : focalElements) {
+			for (IFocalElement focalElement : focalElements) {
 				if (focalElement.getElement().equals(element))
 					return true;
 			}

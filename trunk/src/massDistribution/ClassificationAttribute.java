@@ -1,6 +1,7 @@
 package massDistribution;
 
 import interfaces.Attribute;
+import interfaces.IHypothesis;
 import interfaces.IRange;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class ClassificationAttribute extends MeasuredAttribute {
 		this.map = classificationRanges;
 	}
 
-	public ArrayList<IRange> getRanges(Hypothesis hypothesis) {
+	public ArrayList<IRange> getRanges(IHypothesis hypothesis) {
 		if (map != null) {
 			ArrayList<IRange> ranges = map.get(hypothesis);
 			return ranges;

@@ -1,5 +1,7 @@
 package massDistribution;
 
+import interfaces.IFocalElement;
+
 import java.util.ArrayList;
 
 import joint.JointOperator;
@@ -10,7 +12,7 @@ public class JointMassDistribution extends MassDistribution {
 
 	private JointOperator operator;
 
-	public JointMassDistribution(ArrayList<FocalElement> elements) {
+	public JointMassDistribution(ArrayList<IFocalElement> elements) {
 		super(elements);
 	}
 
@@ -62,8 +64,8 @@ public class JointMassDistribution extends MassDistribution {
 	public Object clone() throws CloneNotSupportedException {
 
 		if (this.bodyOfEvidence != null) {
-			ArrayList<FocalElement> clonedBOF = new ArrayList<FocalElement>();
-			for (FocalElement focalElement : bodyOfEvidence) {
+			ArrayList<IFocalElement> clonedBOF = new ArrayList<IFocalElement>();
+			for (IFocalElement focalElement : bodyOfEvidence) {
 				clonedBOF.add((FocalElement) focalElement.clone());
 			}
 			JointMassDistribution cloned = new JointMassDistribution(clonedBOF);
@@ -82,7 +84,7 @@ public class JointMassDistribution extends MassDistribution {
 	}
 
 	public static JointMassDistribution getEmptySetKnowledge() {
-		ArrayList<FocalElement> bodyOfEvidence = new ArrayList<FocalElement>();
+		ArrayList<IFocalElement> bodyOfEvidence = new ArrayList<IFocalElement>();
 		FocalElement emptSet = new FocalElement(FrameOfDiscernment
 				.getEmptySet(), 1.0);
 		bodyOfEvidence.add(emptSet);

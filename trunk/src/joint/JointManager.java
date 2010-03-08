@@ -1,5 +1,7 @@
 package joint;
 
+import interfaces.IFocalElement;
+
 import java.util.ArrayList;
 
 import massDistribution.JointMassDistribution;
@@ -166,13 +168,14 @@ public class JointManager {
 					// to it
 					// the conflict mass
 
-					FocalElement universalSet = FocalElement.findElement(
-							jointDistribution.getBodyOfEvidence(), frame
-									.getUniversalSet());
+					FocalElement universalSet = (FocalElement) FocalElement
+							.findElement(jointDistribution.getBodyOfEvidence(),
+									frame.getUniversalSet());
 					universalSet.setBpa(universalSet.getBpa() + conflict);
 				} else {
 					// create a new Focal element as the universal set
-					Element universalElement = frame.getUniversalSet();
+					Element universalElement = (Element) frame
+							.getUniversalSet();
 					FocalElement universalFocalElement = new FocalElement(
 							universalElement, conflict);
 					jointDistribution.getBodyOfEvidence().add(
@@ -239,12 +242,12 @@ public class JointManager {
 
 			double[] credibility = getCredibility(supportDegree);
 
-			ArrayList<FocalElement> jointElements = FocalElement
+			ArrayList<IFocalElement> jointElements = FocalElement
 					.getMassUnionElement(masses);
 
 			for (int i = 0; i < jointElements.size(); i++) {
 
-				FocalElement jointElement = jointElements.get(i);
+				FocalElement jointElement = (FocalElement) jointElements.get(i);
 
 				double newBpa = 0;
 				for (int j = 0; j < masses.size(); j++) {
@@ -252,8 +255,9 @@ public class JointManager {
 					double cred = credibility[j];
 					double oldBpa = 0;
 
-					FocalElement focalElement = FocalElement.findElement(m
-							.getBodyOfEvidence(), jointElement.getElement());
+					FocalElement focalElement = (FocalElement) FocalElement
+							.findElement(m.getBodyOfEvidence(), jointElement
+									.getElement());
 
 					if (focalElement != null)
 						oldBpa = focalElement.getBpa();
@@ -286,21 +290,21 @@ public class JointManager {
 
 		double scalarProduct = 0;
 
-		ArrayList<FocalElement> m1Elements = m1.getBodyOfEvidence();
-		ArrayList<FocalElement> m2Elements = m2.getBodyOfEvidence();
+		ArrayList<IFocalElement> m1Elements = m1.getBodyOfEvidence();
+		ArrayList<IFocalElement> m2Elements = m2.getBodyOfEvidence();
 
 		for (int i = 0; i < m1Elements.size(); i++) {
-			FocalElement el1 = m1Elements.get(i);
+			FocalElement el1 = (FocalElement) m1Elements.get(i);
 
 			for (int j = 0; j < m2Elements.size(); j++) {
 
-				FocalElement el2 = m2Elements.get(j);
+				FocalElement el2 = (FocalElement) m2Elements.get(j);
 				// compute the intersection
 				Element intersection = Element.getIntersection(
 						el1.getElement(), el2.getElement());
 				// compute the union
-				Element union = Element.getUnion(el1.getElement(), el2
-						.getElement());
+				Element union = (Element) Element.getUnion(el1.getElement(),
+						el2.getElement());
 
 				double unionSize = 0;
 				double intersectionSize = 0;
@@ -425,24 +429,24 @@ public class JointManager {
 	private static JointMassDistribution yager(MassDistribution m1,
 			MassDistribution m2, FrameOfDiscernment frame)
 			throws MassDistributionNotValidException {
-		ArrayList<FocalElement> m1Elements = m1.getBodyOfEvidence();
-		ArrayList<FocalElement> m2Elements = m2.getBodyOfEvidence();
+		ArrayList<IFocalElement> m1Elements = m1.getBodyOfEvidence();
+		ArrayList<IFocalElement> m2Elements = m2.getBodyOfEvidence();
 
 		// double conflict = getConflict(m1Elements, m2Elements);
 		// conflictTransfer = new Double(conflictTransfer.doubleValue() +
 		// conflict);
 
-		ArrayList<FocalElement> jointElements = FocalElement
+		ArrayList<IFocalElement> jointElements = FocalElement
 				.getMassUnionElement(m1Elements, m2Elements);
 
 		for (int i = 0; i < jointElements.size(); i++) {
-			FocalElement jointElement = jointElements.get(i);
+			FocalElement jointElement = (FocalElement) jointElements.get(i);
 			double bpa = 0;
 			for (int k = 0; k < m1Elements.size(); k++) {
-				FocalElement el1 = m1Elements.get(k);
+				FocalElement el1 = (FocalElement) m1Elements.get(k);
 
 				for (int j = 0; j < m2Elements.size(); j++) {
-					FocalElement el2 = m2Elements.get(j);
+					FocalElement el2 = (FocalElement) m2Elements.get(j);
 
 					Element intersection = Element.getIntersection(el1
 							.getElement(), el2.getElement());
@@ -467,23 +471,23 @@ public class JointManager {
 			MassDistribution m2) throws MassDistributionNotValidException,
 			DempsterTotalConflictException {
 
-		ArrayList<FocalElement> m1Elements = m1.getBodyOfEvidence();
-		ArrayList<FocalElement> m2Elements = m2.getBodyOfEvidence();
+		ArrayList<IFocalElement> m1Elements = m1.getBodyOfEvidence();
+		ArrayList<IFocalElement> m2Elements = m2.getBodyOfEvidence();
 
 		double conflict = getConflict(m1Elements, m2Elements);
 		if (!DoubleUtility
 				.areEqualsDouble(conflict, 1.0, DoubleUtility.EPSILON)) {
-			ArrayList<FocalElement> jointElements = FocalElement
+			ArrayList<IFocalElement> jointElements = FocalElement
 					.getMassUnionElement(m1Elements, m2Elements);
 
 			for (int i = 0; i < jointElements.size(); i++) {
-				FocalElement jointElement = jointElements.get(i);
+				FocalElement jointElement = (FocalElement) jointElements.get(i);
 				double bpa = 0;
 				for (int k = 0; k < m1Elements.size(); k++) {
-					FocalElement el1 = m1Elements.get(k);
+					FocalElement el1 = (FocalElement) m1Elements.get(k);
 
 					for (int j = 0; j < m2Elements.size(); j++) {
-						FocalElement el2 = m2Elements.get(j);
+						FocalElement el2 = (FocalElement) m2Elements.get(j);
 
 						Element intersection = Element.getIntersection(el1
 								.getElement(), el2.getElement());
@@ -519,14 +523,14 @@ public class JointManager {
 
 	}
 
-	private static double getConflict(ArrayList<FocalElement> m1Elements,
-			ArrayList<FocalElement> m2Elements) {
+	private static double getConflict(ArrayList<IFocalElement> m1Elements,
+			ArrayList<IFocalElement> m2Elements) {
 		double conflict = 0;
 		for (int i = 0; i < m1Elements.size(); i++) {
-			FocalElement el1 = m1Elements.get(i);
+			FocalElement el1 = (FocalElement) m1Elements.get(i);
 
 			for (int j = 0; j < m2Elements.size(); j++) {
-				FocalElement el2 = m2Elements.get(j);
+				FocalElement el2 = (FocalElement) m2Elements.get(j);
 
 				if (Element.getIntersection(el1.getElement(), el2.getElement())
 						.isEmptySet()) {
@@ -542,15 +546,15 @@ public class JointManager {
 			MassDistribution m2, ArrayList<MassDistribution> masses)
 			throws MassDistributionNotValidException {
 
-		ArrayList<FocalElement> m1Elements = m1.getBodyOfEvidence();
-		ArrayList<FocalElement> m2Elements = m2.getBodyOfEvidence();
+		ArrayList<IFocalElement> m1Elements = m1.getBodyOfEvidence();
+		ArrayList<IFocalElement> m2Elements = m2.getBodyOfEvidence();
 
-		ArrayList<FocalElement> jointElements = FocalElement
+		ArrayList<IFocalElement> jointElements = FocalElement
 				.getMassUnionElement(m1Elements, m2Elements);
 		for (int i = 2; i < masses.size(); i++) {
 
 			MassDistribution m3 = masses.get(i);
-			ArrayList<FocalElement> el3 = m3.getBodyOfEvidence();
+			ArrayList<IFocalElement> el3 = m3.getBodyOfEvidence();
 			jointElements = FocalElement
 					.getMassUnionElement(jointElements, el3);
 		}
@@ -558,13 +562,14 @@ public class JointManager {
 		for (int i = 0; i < jointElements.size(); i++) {
 
 			double bpa = 0;
-			FocalElement jointElement = jointElements.get(i);
+			FocalElement jointElement = (FocalElement) jointElements.get(i);
 
 			ArrayList<FocalElement> sameElements = new ArrayList<FocalElement>();
 
 			for (int j = 0; j < masses.size(); j++) {
-				FocalElement same = FocalElement.findElement(masses.get(j)
-						.getBodyOfEvidence(), jointElement.getElement());
+				FocalElement same = (FocalElement) FocalElement.findElement(
+						masses.get(j).getBodyOfEvidence(), jointElement
+								.getElement());
 				if (same != null) {
 					sameElements.add(same);
 				}

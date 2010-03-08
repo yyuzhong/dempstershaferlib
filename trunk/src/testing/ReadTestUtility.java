@@ -1,5 +1,8 @@
 package testing;
 
+import interfaces.IFocalElement;
+import interfaces.IHypothesis;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -67,7 +70,7 @@ public class ReadTestUtility {
 
 		MassDistribution results = null;
 
-		ArrayList<FocalElement> elementList = new ArrayList<FocalElement>();
+		ArrayList<IFocalElement> elementList = new ArrayList<IFocalElement>();
 
 		StringTokenizer elementTokenizer = new StringTokenizer(readLine);
 
@@ -90,7 +93,7 @@ public class ReadTestUtility {
 
 	private static FocalElement parseElement(String elementString) {
 		// elementString=A,B-0.5
-		ArrayList<Hypothesis> hypothesiesList = new ArrayList<Hypothesis>();
+		ArrayList<IHypothesis> hypothesiesList = new ArrayList<IHypothesis>();
 		StringTokenizer elementTokenizer = new StringTokenizer(elementString);
 		String hypothesiesString = elementTokenizer.nextToken("-");
 		hypothesiesList = parseHypothesies(hypothesiesString);
@@ -100,10 +103,10 @@ public class ReadTestUtility {
 		return el;
 	}
 
-	private static ArrayList<Hypothesis> parseHypothesies(
+	private static ArrayList<IHypothesis> parseHypothesies(
 			String hypothesiesString) {
 		// hypothesiesString=A,B
-		ArrayList<Hypothesis> hypothesiesList = new ArrayList<Hypothesis>();
+		ArrayList<IHypothesis> hypothesiesList = new ArrayList<IHypothesis>();
 		StringTokenizer hypTokenizer = new StringTokenizer(hypothesiesString);
 		while (hypTokenizer.hasMoreTokens()) {
 
@@ -237,7 +240,7 @@ public class ReadTestUtility {
 
 			readLine = br.readLine();
 			readLine = readLine.replaceAll("\\{", "");
-			ArrayList<Hypothesis> allHypothesies = parseHypothesies(readLine);
+			ArrayList<IHypothesis> allHypothesies = parseHypothesies(readLine);
 			return new FrameOfDiscernment(allHypothesies);
 
 		} catch (FileNotFoundException e) {
