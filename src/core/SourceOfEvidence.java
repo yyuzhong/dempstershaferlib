@@ -1,5 +1,7 @@
 package core;
 
+import interfaces.IFocalElement;
+import interfaces.IHypothesis;
 import interfaces.IMeasure;
 import interfaces.IRange;
 import interfaces.ISource;
@@ -94,7 +96,7 @@ public abstract class SourceOfEvidence implements ISource {
 	private MassDistribution computeMass(ArrayList<FocalElement> focalEvidence) {
 		MassDistribution mass = new MassDistribution();
 
-		ArrayList<FocalElement> bodyOfEvidence = new ArrayList<FocalElement>();
+		ArrayList<IFocalElement> bodyOfEvidence = new ArrayList<IFocalElement>();
 
 		for (int i = 0; i < focalEvidence.size(); i++) {
 			FocalElement focalElement = focalEvidence.get(i);
@@ -139,11 +141,11 @@ public abstract class SourceOfEvidence implements ISource {
 	 */
 	private Element computeElement(ClassificationAttribute classAttribute,
 			IMeasure measuredValue) {
-		ArrayList<Hypothesis> allHypothesis = frameOfDiscernment
+		ArrayList<IHypothesis> allHypothesis = frameOfDiscernment
 				.getHipothesies();
 
 		Element element = new Element();
-		for (Hypothesis hypothesis : allHypothesis) {
+		for (IHypothesis hypothesis : allHypothesis) {
 
 			ArrayList<IRange> allRange = classAttribute.getRanges(hypothesis);
 

@@ -1,5 +1,8 @@
 package core;
 
+import interfaces.IElement;
+import interfaces.IPowerSet;
+
 import java.util.ArrayList;
 
 /**
@@ -12,29 +15,29 @@ import java.util.ArrayList;
  * @author Elisa Costante
  * 
  */
-public class PowerSet {
+public class PowerSet implements IPowerSet {
 
-	private ArrayList<Element> elements;
+	private ArrayList<IElement> elements;
 
 	public PowerSet() {
-		elements = new ArrayList<Element>();
+		elements = new ArrayList<IElement>();
 	}
 
-	public PowerSet(ArrayList<Element> elements) {
+	public PowerSet(ArrayList<IElement> elements) {
 		this.elements = elements;
 	}
 
-	public ArrayList<Element> getElements() {
+	public ArrayList<IElement> getElements() {
 		return elements;
 	}
 
-	public void setElements(ArrayList<Element> elements) {
+	public void setElements(ArrayList<IElement> elements) {
 		this.elements = elements;
 	}
 
-	public void addElement(Element element) {
+	public void addElement(IElement element) {
 		if (elements == null)
-			elements = new ArrayList<Element>();
+			elements = new ArrayList<IElement>();
 		elements.add(element);
 	}
 

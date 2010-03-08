@@ -11,6 +11,8 @@ package utilities;
  *
  */
 
+import interfaces.IHypothesis;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -135,7 +137,7 @@ public class PowerSetIterator implements Iterator {
 		Hypothesis h3 = new Hypothesis("C");
 		Hypothesis h4 = new Hypothesis("D");
 
-		ArrayList<Hypothesis> allHypothesis = new ArrayList<Hypothesis>();
+		ArrayList<IHypothesis> allHypothesis = new ArrayList<IHypothesis>();
 		allHypothesis.add(h1);
 		allHypothesis.add(h2);
 		allHypothesis.add(h3);
@@ -146,7 +148,7 @@ public class PowerSetIterator implements Iterator {
 
 		PowerSetIterator powerSetIter = new PowerSetIterator(allHypothesis);
 		while (powerSetIter.hasNext()) {
-			ArrayList<Hypothesis> object = (ArrayList<Hypothesis>) powerSetIter
+			ArrayList<IHypothesis> object = (ArrayList<IHypothesis>) powerSetIter
 					.next();
 			Element el = new Element(object);
 			System.out.println(el.toString());

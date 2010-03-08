@@ -1,18 +1,20 @@
 package massDistribution;
 
+import interfaces.IElement;
+import interfaces.IFocalElement;
+
 import java.util.ArrayList;
 
 import utilities.DoubleUtility;
-import core.Element;
 import core.FocalElement;
 import core.FrameOfDiscernment;
 
 public class MassDistribution implements Cloneable {
 
-	protected ArrayList<FocalElement> bodyOfEvidence;
+	protected ArrayList<IFocalElement> bodyOfEvidence;
 	protected FrameOfDiscernment frameOfDiscernment;
 
-	public MassDistribution(ArrayList<FocalElement> mass) {
+	public MassDistribution(ArrayList<IFocalElement> mass) {
 		super();
 		this.bodyOfEvidence = mass;
 	}
@@ -21,17 +23,17 @@ public class MassDistribution implements Cloneable {
 
 	}
 
-	public ArrayList<FocalElement> getBodyOfEvidence() {
+	public ArrayList<IFocalElement> getBodyOfEvidence() {
 		return bodyOfEvidence;
 	}
 
-	public void setElements(ArrayList<FocalElement> focalElements) {
+	public void setElements(ArrayList<IFocalElement> focalElements) {
 		this.bodyOfEvidence = focalElements;
 	}
 
 	public void addElement(FocalElement element) {
 		if (bodyOfEvidence == null)
-			bodyOfEvidence = new ArrayList<FocalElement>();
+			bodyOfEvidence = new ArrayList<IFocalElement>();
 		bodyOfEvidence.add(element);
 	}
 
@@ -58,8 +60,8 @@ public class MassDistribution implements Cloneable {
 	 */
 	public boolean hasTotalLackOfKnowledge() {
 		if (frameOfDiscernment != null) {
-			Element universalSet = frameOfDiscernment.getUniversalSet();
-			FocalElement universalFocalElement = getFocalElement(universalSet
+			IElement universalSet = frameOfDiscernment.getUniversalSet();
+			IFocalElement universalFocalElement = getFocalElement(universalSet
 					.toString());
 			if (universalFocalElement != null) {
 				if (DoubleUtility.areEqualsDouble(universalFocalElement
@@ -113,8 +115,8 @@ public class MassDistribution implements Cloneable {
 				&& other.getBodyOfEvidence().containsAll(bodyOfEvidence)) {
 			boolean equal = true;
 			for (int i = 0; i < other.getBodyOfEvidence().size(); i++) {
-				FocalElement el1 = other.getBodyOfEvidence().get(i);
-				FocalElement el2 = MassDistribution.findFocalElement(
+				IFocalElement el1 = other.getBodyOfEvidence().get(i);
+				IFocalElement el2 = MassDistribution.findFocalElement(
 						bodyOfEvidence, el1);
 
 				if (!el1.equals(el2))
@@ -129,7 +131,7 @@ public class MassDistribution implements Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 		MassDistribution clonedMass = new MassDistribution();
 		if (bodyOfEvidence != null) {
-			ArrayList<FocalElement> elementsClone = new ArrayList<FocalElement>();
+			ArrayList<IFocalElement> elementsClone = new ArrayList<IFocalElement>();
 			for (int i = 0; i < bodyOfEvidence.size(); i++) {
 				FocalElement el = (FocalElement) bodyOfEvidence.get(i).clone();
 				elementsClone.add(el);
@@ -147,13 +149,13 @@ public class MassDistribution implements Cloneable {
 	}
 
 	public static MassDistribution order(MassDistribution mass) {
-		ArrayList<FocalElement> orderedElements = new ArrayList<FocalElement>();
+		ArrayList<IFocalElement> orderedElements = new ArrayList<IFocalElement>();
 
-		for (FocalElement focalElement1 : mass.getBodyOfEvidence()) {
+		for (IFocalElement focalElement1 : mass.getBodyOfEvidence()) {
 
-			FocalElement min = focalElement1;
+			IFocalElement min = focalElement1;
 			for (int j = 0; j < mass.getBodyOfEvidence().size(); j++) {
-				FocalElement element2 = mass.getBodyOfEvidence().get(j);
+				IFocalElement element2 = mass.getBodyOfEvidence().get(j);
 
 				if (element2.getElement().compareTo(focalElement1.getElement()) < 0
 						&& !orderedElements.contains(element2)) {
@@ -181,10 +183,10 @@ public class MassDistribution implements Cloneable {
 	 * @return The <code>element</code> if it is in the list, <code>null</code>
 	 *         otherwise.
 	 */
-	public static FocalElement findFocalElement(
-			ArrayList<FocalElement> elementsList, FocalElement element) {
+	public static IFocalElement findFocalElement(
+			ArrayList<IFocalElement> elementsList, IFocalElement element) {
 		int index = elementsList.indexOf(element);
-		FocalElement found = null;
+		IFocalElement found = null;
 		if (index >= 0)
 			found = elementsList.get(index);
 		return found;
@@ -197,7 +199,7 @@ public class MassDistribution implements Cloneable {
 	 * @param jointDistribution
 	 */
 	public static void setBodyOfEvidence(MassDistribution massDistribution) {
-		for (FocalElement focalElement : massDistribution.getBodyOfEvidence()) {
+		for (IFocalElement focalElement : massDistribution.getBodyOfEvidence()) {
 			focalElement
 					.setBodyOfEvidence(massDistribution.getBodyOfEvidence());
 
@@ -207,7 +209,7 @@ public class MassDistribution implements Cloneable {
 
 	public double getTotalBpa() {
 		double sum = 0;
-		for (FocalElement focalElement : bodyOfEvidence) {
+		for (IFocalElement focalElement : bodyOfEvidence) {
 			sum = sum + focalElement.getBpa();
 
 		}
@@ -237,10 +239,10 @@ public class MassDistribution implements Cloneable {
 	 * @return va focal element which match with the element or null if any
 	 *         match is found.
 	 */
-	public FocalElement getFocalElement(String element) {
+	public IFocalElement getFocalElement(String element) {
 		for (int i = 0; i < bodyOfEvidence.size(); i++) {
-			FocalElement focalElement = bodyOfEvidence.get(i);
-			Element thisElement = focalElement.getElement();
+			IFocalElement focalElement = bodyOfEvidence.get(i);
+			IElement thisElement = focalElement.getElement();
 			if (thisElement.toString().equalsIgnoreCase(element))
 				return focalElement;
 		}

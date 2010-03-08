@@ -1,5 +1,8 @@
 package core;
 
+import interfaces.IElement;
+import interfaces.IHypothesis;
+
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -10,11 +13,11 @@ import java.util.TreeSet;
  * @author Elisa Costante
  * 
  */
-public class Element implements Comparable, Cloneable {
+public class Element implements IElement {
 
-	protected ArrayList<Hypothesis> hypothesies;
+	protected ArrayList<IHypothesis> hypothesies;
 
-	public Element(ArrayList<Hypothesis> hypothesies) {
+	public Element(ArrayList<IHypothesis> hypothesies) {
 		super();
 		this.hypothesies = hypothesies;
 	}
@@ -23,17 +26,17 @@ public class Element implements Comparable, Cloneable {
 		super();
 	}
 
-	public ArrayList<Hypothesis> getHypothesies() {
+	public ArrayList<IHypothesis> getHypothesies() {
 		return hypothesies;
 	}
 
-	public void setHypothesies(ArrayList<Hypothesis> hypothesies) {
+	public void setHypothesies(ArrayList<IHypothesis> hypothesies) {
 		this.hypothesies = hypothesies;
 	}
 
-	public void addHypothesis(Hypothesis hypothesis) {
+	public void addHypothesis(IHypothesis hypothesis) {
 		if (hypothesies == null) {
-			hypothesies = new ArrayList<Hypothesis>();
+			hypothesies = new ArrayList<IHypothesis>();
 		}
 		hypothesies.add(hypothesis);
 	}
@@ -60,7 +63,7 @@ public class Element implements Comparable, Cloneable {
 	 * @return the intersection or null if the intersection is empty.
 	 */
 
-	public static Element getIntersection(Element element1, Element element2) {
+	public static Element getIntersection(IElement element1, IElement element2) {
 
 		if (element1 != null && element2 != null) {
 			if (element1.isEmptySet() || element2.isEmptySet()) {
@@ -69,15 +72,15 @@ public class Element implements Comparable, Cloneable {
 			} else {
 				Element intersectionElement = null;
 
-				ArrayList<Hypothesis> h1Array = element1.getHypothesies();
-				ArrayList<Hypothesis> h2Array = element2.getHypothesies();
-				ArrayList<Hypothesis> intersectionHypothesies = new ArrayList<Hypothesis>();
+				ArrayList<IHypothesis> h1Array = element1.getHypothesies();
+				ArrayList<IHypothesis> h2Array = element2.getHypothesies();
+				ArrayList<IHypothesis> intersectionHypothesies = new ArrayList<IHypothesis>();
 				if (h1Array != null && h2Array != null) {
 					// Searchinf for the common hypothesis
 					for (int i = 0; i < h1Array.size(); i++) {
-						Hypothesis h1 = h1Array.get(i);
+						IHypothesis h1 = h1Array.get(i);
 						for (int j = 0; j < h2Array.size(); j++) {
-							Hypothesis h2 = h2Array.get(j);
+							IHypothesis h2 = h2Array.get(j);
 							if (h1.equals(h2))
 								intersectionHypothesies.add(h1);
 						}
@@ -110,7 +113,7 @@ public class Element implements Comparable, Cloneable {
 	 * @return the Union between the two elements or null if one of the element
 	 *         is null.
 	 */
-	public static Element getUnion(Element element1, Element element2) {
+	public static IElement getUnion(IElement element1, IElement element2) {
 		if (element1 == null || element2 == null)
 			return null;
 		else if (element1.isEmptySet())
@@ -118,13 +121,13 @@ public class Element implements Comparable, Cloneable {
 		else if (element2.isEmptySet())
 			return element1;
 		else {
-			TreeSet<Hypothesis> union = new TreeSet<Hypothesis>(element1
+			TreeSet<IHypothesis> union = new TreeSet<IHypothesis>(element1
 					.getHypothesies());
 			union.addAll(element2.getHypothesies());
 
 			if (union.size() > 0)
 
-				return new Element(new ArrayList<Hypothesis>(union));
+				return new Element(new ArrayList<IHypothesis>(union));
 			else
 				return new Element(null);
 		}
@@ -139,7 +142,7 @@ public class Element implements Comparable, Cloneable {
 	 * @param b
 	 * @return true if b is included in a.
 	 */
-	public static boolean isIncluded(Element a, Element b) {
+	public static boolean isIncluded(IElement a, IElement b) {
 		// B is included in A if all the element of B belong to A
 		// that means the intersection between A and B is equals to B.
 		if (b.isEmptySet())
@@ -164,7 +167,7 @@ public class Element implements Comparable, Cloneable {
 	public boolean equals(Object obj) {
 		if (this != null && obj != null) {
 			Element other = (Element) obj;
-			ArrayList<Hypothesis> otherHypothesies = other.getHypothesies();
+			ArrayList<IHypothesis> otherHypothesies = other.getHypothesies();
 			if ((this.hypothesies == null && other.getHypothesies() == null)
 					|| (this.hypothesies != null
 							&& other.getHypothesies() != null
@@ -208,7 +211,7 @@ public class Element implements Comparable, Cloneable {
 	 * between the string rapresentation of the elements otherwise.
 	 */
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(IElement o) {
 		// if (o != null) {
 		// Element element = (Element) o;
 		//
@@ -250,9 +253,9 @@ public class Element implements Comparable, Cloneable {
 	}
 
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
+	public Object clone() throws CloneNotSupportedException {
 		if (hypothesies != null) {
-			ArrayList<Hypothesis> hypClone = new ArrayList<Hypothesis>();
+			ArrayList<IHypothesis> hypClone = new ArrayList<IHypothesis>();
 			for (int i = 0; i < hypothesies.size(); i++) {
 				Hypothesis hyp = (Hypothesis) hypothesies.get(i).clone();
 				hypClone.add(hyp);

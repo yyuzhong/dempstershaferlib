@@ -1,5 +1,7 @@
 package core;
 
+import interfaces.IHypothesis;
+
 /**
  * An Hypothesis is an element of the Frame of Discernment in Dempster-Shafer
  * Theory. It rapresent an event.
@@ -7,7 +9,7 @@ package core;
  * @author Elisa Costante
  * 
  */
-public class Hypothesis implements Comparable, Cloneable {
+public class Hypothesis implements Comparable, IHypothesis {
 
 	protected String identifier;
 	protected Object value;
@@ -91,7 +93,7 @@ public class Hypothesis implements Comparable, Cloneable {
 	}
 
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
+	public Object clone() throws CloneNotSupportedException {
 		String nameClone = new String(identifier);
 		Object valueClone = value;
 		Hypothesis clone = new Hypothesis(nameClone, valueClone);
