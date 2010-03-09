@@ -4,6 +4,7 @@
 package massDistribution;
 
 import interfaces.IMeasure;
+import interfaces.IMetric;
 import interfaces.IRange;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * @author Elisa Costante
  * 
  */
-public class Metric {
+public class Metric implements IMetric {
 
 	private String name;
 	private MetricType type;
@@ -202,7 +203,7 @@ public class Metric {
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
+	public Object clone() throws CloneNotSupportedException {
 		if (this != null) {
 			Metric cloned = new Metric(this.name, this.type);
 			if (this.bestCase != null)

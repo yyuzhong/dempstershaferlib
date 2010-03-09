@@ -3,7 +3,7 @@
  */
 package massDistribution;
 
-import interfaces.Attribute;
+import interfaces.AbstractAttribute;
 
 /**
  * A {@link MeasuredAttribute} has a Metric (IMeasure) an Identifier and a list
@@ -12,7 +12,7 @@ import interfaces.Attribute;
  * @author Elisa Costante
  * 
  */
-public class MeasuredAttribute extends Attribute {
+public class MeasuredAttribute extends AbstractAttribute {
 
 	private Metric metric;
 

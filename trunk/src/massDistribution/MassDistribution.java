@@ -2,6 +2,8 @@ package massDistribution;
 
 import interfaces.IElement;
 import interfaces.IFocalElement;
+import interfaces.IFrameOfDiscernment;
+import interfaces.IMassDistribution;
 
 import java.util.ArrayList;
 
@@ -9,10 +11,10 @@ import utilities.DoubleUtility;
 import core.FocalElement;
 import core.FrameOfDiscernment;
 
-public class MassDistribution implements Cloneable {
+public class MassDistribution implements Cloneable, IMassDistribution {
 
 	protected ArrayList<IFocalElement> bodyOfEvidence;
-	protected FrameOfDiscernment frameOfDiscernment;
+	protected IFrameOfDiscernment frameOfDiscernment;
 
 	public MassDistribution(ArrayList<IFocalElement> mass) {
 		super();
@@ -219,7 +221,7 @@ public class MassDistribution implements Cloneable {
 	/**
 	 * @return the frameOfDiscernment
 	 */
-	public FrameOfDiscernment getFrameOfDiscernment() {
+	public IFrameOfDiscernment getFrameOfDiscernment() {
 		return this.frameOfDiscernment;
 	}
 
@@ -227,7 +229,7 @@ public class MassDistribution implements Cloneable {
 	 * @param frameOfDiscernment
 	 *            the frameOfDiscernment to set
 	 */
-	public void setFrameOfDiscernment(FrameOfDiscernment frameOfDiscernment) {
+	public void setFrameOfDiscernment(IFrameOfDiscernment frameOfDiscernment) {
 		this.frameOfDiscernment = frameOfDiscernment;
 	}
 

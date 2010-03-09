@@ -1,6 +1,6 @@
 package massDistribution;
 
-import interfaces.Attribute;
+import interfaces.AbstractAttribute;
 import interfaces.IHypothesis;
 import interfaces.IRange;
 
@@ -10,7 +10,7 @@ import java.util.Hashtable;
 import core.Hypothesis;
 
 /**
- * A {@link ClassificationAttribute} is an {@link Attribute} with a weight and a
+ * A {@link ClassificationAttribute} is an {@link AbstractAttribute} with a weight and a
  * map with couples Hypothesis-Ranges. This map for each Hypothesis says the
  * interval that the attribute should have to belongs from that Hypothesis.
  * 
