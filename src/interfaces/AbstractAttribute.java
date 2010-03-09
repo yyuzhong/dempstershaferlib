@@ -5,11 +5,11 @@ package interfaces;
  * @author Elisa Costante
  * 
  */
-public abstract class Attribute implements Cloneable {
+public abstract class AbstractAttribute implements Cloneable {
 
 	protected String identifier;
 
-	public Attribute(String identifier) {
+	public AbstractAttribute(String identifier) {
 		super();
 		this.identifier = identifier;
 	}
@@ -60,7 +60,7 @@ public abstract class Attribute implements Cloneable {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		Attribute otherAttr = (Attribute) obj;
+		AbstractAttribute otherAttr = (AbstractAttribute) obj;
 		if (this.identifier.equalsIgnoreCase(otherAttr.identifier))
 			return true;
 		else
