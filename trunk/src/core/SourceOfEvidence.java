@@ -20,7 +20,7 @@ import massDistribution.MeasuredAttribute;
  * @author Elisa Costante
  * 
  */
-public abstract class SourceOfEvidence implements ISource {
+public class SourceOfEvidence implements ISource {
 
 	protected FrameOfDiscernment frameOfDiscernment;
 
