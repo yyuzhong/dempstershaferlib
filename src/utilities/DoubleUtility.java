@@ -12,7 +12,7 @@ import java.text.NumberFormat;
  */
 public class DoubleUtility {
 
-	public static final double EPSILON = 0.001;
+	public static final double EPSILON = 0.000001;
 
 	/**
 	 * Returns true if (b - epsilon) <= a <= (b + epsilon), false otherwise
@@ -26,7 +26,8 @@ public class DoubleUtility {
 	 * @return
 	 */
 	public static boolean areEqualsDouble(double a, double b, double epsilon) {
-		if (Math.abs(b - epsilon) <= a && a <= Math.abs(b + epsilon))
+		//if (Math.abs(b - epsilon) <= a && a <= Math.abs(b + epsilon))
+		if(Math.abs(a-b)<=epsilon)
 			return true;
 		else
 			return false;

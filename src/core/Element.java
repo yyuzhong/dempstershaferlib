@@ -237,7 +237,7 @@ public class Element implements IElement {
 		if (this.equals(o))
 			return 0;
 		else if (o != null)
-			return o.toString().compareTo(this.toString());
+			return this.toString().compareTo(o.toString());
 		else
 			return -1;
 	}

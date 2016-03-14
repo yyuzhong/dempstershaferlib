@@ -165,7 +165,7 @@ public class MassDistribution implements Cloneable, IMassDistribution {
 				}
 
 			}
-			orderedElements.add(min);
+			if(!orderedElements.contains(min)) orderedElements.add(min);
 			// mass.getFocalElements().remove(focalElement1);
 		}
 

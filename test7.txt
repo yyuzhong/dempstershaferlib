@@ -1,0 +1,6 @@
+#Test 4: dati dalla presentazione n.5 Java Libraries
+$Frame of Discernment"
+{A,B,C}
+$Input row-2
+{{A-0.98};{B-0.01};{C-0.00};{A,B,C-0.01}}
+{{A-0.00};{B-0.01};{C-0.98};{A,B,C-0.01}}

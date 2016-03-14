@@ -12,7 +12,7 @@ import exception.MassDistributionNotValidException;
 import gui.NewSwingApp;
 
 public class Main {
-	private static String filename = "test5.txt";
+	private static String filename = "/Volumes/User/Project/dempstershaferlib/test7.txt";
 
 	/**
 	 * @param args
